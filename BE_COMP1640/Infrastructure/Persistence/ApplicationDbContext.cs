@@ -17,7 +17,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
 
     public DbSet<Media> Media => Set<Media>();
 
-    public DbSet<SubmissionDeadline> SubmissionDeadlines => Set<SubmissionDeadline>();
+    public DbSet<SubmissionPeriod> SubmissionPeriods => Set<SubmissionPeriod>();
 
     public DbSet<ApplicationUser> Users => Set<ApplicationUser>();
 

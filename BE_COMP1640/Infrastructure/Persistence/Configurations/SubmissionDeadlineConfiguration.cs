@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations
 {
-    public class SubmissionDeadlineConfiguration : IEntityTypeConfiguration<SubmissionDeadline>
+    public class SubmissionDeadlineConfiguration : IEntityTypeConfiguration<SubmissionPeriod>
     {
         public SubmissionDeadlineConfiguration() { }
 
-        public void Configure(EntityTypeBuilder<SubmissionDeadline> builder)
+        public void Configure(EntityTypeBuilder<SubmissionPeriod> builder)
         {
             builder.Property(sd => sd.AcademicYear)
                 .IsRequired();
