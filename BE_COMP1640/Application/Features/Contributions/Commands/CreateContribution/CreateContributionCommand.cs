@@ -10,9 +10,9 @@ namespace Application.Features.Contributions.Commands.CreateContribution
 
         public string Description { get; set; }
 
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
 
-        public IFormFile DocumentFile { get; set; }
+        public IFormFile? DocumentFile { get; set; }
 
     }
 }

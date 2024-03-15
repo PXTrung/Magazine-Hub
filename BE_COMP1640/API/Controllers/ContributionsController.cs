@@ -1,5 +1,7 @@
-﻿using API.Sieve;
+﻿using API.RequestModels.Contribution;
+using API.Sieve;
 using Application.Features.Contributions.Commands.CreateContribution;
+using Application.Features.Contributions.Commands.UpdateContribution;
 using Application.Features.Contributions.Queries.GetContribution;
 using Application.Features.Contributions.Queries.ListContribution;
 using MediatR;
@@ -29,7 +31,7 @@ namespace API.Controllers
         {
             var result = await _sender.Send(command);
             return result.Match(
-                value => base.Ok(value),
+                value => base.Created(),
                 Problem);
         }
 
@@ -49,8 +51,8 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("id")]
-        public async Task<IActionResult> GetContribution([FromQuery] Guid id)
+        [Route("{id:guid}")]
+        public async Task<IActionResult> GetContribution(Guid id)
         {
             var query = new GetContributionQuery(id);
 
@@ -58,6 +60,21 @@ namespace API.Controllers
 
             return result.Match(
                 value => base.Ok(value),
+                Problem);
+        }
+
+        [HttpPut]
+        [Route("{id:guid}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateContribution(Guid id, [FromForm] UpdateContributionRequest request)
+        {
+            var command = new UpdateContributionCommand(id, request.Title, request.Description, request.ImageFile,
+                request.DocumentFile);
+
+            var result = await _sender.Send(command);
+
+            return result.Match(
+                _ => NoContent(),
                 Problem);
         }
     }

@@ -1,7 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
 using Infrastructure.Email;
-using Infrastructure.File;
 using Infrastructure.Identity.Services;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
@@ -32,17 +31,23 @@ public static class InfrastructureDependencyInjection
 
     private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("SQLiteConnection");
 
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
 
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
             options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
-            options.UseSqlite(connectionString)
+
+            options.UseSqlServer(configuration.GetConnectionString("SQLServerConnection"))
                 .LogTo(s => System.Diagnostics.Debug.WriteLine(s))
                 .EnableDetailedErrors()
                 .EnableSensitiveDataLogging();
+
+
+            //options.UseSqlite(configuration.GetConnectionString("SQLiteConnection"))
+            //    .LogTo(s => System.Diagnostics.Debug.WriteLine(s))
+            //    .EnableDetailedErrors()
+            //    .EnableSensitiveDataLogging();
         });
 
 
@@ -128,7 +133,7 @@ public static class InfrastructureDependencyInjection
         services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ILinkGenerator, LinkGenerator>();
-        services.AddScoped<IFileManager, FileManager>();
+        services.AddScoped<IFileManager, FileManager.FileManager>();
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
     }
 

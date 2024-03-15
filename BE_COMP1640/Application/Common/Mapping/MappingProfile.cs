@@ -29,7 +29,9 @@ public class MappingProfile : Profile
         CreateMap<UpdateContributionCommand, Contribution>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.Image, opt => opt.Ignore())
-            .ForMember(dest => dest.Document, opt => opt.Ignore());
+            .ForMember(dest => dest.Document, opt => opt.Ignore())
+            .ForMember(dest => dest.Title, opt => opt.Condition(src => !string.IsNullOrEmpty(src.Title)))
+            .ForMember(dest => dest.Description, opt => opt.Condition(src => !string.IsNullOrEmpty(src.Description)));
 
         CreateMap<CreateContributionCommand, Contribution>()
             .ForMember(dest => dest.Image, opt => opt.Ignore())
