@@ -1,5 +1,7 @@
-﻿using API.Sieve;
+﻿using API.RequestModels.Contributions;
+using API.Sieve;
 using Application.Features.Contributions.Commands.CreateContribution;
+using Application.Features.Contributions.Commands.UpdateContribution;
 using Application.Features.Contributions.Queries.GetContribution;
 using Application.Features.Contributions.Queries.ListContribution;
 using MediatR;
@@ -23,16 +25,24 @@ namespace API.Controllers
             _sieveProcessor = sieveProcessor;
         }
 
+
+        /// <summary>
+        ///     Creating a new Contribution
+        /// </summary>
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create([FromForm] CreateContributionCommand command)
+        public async Task<IActionResult> CreateContribution([FromForm] CreateContributionCommand request)
         {
-            var result = await _sender.Send(command);
+            var result = await _sender.Send(request);
             return result.Match(
-                value => base.Ok(value),
+                value => base.Created(),
                 Problem);
         }
 
+
+        /// <summary>
+        ///     Get list of Contributions
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> ListContribution([FromQuery] SieveModel sieveModel)
         {
@@ -48,9 +58,13 @@ namespace API.Controllers
             return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel));
         }
 
+
+        /// <summary>
+        ///     Get one Contribution by id
+        /// </summary>
         [HttpGet]
-        [Route("id")]
-        public async Task<IActionResult> GetContribution([FromQuery] Guid id)
+        [Route("{id:guid}")]
+        public async Task<IActionResult> GetContribution([FromRoute] Guid id)
         {
             var query = new GetContributionQuery(id);
 
@@ -58,6 +72,25 @@ namespace API.Controllers
 
             return result.Match(
                 value => base.Ok(value),
+                Problem);
+        }
+
+
+        /// <summary>
+        ///     Update one Contribution by id
+        /// </summary>
+        [HttpPut]
+        [Route("{id:guid}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateContribution([FromRoute] Guid id, [FromForm] UpdateContributionRequest request)
+        {
+            var command = new UpdateContributionCommand(id, request.Title, request.Description, request.ImageFile,
+                request.DocumentFile);
+
+            var result = await _sender.Send(command);
+
+            return result.Match(
+                _ => NoContent(),
                 Problem);
         }
     }

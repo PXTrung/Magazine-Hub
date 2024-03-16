@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Inital : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -185,7 +186,7 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubmissionDeadlines",
+                name: "Periods",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -198,9 +199,9 @@ namespace Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubmissionDeadlines", x => x.Id);
+                    table.PrimaryKey("PK_Periods", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SubmissionDeadlines_AspNetUsers_CreatedById",
+                        name: "FK_Periods_AspNetUsers_CreatedById",
                         column: x => x.CreatedById,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
@@ -246,9 +247,9 @@ namespace Infrastructure.Persistence.Migrations
                         principalTable: "Media",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Contributions_SubmissionDeadlines_SubmissionDeadlineId",
+                        name: "FK_Contributions_Periods_SubmissionDeadlineId",
                         column: x => x.SubmissionDeadlineId,
-                        principalTable: "SubmissionDeadlines",
+                        principalTable: "Periods",
                         principalColumn: "Id");
                 });
 
@@ -368,8 +369,8 @@ namespace Infrastructure.Persistence.Migrations
                 column: "CreatedById");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubmissionDeadlines_CreatedById",
-                table: "SubmissionDeadlines",
+                name: "IX_Periods_CreatedById",
+                table: "Periods",
                 column: "CreatedById");
 
             migrationBuilder.AddForeignKey(
@@ -439,7 +440,7 @@ namespace Infrastructure.Persistence.Migrations
                 name: "Media");
 
             migrationBuilder.DropTable(
-                name: "SubmissionDeadlines");
+                name: "Periods");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

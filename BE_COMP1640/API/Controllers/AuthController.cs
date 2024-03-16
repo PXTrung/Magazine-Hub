@@ -19,6 +19,10 @@ public class AuthController : ApiController
         _sender = sender;
     }
 
+
+    /// <summary>
+    ///     Registering a new account
+    /// </summary>
     [HttpPost]
     [Route("Register")]
     public async Task<IActionResult> Register([FromBody] RegisterCommand request)
@@ -30,7 +34,9 @@ public class AuthController : ApiController
             Problem);
     }
 
-
+    /// <summary>
+    ///     Login to get JWT
+    /// </summary>
     [HttpPost]
     [Route("Login")]
     public async Task<IActionResult> Login([FromBody] LoginCommand request)
@@ -43,11 +49,13 @@ public class AuthController : ApiController
     }
 
 
-    //Endpoint for editing self information
+    /// <summary>
+    ///     Update oneself profile
+    /// </summary>
     [HttpPut]
     [Route("UpdateProfile")]
     [Authorize]
-    public async Task<IActionResult> UpdateProfile(UpdateProfileCommand command)
+    public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileCommand command)
     {
         var result = await _sender.Send(command);
 
@@ -56,7 +64,9 @@ public class AuthController : ApiController
             Problem);
     }
 
-
+    /// <summary>
+    ///    [Ignore] Just only for confirming email via sent email
+    /// </summary>
     [HttpGet]
     [Route("ConfirmEmail")]
     public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailCommand command)
@@ -70,12 +80,6 @@ public class AuthController : ApiController
     }
 
 
-    //Endpoint for changing password
-    [HttpPut]
-    [Route("ChangePassword")]
-    public async Task<IActionResult> ChangePassword()
-    {
-        return NoContent();
-    }
+
 
 }

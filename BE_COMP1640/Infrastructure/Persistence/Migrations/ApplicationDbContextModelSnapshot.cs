@@ -276,7 +276,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("Media");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SubmissionDeadline", b =>
+            modelBuilder.Entity("Domain.Entities.Period", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -304,7 +304,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.ToTable("SubmissionDeadlines");
+                    b.ToTable("Periods");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -409,7 +409,7 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
                 {
                     b.HasOne("Domain.Entities.Faculty", "Faculty")
-                        .WithMany("Users")
+                        .WithMany("Members")
                         .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.NoAction);
 
@@ -439,7 +439,7 @@ namespace Infrastructure.Persistence.Migrations
                         .HasForeignKey("Domain.Entities.Contribution", "ImageId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("Domain.Entities.SubmissionDeadline", "SubmissionDeadline")
+                    b.HasOne("Domain.Entities.Period", "Period")
                         .WithMany("Contributions")
                         .HasForeignKey("SubmissionDeadlineId")
                         .OnDelete(DeleteBehavior.NoAction);
@@ -452,7 +452,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Navigation("Image");
 
-                    b.Navigation("SubmissionDeadline");
+                    b.Navigation("Period");
                 });
 
             modelBuilder.Entity("Domain.Entities.Faculty", b =>
@@ -496,7 +496,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("CreatedBy");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SubmissionDeadline", b =>
+            modelBuilder.Entity("Domain.Entities.Period", b =>
                 {
                     b.HasOne("Domain.Entities.ApplicationUser", "CreatedBy")
                         .WithMany()
@@ -574,10 +574,10 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Navigation("Contributions");
 
-                    b.Navigation("Users");
+                    b.Navigation("Members");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SubmissionDeadline", b =>
+            modelBuilder.Entity("Domain.Entities.Period", b =>
                 {
                     b.Navigation("Contributions");
                 });

@@ -28,10 +28,24 @@ namespace Application.Common.Behaviours
                 return await next();
             }
 
-            var errors = validationResult.Errors
-                .ConvertAll(error => Error.Validation(
-                    code: error.PropertyName,
-                    description: error.ErrorMessage));
+            //var errors = validationResult.Errors
+            //    .ConvertAll(error => Error.Validation(
+            //        code: error.PropertyName,
+            //        description: error.ErrorMessage));
+
+            var errors = validationResult.Errors.Select(error =>
+            {
+                if (error.ErrorCode == "NotFound")
+                {
+                    return Error.NotFound(description: error.ErrorMessage);
+                }
+                else
+                {
+                    return Error.Validation(
+                        code: error.PropertyName,
+                        description: error.ErrorMessage);
+                }
+            }).ToList();
 
             return (dynamic)errors;
         }

@@ -34,7 +34,7 @@ namespace Application.Features.Contributions.Commands.CreateContribution
             //Save Document file and create Media entity
             var documentEntity = await _fileManager.SaveFileAsync(request.DocumentFile, "Documents");
 
-            //Add Media entites
+            //Add Media entities
             await _context.Media.AddRangeAsync([imageEntity, documentEntity], cancellationToken);
 
             //Connect FK
@@ -45,7 +45,7 @@ namespace Application.Features.Contributions.Commands.CreateContribution
             await _context.Contributions.AddAsync(contributionEntity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new ErrorOr<Success>();
+            return Result.Success;
         }
     }
 }

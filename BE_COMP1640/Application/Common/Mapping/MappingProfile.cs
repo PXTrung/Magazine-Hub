@@ -4,6 +4,10 @@ using Application.Features.Contributions.Commands.CreateContribution;
 using Application.Features.Contributions.Commands.UpdateContribution;
 using Application.Features.Contributions.Queries.GetContribution;
 using Application.Features.Contributions.Queries.ListContribution;
+using Application.Features.Faculties.Commands.CreateFaculty;
+using Application.Features.Faculties.Queries.ListFaculty;
+using Application.Features.Periods.Commands.CreatePeriod;
+using Application.Features.Periods.Commands.UpdatePeriod;
 using AutoMapper;
 using Domain.Entities;
 
@@ -29,7 +33,9 @@ public class MappingProfile : Profile
         CreateMap<UpdateContributionCommand, Contribution>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.Image, opt => opt.Ignore())
-            .ForMember(dest => dest.Document, opt => opt.Ignore());
+            .ForMember(dest => dest.Document, opt => opt.Ignore())
+            .ForMember(dest => dest.Title, opt => opt.Condition(src => !string.IsNullOrEmpty(src.Title)))
+            .ForMember(dest => dest.Description, opt => opt.Condition(src => !string.IsNullOrEmpty(src.Description)));
 
         CreateMap<CreateContributionCommand, Contribution>()
             .ForMember(dest => dest.Image, opt => opt.Ignore())
@@ -45,7 +51,15 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UserName, opt => opt.MapFrom((src => src.Email)));
 
 
+        //Mapping of Period
+        CreateMap<CreatePeriodCommand, Period>();
+        CreateMap<UpdatePeriodCommand, Period>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore());
 
+
+        //Mapping of Faculty
+        CreateMap<CreateFacultyCommand, Faculty>();
+        CreateMap<Faculty, ListFacultyDto>().ReverseMap();
     }
 
 

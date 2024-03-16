@@ -24,7 +24,8 @@ namespace API.Sieve.Configurations
                 .CanSort();
 
             mapper.Property<ListContributionDto>(c => c.CreatedByEmail)
-                .CanFilter();
+                .CanFilter()
+                .CanSort();
 
         }
     }
