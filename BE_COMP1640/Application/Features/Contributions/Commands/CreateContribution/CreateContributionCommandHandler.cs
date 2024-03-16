@@ -45,7 +45,7 @@ namespace Application.Features.Contributions.Commands.CreateContribution
             await _context.Contributions.AddAsync(contributionEntity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new ErrorOr<Success>();
+            return Result.Success;
         }
     }
 }

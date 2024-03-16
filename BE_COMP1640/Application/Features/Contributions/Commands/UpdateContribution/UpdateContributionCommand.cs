@@ -17,8 +17,10 @@ namespace Application.Features.Contributions.Commands.UpdateContribution
 
         public Guid Id { get; set; }
 
+        /// <example>Business Administration in Graphic design?</example>
         public string? Title { get; set; }
 
+        /// <example>Just descrption</example>
         public string? Description { get; set; }
 
         public IFormFile? ImageFile { get; set; }

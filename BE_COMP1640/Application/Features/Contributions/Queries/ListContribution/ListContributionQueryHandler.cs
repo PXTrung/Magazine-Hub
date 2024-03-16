@@ -20,13 +20,13 @@ namespace Application.Features.Contributions.Queries.ListContribution
 
         public Task<ErrorOr<IQueryable<ListContributionDto>>> Handle(ListContributionQuery request, CancellationToken cancellationToken)
         {
-            var contribution = _context.Contributions
+            var contributions = _context.Contributions
                 .Include(c => c.CreatedBy)
                 .Include(c => c.Image)
                 .Include(c => c.Document)
                 .AsNoTracking();
 
-            var result = _mapper.ProjectTo<ListContributionDto>(contribution);
+            var result = _mapper.ProjectTo<ListContributionDto>(contributions);
 
             return Task.FromResult(result.ToErrorOr());
         }

@@ -1,9 +1,11 @@
 ﻿using API.Sieve;
+using Application;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using Sieve.Models;
 using Sieve.Services;
+using System.Reflection;
 
 namespace API;
 
@@ -40,9 +42,8 @@ public static class DependencyInjection
         apiInfo.Description += "\n\nTeam Members:\n";
         apiInfo.Description += "1. Leader - Lê Nguyên Khang\n";
         apiInfo.Description += "2. Member - Phạm Xuân Trung\n";
-        apiInfo.Description += "3. Member - Phan Hòa An Khê\n";
-        apiInfo.Description += "4. Member - Lê Ngọc Phương Anh\n";
-        apiInfo.Description += "5. Member - Nguyễn Hồng Nhật\n";
+        apiInfo.Description += "3. Member - Lê Ngọc Phương Anh\n";
+        apiInfo.Description += "4. Member - Nguyễn Hồng Nhật\n";
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
         {
@@ -72,6 +73,8 @@ public static class DependencyInjection
                 }
             });
             options.DescribeAllParametersInCamelCase();
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"), includeControllerXmlComments: true);
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{typeof(ApplicationDependencyInjection).Assembly.GetName().Name}.xml"));
         });
         services.AddFluentValidationRulesToSwagger();
         return services;

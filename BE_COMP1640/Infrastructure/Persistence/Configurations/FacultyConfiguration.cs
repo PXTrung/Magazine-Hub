@@ -23,7 +23,7 @@ namespace Infrastructure.Persistence.Configurations
                 .HasForeignKey(c => c.CreatedById)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasMany<ApplicationUser>(f => f.Users)
+            builder.HasMany<ApplicationUser>(f => f.Members)
                 .WithOne(u => u.Faculty)
                 .HasForeignKey(u => u.FacultyId)
                 .IsRequired(false)

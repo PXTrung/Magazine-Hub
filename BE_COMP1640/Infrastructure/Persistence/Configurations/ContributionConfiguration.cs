@@ -33,7 +33,7 @@ namespace Infrastructure.Persistence.Configurations
                 .HasPrincipalKey(u => u.Id)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne<SubmissionPeriod>(c => c.SubmissionPeriod)
+            builder.HasOne<Period>(c => c.Period)
                 .WithMany(s => s.Contributions)
                 .HasForeignKey(s => s.SubmissionDeadlineId)
                 .OnDelete(DeleteBehavior.NoAction);

@@ -1,12 +1,22 @@
-﻿using FluentValidation;
+﻿using Application.Common.Interfaces;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Contributions.Commands.UpdateContribution
 {
     public class UpdateContributionCommandValidator : AbstractValidator<UpdateContributionCommand>
     {
-        public UpdateContributionCommandValidator()
+        private readonly IApplicationDbContext _context;
+        private readonly ICurrentUserProvider _currentUserProvider;
+
+        public UpdateContributionCommandValidator(IApplicationDbContext context, ICurrentUserProvider currentUserProvider)
         {
+            _context = context;
+            _currentUserProvider = currentUserProvider;
+            RuleFor(x => x.Id)
+                .MustAsync(IdExists).WithMessage("Contribution not found").WithErrorCode("NotFound");
+
             RuleFor(x => x.Title)
                 .MaximumLength(255).WithMessage("Title must not exceed 255 characters.");
 
@@ -24,7 +34,24 @@ namespace Application.Features.Contributions.Commands.UpdateContribution
                 .Must(BeAValidDocumentFile).WithMessage("Unsupported document file extension. Supported extensions: .doc, .docx, .pdf")
                 .Must(BeUnder20Mb).WithMessage("Document file size should be less than 10MB.")
                 .When(x => x.DocumentFile != null);
+
+            RuleFor(x => x)
+                .MustAsync(CanUpdateContribution)
+                .WithMessage("Contribution not found").WithErrorCode("NotFound");
         }
+
+        private Task<bool> IdExists(Guid id, CancellationToken cancellationToken)
+        {
+            return _context.Contributions.AnyAsync(p => p.Id == id, cancellationToken);
+        }
+
+        private async Task<bool> CanUpdateContribution(UpdateContributionCommand command, CancellationToken cancellationToken)
+        {
+            var currentUser = _currentUserProvider.GetCurrentUser();
+            var contributionEntity = await _context.Contributions.FindAsync(command.Id);
+            return contributionEntity?.CreatedById == currentUser.Id;
+        }
+
 
         private bool BeAValidImageFile(IFormFile? file)
         {
@@ -42,5 +69,7 @@ namespace Application.Features.Contributions.Commands.UpdateContribution
         {
             return file != null && file.Length <= 20971520;
         }
+
+
     }
 }

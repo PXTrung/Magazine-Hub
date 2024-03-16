@@ -13,6 +13,6 @@ public interface IApplicationDbContext
 
     public DbSet<Media> Media { get; }
 
-    public DbSet<SubmissionPeriod> SubmissionPeriods { get; }
+    public DbSet<Period> Periods { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

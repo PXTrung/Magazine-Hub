@@ -1,4 +1,4 @@
-﻿namespace API.RequestModels.Contribution
+﻿namespace API.RequestModels.Contributions
 {
     public class UpdateContributionRequest
     {

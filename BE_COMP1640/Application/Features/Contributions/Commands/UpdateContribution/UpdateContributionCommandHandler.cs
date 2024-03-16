@@ -26,14 +26,12 @@ namespace Application.Features.Contributions.Commands.UpdateContribution
 
         public async Task<ErrorOr<Success>> Handle(UpdateContributionCommand request, CancellationToken cancellationToken)
         {
-            var currentUser = _currentUserProvider.GetCurrentUser();
 
             var contributionEntity = await _context.Contributions
                 .Include(c => c.Image)
                 .Include(c => c.Document)
-                .FirstOrDefaultAsync(c => c.Id == request.Id && c.CreatedById == currentUser.Id, cancellationToken);
+                .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
 
-            if (contributionEntity == null) return Error.NotFound(description: "Contribution not found");
 
 
             _mapper.Map(request, contributionEntity);

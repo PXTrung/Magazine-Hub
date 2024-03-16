@@ -17,7 +17,7 @@ public class Contribution : AuditableBaseEntity
 
     public Guid? SubmissionDeadlineId { get; set; }
 
-    public SubmissionPeriod SubmissionPeriod { get; set; } // One-to-one
+    public Period Period { get; set; } // One-to-one
 
     public Guid? ImageId { get; set; }
 
