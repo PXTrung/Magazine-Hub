@@ -10,6 +10,7 @@ const LoginForm = lazy(() => import("../pages/auth/components/LoginForm"));
 const RegisterForm = lazy(
    () => import("../pages/auth/components/RegisterForm"),
 );
+const Contribution = lazy(() => import("../pages/contribution/Contribution"));
 
 type LoadComponentProps = {
    component: React.LazyExoticComponent<() => JSX.Element>;
@@ -48,6 +49,10 @@ export default function AllRoutes() {
       {
          path: "/",
          element: <LandingPage />,
+      },
+      {
+         path: PATHS.CONTRIBUTION.IDENTIFY,
+         element: <LazyLoadingComponent component={Contribution} />,
       },
    ]);
 }
