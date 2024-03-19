@@ -3,6 +3,8 @@ import Input from "../../../components/CustomInput";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../authValidationSchemas";
+import { ENDPOINTS } from "../../../api";
+import Dropdown from "../../../components/Dropdown/index";
 
 const RegisterForm = () => {
    const {
@@ -13,23 +15,23 @@ const RegisterForm = () => {
       resolver: yupResolver<FieldValues>(registerSchema),
    });
 
-   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
       console.log(data);
 
-      // await fetch("http://localhost:8000/api/v1/users/register", {
-      //    method: "POST",
-      //    headers: {
-      //       "Content-Type": "application/json",
-      //    },
-      //    body: JSON.stringify(user),
-      // })
-      //    .then((response) => {
-      //       console.log("status: ", response.status);
-      //       console.log("message: ", response.json);
-      //    })
-      //    .catch((error) => {
-      //       console.error("Lỗi:", error);
-      //    });
+      await fetch(ENDPOINTS.REGISTER, {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify(data),
+      })
+         .then((response) => {
+            console.log("status: ", response.status);
+            console.log("message: ", response.json);
+         })
+         .catch((error) => {
+            console.error("Lỗi:", error);
+         });
    };
 
    return (
@@ -58,6 +60,7 @@ const RegisterForm = () => {
                   style="flex-1"
                />
             </div>
+            <Dropdown id="facuty" label="Facuty" register={register} />
             <Input
                register={register}
                errors={errors}
@@ -98,31 +101,6 @@ const RegisterForm = () => {
                Register
             </button>
          </form>
-         <div className="mt-3">
-            <div className="relative flex justify-center text-xs overflow-hidden">
-               <span
-                  className="relative font-normal text-gray-600 uppercase
-                  before:block before:w-[180px] before:h-[1px] before:absolute before:top-[8px] before:right-[40px] before:bg-gray-200
-                  after:block after:w-[180px] after:h-[1px] after:absolute after:top-[8px] after:left-[40px] after:bg-gray-200"
-               >
-                  or
-               </span>
-            </div>
-
-            <div className="mt-3 flex justify-center gap-4 text-gray-500 hover:text-gray-700 rounded border hover:border-gray-700 transition-all duration-100">
-               <button
-                  className="w-full flex flex-row justify-center items-center p-2 "
-                  onClick={() => {}}
-               >
-                  <img
-                     src="/assets/icons/google-logo.png"
-                     alt=""
-                     className="w-4 h-4 mr-3"
-                  />
-                  <span className="text-base ">Sign up with Google</span>
-               </button>
-            </div>
-         </div>
       </div>
    );
 };
