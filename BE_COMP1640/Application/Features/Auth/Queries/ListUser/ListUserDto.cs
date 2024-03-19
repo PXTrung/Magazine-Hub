@@ -12,5 +12,6 @@
 
         public string FacultyName { get; set; }
 
+        public Guid FacultyId { get; set; }
     }
 }

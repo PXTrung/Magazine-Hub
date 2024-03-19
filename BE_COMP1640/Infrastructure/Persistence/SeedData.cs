@@ -8,10 +8,19 @@ namespace Infrastructure.Persistence
     {
         public static async Task Initialize(IServiceProvider serviceProvider)
         {
-            var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
-            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+            using var scope = serviceProvider.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
 
+            //Ensuring the database created
+            await context.Database.EnsureCreatedAsync();
+
+            //Migrating pending migration
+            //if ((await context.Database.GetPendingMigrationsAsync()).Any())
+            //{
+            //    await context.Database.MigrateAsync();
+            //}
 
 
             // Check if roles table have any data
@@ -165,8 +174,6 @@ namespace Infrastructure.Persistence
                 await context.Contributions.AddRangeAsync(newContributions);
                 await context.SaveChangesAsync();
             }
-
-
         }
     }
 }

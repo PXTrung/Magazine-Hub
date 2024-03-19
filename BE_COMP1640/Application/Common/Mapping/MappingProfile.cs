@@ -59,7 +59,9 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.FacultyName,
                 opt => opt.MapFrom(src => src.Faculty != null ? src.Faculty.Name : null))
             .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FirstName + src.LastName))
-        .ForMember(dest => dest.Role, opt => opt.MapFrom(src => string.Join(", ", src.Roles.AsEnumerable().Select(r => r.Name))));
+            .ForMember(dest => dest.Role,
+                opt => opt.MapFrom(src => string.Join(", ", src.Roles.AsEnumerable().Select(r => r.Name))))
+            .ForMember(dest => dest.FacultyId, opt => opt.MapFrom(src => src.Faculty != null ? src.Faculty.Id : (Guid?)null));
 
 
         CreateMap<ApplicationRole, ListRoleDto>();

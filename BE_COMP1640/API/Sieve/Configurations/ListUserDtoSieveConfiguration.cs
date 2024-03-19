@@ -19,6 +19,9 @@ namespace API.Sieve.Configurations
                 .CanFilter()
                 .CanSort();
 
+            mapper.Property<ListUserDto>(c => c.FacultyId)
+                .CanFilter()
+                .CanSort();
 
         }
     }
