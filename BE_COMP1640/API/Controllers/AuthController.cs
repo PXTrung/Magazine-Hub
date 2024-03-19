@@ -1,10 +1,16 @@
-﻿using Application.Features.Auth.Commands.ConfirmEmail;
+﻿using API.Sieve;
+using Application.Features.Auth.Commands.AssignRole;
+using Application.Features.Auth.Commands.ConfirmEmail;
 using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.UpdateProfile;
+using Application.Features.Auth.Queries.ListRole;
+using Application.Features.Auth.Queries.ListUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sieve.Models;
+using Sieve.Services;
 
 namespace API.Controllers;
 
@@ -13,10 +19,12 @@ namespace API.Controllers;
 public class AuthController : ApiController
 {
     private readonly ISender _sender;
+    private readonly ISieveProcessor _sieveProcessor;
 
-    public AuthController(ISender sender)
+    public AuthController(ISender sender, ISieveProcessor sieveProcessor)
     {
         _sender = sender;
+        _sieveProcessor = sieveProcessor;
     }
 
 
@@ -30,7 +38,7 @@ public class AuthController : ApiController
         var authResult = await _sender.Send(request);
 
         return authResult.Match(
-            result => base.Ok(result),
+            value => base.Ok(value),
             Problem);
     }
 
@@ -44,7 +52,7 @@ public class AuthController : ApiController
         var authResult = await _sender.Send(request);
 
         return authResult.Match(
-            result => base.Ok(result),
+            value => base.Ok(value),
             Problem);
     }
 
@@ -60,7 +68,7 @@ public class AuthController : ApiController
         var result = await _sender.Send(command);
 
         return result.Match(
-            _ => NoContent(),
+            value => base.Ok(value),
             Problem);
     }
 
@@ -79,7 +87,56 @@ public class AuthController : ApiController
             Problem);
     }
 
+    /// <summary>
+    ///     List all users in the system
+    /// </summary>
+    [HttpGet]
+    [Route("Users")]
+    public async Task<IActionResult> ListUser([FromQuery] SieveModel sieveModel)
+    {
+
+        var result = await _sender.Send(new ListUserQuery());
 
 
+        if (result.IsError)
+        {
+            return Problem(result.Errors);
+        }
 
+
+        return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel));
+
+    }
+
+    /// <summary>
+    ///     List all roles in the system
+    /// </summary>
+    [HttpGet]
+    [Route("Roles")]
+    public async Task<IActionResult> ListRole([FromQuery] SieveModel sieveModel)
+    {
+        var result = await _sender.Send(new ListRoleQuery());
+
+        if (result.IsError)
+        {
+            return Problem(result.Errors);
+        }
+
+        return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel));
+    }
+
+    /// <summary>
+    ///     Assign role to user
+    /// </summary>
+    [HttpPut]
+    [Route("AssignRole")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> AssignRole([FromBody] AssignRoleCommand request)
+    {
+        var result = await _sender.Send(request);
+
+        return result.Match(
+            value => base.Ok(value),
+            Problem);
+    }
 }

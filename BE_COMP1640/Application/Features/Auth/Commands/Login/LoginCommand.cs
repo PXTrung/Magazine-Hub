@@ -1,9 +1,10 @@
-﻿using ErrorOr;
+﻿using Application.Common.Models;
+using ErrorOr;
 using MediatR;
 
 namespace Application.Features.Auth.Commands.Login
 {
-    public record LoginCommand : IRequest<ErrorOr<LoginDto>>
+    public record LoginCommand : IRequest<ErrorOr<SuccessResult>>
     {
 
         /// <example>userexample@gmail.com</example>

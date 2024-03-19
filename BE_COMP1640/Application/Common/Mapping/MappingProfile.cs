@@ -1,5 +1,7 @@
 ﻿using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.Register;
+using Application.Features.Auth.Queries.ListRole;
+using Application.Features.Auth.Queries.ListUser;
 using Application.Features.Contributions.Commands.CreateContribution;
 using Application.Features.Contributions.Commands.UpdateContribution;
 using Application.Features.Contributions.Queries.GetContribution;
@@ -23,7 +25,10 @@ public class MappingProfile : Profile
         CreateMap<Contribution, ListContributionDto>()
             .ForMember(dest => dest.CreatedByEmail, opt => opt.MapFrom(src => src.CreatedBy.Email))
             .ForMember(dest => dest.CoverImageUrl, opt => opt.MapFrom(src => src.Image.UrlFilePath))
-            .ForMember(dest => dest.DocumentUrl, opt => opt.MapFrom(src => src.Document.UrlFilePath));
+            .ForMember(dest => dest.DocumentUrl, opt => opt.MapFrom(src => src.Document.UrlFilePath))
+            .ForMember(dest => dest.FacultyName,
+                opt => opt.MapFrom(src => src.CreatedBy.Faculty != null ? src.CreatedBy.Faculty.Name : null))
+            .ForMember(dest => dest.FacultyId, opt => opt.MapFrom(src => src.CreatedBy.Faculty != null ? src.CreatedBy.Faculty.Id : (Guid?)null));
 
         CreateMap<Contribution, GetContributionDto>()
             .ForMember(dest => dest.CreatedByEmail, opt => opt.MapFrom(src => src.CreatedBy.Email))
@@ -50,6 +55,16 @@ public class MappingProfile : Profile
         CreateMap<RegisterCommand, ApplicationUser>()
             .ForMember(dest => dest.UserName, opt => opt.MapFrom((src => src.Email)));
 
+        CreateMap<ApplicationUser, ListUserDto>()
+            .ForMember(dest => dest.FacultyName,
+                opt => opt.MapFrom(src => src.Faculty != null ? src.Faculty.Name : null))
+            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FirstName + src.LastName))
+            .ForMember(dest => dest.Role,
+                opt => opt.MapFrom(src => string.Join(", ", src.Roles.AsEnumerable().Select(r => r.Name))))
+            .ForMember(dest => dest.FacultyId, opt => opt.MapFrom(src => src.Faculty != null ? src.Faculty.Id : (Guid?)null));
+
+
+        CreateMap<ApplicationRole, ListRoleDto>();
 
         //Mapping of Period
         CreateMap<CreatePeriodCommand, Period>();
@@ -60,6 +75,8 @@ public class MappingProfile : Profile
         //Mapping of Faculty
         CreateMap<CreateFacultyCommand, Faculty>();
         CreateMap<Faculty, ListFacultyDto>().ReverseMap();
+
+
     }
 
 

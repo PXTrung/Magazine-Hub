@@ -1,9 +1,10 @@
-﻿using ErrorOr;
+﻿using Application.Common.Models;
+using ErrorOr;
 using MediatR;
 
 namespace Application.Features.Auth.Commands.UpdateProfile
 {
-    public record UpdateProfileCommand : IRequest<ErrorOr<Success>>
+    public record UpdateProfileCommand : IRequest<ErrorOr<SuccessResult>>
     {
 
         /// <example>Trung</example>

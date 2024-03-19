@@ -2,6 +2,7 @@
 {
     public record CurrentUser(
         Guid Id,
+        Guid FacultyId,
         string FirstName,
         string LastName,
         string Email,

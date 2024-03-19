@@ -27,6 +27,7 @@ namespace API.Controllers
         /// </summary>
         [HttpPost]
         [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromForm] CreatePeriodCommand request)
         {
             var result = await _sender.Send(request);
@@ -42,7 +43,7 @@ namespace API.Controllers
         /// </summary>
         [HttpPut]
         [Route("{id:guid}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdatePeriod([FromRoute] Guid id, [FromBody] UpdatePeriodRequest request)
         {
             var command = new UpdatePeriodCommand(id: id,

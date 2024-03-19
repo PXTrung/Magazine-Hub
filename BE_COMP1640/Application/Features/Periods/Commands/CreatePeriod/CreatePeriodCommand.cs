@@ -1,9 +1,10 @@
-﻿using ErrorOr;
+﻿using Application.Common.Models;
+using ErrorOr;
 using MediatR;
 
 namespace Application.Features.Periods.Commands.CreatePeriod
 {
-    public record CreatePeriodCommand : IRequest<ErrorOr<Success>>
+    public record CreatePeriodCommand : IRequest<ErrorOr<SuccessResult>>
     {
 
         /// <example>2024</example>

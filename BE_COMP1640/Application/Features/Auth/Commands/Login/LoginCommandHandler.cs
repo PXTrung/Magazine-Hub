@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Common.Models;
 using Domain.Entities;
 using ErrorOr;
 using MediatR;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Features.Auth.Commands.Login
 {
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, ErrorOr<LoginDto>>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, ErrorOr<SuccessResult>>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
@@ -17,7 +18,7 @@ namespace Application.Features.Auth.Commands.Login
             _userManager = userManager;
             _jwtTokenGenerator = jwtTokenGenerator;
         }
-        public async Task<ErrorOr<LoginDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<SuccessResult>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
@@ -32,12 +33,14 @@ namespace Application.Features.Auth.Commands.Login
             var roles = await _userManager.GetRolesAsync(user);
 
 
-            var token = _jwtTokenGenerator.GenerateToken(id: user.Id, email: user.Email,
+            var token = _jwtTokenGenerator.GenerateToken(id: user.Id,
+                facultyId: user.FacultyId,
+                email: user.Email,
                 firstName: user.FirstName,
                 lastName: user.LastName,
                 roles: roles.ToList());
 
-            return new LoginDto(token);
+            return new SuccessResult(title: "Login successfully!", data: token);
         }
     }
 }

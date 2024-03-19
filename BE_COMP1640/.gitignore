@@ -399,6 +399,8 @@ FodyWeavers.xsd
 
 
 
-# Server files resources (.jpg,...)
+# Server media files resources (.jpg,...)
 API/MediaFiles/Images/*
 API/MediaFiles/Documents/*
+!API/MediaFiles/Images/.gitkeep
+!API/MediaFiles/Documents/.gitkeep

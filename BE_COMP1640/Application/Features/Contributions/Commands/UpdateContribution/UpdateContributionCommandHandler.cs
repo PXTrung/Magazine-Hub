@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Common.Models;
 using AutoMapper;
 using ErrorOr;
 using MediatR;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Contributions.Commands.UpdateContribution
 {
-    public class UpdateContributionCommandHandler : IRequestHandler<UpdateContributionCommand, ErrorOr<Success>>
+    public class UpdateContributionCommandHandler : IRequestHandler<UpdateContributionCommand, ErrorOr<SuccessResult>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -24,17 +25,18 @@ namespace Application.Features.Contributions.Commands.UpdateContribution
             _currentUserProvider = currentUserProvider;
         }
 
-        public async Task<ErrorOr<Success>> Handle(UpdateContributionCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<SuccessResult>> Handle(UpdateContributionCommand request, CancellationToken cancellationToken)
         {
 
             var contributionEntity = await _context.Contributions
                 .Include(c => c.Image)
                 .Include(c => c.Document)
-                .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
-
-
+                .FirstOrDefaultAsync(c => c.Id == request.Id && c.CreatedById == _currentUserProvider.GetCurrentUser().Id, cancellationToken);
 
             _mapper.Map(request, contributionEntity);
+
+            if (contributionEntity == null) return Error.NotFound("Contribution not found");
+
 
             if (request.ImageFile != null) await _fileManager.UpdateFileAsync(request.ImageFile, "Images", contributionEntity.Image);
 
@@ -42,7 +44,7 @@ namespace Application.Features.Contributions.Commands.UpdateContribution
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return Result.Success;
+            return new SuccessResult(title: "Updated contribution successfully!");
         }
     }
 }

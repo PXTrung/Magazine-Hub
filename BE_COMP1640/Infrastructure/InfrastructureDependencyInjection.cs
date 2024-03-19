@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -39,17 +40,16 @@ public static class InfrastructureDependencyInjection
             options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
 
             //options.UseSqlServer(configuration.GetConnectionString("SQLServerConnection"))
-            //    .LogTo(s => System.Diagnostics.Debug.WriteLine(s))
+            //    .LogTo(s => Debug.WriteLine(s))
             //    .EnableDetailedErrors()
             //    .EnableSensitiveDataLogging();
 
 
             options.UseSqlite(configuration.GetConnectionString("SQLiteConnection"))
-                .LogTo(s => System.Diagnostics.Debug.WriteLine(s))
+                .LogTo(s => Debug.WriteLine(s))
                 .EnableDetailedErrors()
                 .EnableSensitiveDataLogging();
         });
-
 
     }
 
@@ -101,7 +101,7 @@ public static class InfrastructureDependencyInjection
                     {
                         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                         {
-                            context.Response.Headers.Add("Token-Expired", "true");
+                            context.Response.Headers.Append("Token-Expired", "true");
                         }
 
                         return Task.CompletedTask;
@@ -111,7 +111,7 @@ public static class InfrastructureDependencyInjection
                         context.HandleResponse();
                         context.Response.StatusCode = 401;
                         context.Response.ContentType = "application/json";
-                        var serializedError = JsonSerializer.SerializeToUtf8Bytes(new { error = "Unauthorized" });
+                        var serializedError = JsonSerializer.SerializeToUtf8Bytes(new { title = "You are not authorized" });
                         var errorJson = Encoding.UTF8.GetString(serializedError);
                         context.Response.WriteAsync(errorJson);
                         return Task.CompletedTask;
@@ -120,7 +120,7 @@ public static class InfrastructureDependencyInjection
                     {
                         context.Response.StatusCode = 403;
                         context.Response.ContentType = "application/json";
-                        var serializedError = JsonSerializer.SerializeToUtf8Bytes(new { error = "Forbidden" });
+                        var serializedError = JsonSerializer.SerializeToUtf8Bytes(new { title = "You are not authorized to access this resource" });
                         var errorJson = Encoding.UTF8.GetString(serializedError);
                         context.Response.WriteAsync(errorJson);
                         return Task.CompletedTask;

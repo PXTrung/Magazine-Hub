@@ -5,6 +5,7 @@
         Submitted = 0,
         Approved = 1,
         Rejected = 2,
-        RevisionRequested = 3
+        Published = 3,
+        Todo = 4
     }
 }

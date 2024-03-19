@@ -1,5 +1,6 @@
 ﻿using API.RequestModels.Contributions;
 using API.Sieve;
+using Application.Common.Interfaces;
 using Application.Features.Contributions.Commands.CreateContribution;
 using Application.Features.Contributions.Commands.UpdateContribution;
 using Application.Features.Contributions.Queries.GetContribution;
@@ -18,11 +19,13 @@ namespace API.Controllers
     {
         private readonly ISender _sender;
         private readonly ISieveProcessor _sieveProcessor;
+        private readonly ICurrentUserProvider _currentUserProvider;
 
-        public ContributionsController(ISender sender, ISieveProcessor sieveProcessor)
+        public ContributionsController(ISender sender, ISieveProcessor sieveProcessor, ICurrentUserProvider currentUserProvider)
         {
             _sender = sender;
             _sieveProcessor = sieveProcessor;
+            _currentUserProvider = currentUserProvider;
         }
 
 
@@ -30,12 +33,31 @@ namespace API.Controllers
         ///     Creating a new Contribution
         /// </summary>
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Contributor")]
         public async Task<IActionResult> CreateContribution([FromForm] CreateContributionCommand request)
         {
             var result = await _sender.Send(request);
             return result.Match(
-                value => base.Created(),
+                value => StatusCode(201, value),
+                Problem);
+        }
+
+        /// <summary>
+        ///     Update one Contribution by id
+        /// </summary>
+        [HttpPut]
+        [Route("{id:guid}")]
+        [Authorize]
+        [Authorize(Roles = "Contributor")]
+        public async Task<IActionResult> UpdateContribution([FromRoute] Guid id, [FromForm] UpdateContributionRequest request)
+        {
+            var command = new UpdateContributionCommand(id, request.Title, request.Description, request.ImageFile,
+                request.DocumentFile);
+
+            var result = await _sender.Send(command);
+
+            return result.Match(
+                value => base.Ok(value),
                 Problem);
         }
 
@@ -76,22 +98,6 @@ namespace API.Controllers
         }
 
 
-        /// <summary>
-        ///     Update one Contribution by id
-        /// </summary>
-        [HttpPut]
-        [Route("{id:guid}")]
-        [Authorize]
-        public async Task<IActionResult> UpdateContribution([FromRoute] Guid id, [FromForm] UpdateContributionRequest request)
-        {
-            var command = new UpdateContributionCommand(id, request.Title, request.Description, request.ImageFile,
-                request.DocumentFile);
-
-            var result = await _sender.Send(command);
-
-            return result.Match(
-                _ => NoContent(),
-                Problem);
-        }
     }
+
 }

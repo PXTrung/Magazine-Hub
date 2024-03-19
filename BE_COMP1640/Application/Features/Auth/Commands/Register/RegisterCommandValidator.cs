@@ -11,7 +11,6 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
             .NotEmpty().WithMessage("Email is required")
             .EmailAddress().WithMessage("Email is not valid");
 
-
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("Password is required")
             .MinimumLength(8).WithMessage("Password must be at least 8 characters long")
@@ -23,6 +22,9 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
         RuleFor(x => x.ConfirmPassword)
             .NotEmpty().WithMessage("Password confirmation is required")
             .Equal(x => x.Password).WithMessage("Password confirmation must match the password");
+
+        RuleFor(x => x.FacultyId)
+            .NotEmpty().WithMessage("FacultyId is required");
 
         RuleFor(x => x.FirstName)
             .MaximumLength(50).WithMessage("First name must not exceed 50 characters")

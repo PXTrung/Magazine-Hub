@@ -7,8 +7,6 @@ namespace API.Sieve
     public class ApplicationSieveProcessor : SieveProcessor
 
     {
-
-
         protected override SievePropertyMapper MapProperties(SievePropertyMapper mapper)
         {
             return mapper.ApplyConfigurationsFromAssembly(typeof(ApplicationSieveProcessor).Assembly);

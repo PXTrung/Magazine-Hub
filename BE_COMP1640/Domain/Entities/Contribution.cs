@@ -15,7 +15,7 @@ public class Contribution : AuditableBaseEntity
 
     public Guid? FacultyId { get; set; } // Foreign key
 
-    public Guid? SubmissionDeadlineId { get; set; }
+    public Guid? PeriodId { get; set; }
 
     public Period Period { get; set; } // One-to-one
 

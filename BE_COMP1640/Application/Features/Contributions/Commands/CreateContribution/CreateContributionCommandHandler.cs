@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Common.Models;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
@@ -7,7 +8,7 @@ using MediatR;
 
 namespace Application.Features.Contributions.Commands.CreateContribution
 {
-    public class CreateContributionCommandHandler : IRequestHandler<CreateContributionCommand, ErrorOr<Success>>
+    public class CreateContributionCommandHandler : IRequestHandler<CreateContributionCommand, ErrorOr<SuccessResult>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -23,7 +24,7 @@ namespace Application.Features.Contributions.Commands.CreateContribution
             _fileManager = fileManager;
         }
 
-        public async Task<ErrorOr<Success>> Handle(CreateContributionCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<SuccessResult>> Handle(CreateContributionCommand request, CancellationToken cancellationToken)
         {
             //Mapping and make status as Submitted
             var contributionEntity = _mapper.Map<Contribution>(request);
@@ -45,7 +46,7 @@ namespace Application.Features.Contributions.Commands.CreateContribution
             await _context.Contributions.AddAsync(contributionEntity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return Result.Success;
+            return new SuccessResult(title: "Submitted contribution successfully!");
         }
     }
 }

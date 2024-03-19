@@ -15,6 +15,22 @@ namespace API.Sieve.Configurations
                 .CanFilter()
                 .CanSort();
 
+            mapper.Property<ListContributionDto>(c => c.Status)
+                .CanFilter()
+                .CanSort();
+
+            mapper.Property<ListContributionDto>(c => c.FacultyName)
+                .CanFilter()
+                .CanSort();
+
+            mapper.Property<ListContributionDto>(c => c.FacultyId)
+                .CanFilter()
+                .CanSort();
+
+            mapper.Property<ListContributionDto>(c => c.CreatedByEmail)
+                .CanFilter()
+                .CanSort();
+
             mapper.Property<ListContributionDto>(c => c.CreatedAt)
                 .CanFilter()
                 .CanSort();
@@ -23,9 +39,7 @@ namespace API.Sieve.Configurations
                 .CanFilter()
                 .CanSort();
 
-            mapper.Property<ListContributionDto>(c => c.CreatedByEmail)
-                .CanFilter()
-                .CanSort();
+
 
         }
     }
