@@ -16,5 +16,8 @@ namespace Domain.Entities
 
         public Faculty? Faculty { get; set; }
 
+        public ICollection<ApplicationRole> Roles { get; set; }
+
+
     }
 }

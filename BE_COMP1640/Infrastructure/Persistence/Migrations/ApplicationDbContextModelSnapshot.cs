@@ -131,7 +131,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -151,11 +151,11 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset>("LastModifiedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
+                    b.Property<Guid?>("PeriodId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("SubmissionDeadlineId")
+                    b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
@@ -175,7 +175,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasIndex("ImageId")
                         .IsUnique();
 
-                    b.HasIndex("SubmissionDeadlineId");
+                    b.HasIndex("PeriodId");
 
                     b.ToTable("Contributions");
                 });
@@ -189,7 +189,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
@@ -224,7 +224,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset>("LastModifiedAt")
@@ -248,7 +248,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FileExtension")
@@ -288,7 +288,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FirstSubmissionDeadline")
@@ -384,7 +384,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -421,8 +421,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasOne("Domain.Entities.ApplicationUser", "CreatedBy")
                         .WithMany("Contributions")
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Domain.Entities.Media", "Document")
                         .WithOne()
@@ -441,7 +440,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasOne("Domain.Entities.Period", "Period")
                         .WithMany("Contributions")
-                        .HasForeignKey("SubmissionDeadlineId")
+                        .HasForeignKey("PeriodId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("CreatedBy");
@@ -460,8 +459,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasOne("Domain.Entities.ApplicationUser", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("CreatedBy");
                 });
@@ -477,8 +475,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasOne("Domain.Entities.ApplicationUser", "CreatedBy")
                         .WithMany("Feedbacks")
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Contribution");
 
@@ -490,8 +487,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasOne("Domain.Entities.ApplicationUser", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("CreatedBy");
                 });
@@ -501,8 +497,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasOne("Domain.Entities.ApplicationUser", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("CreatedBy");
                 });

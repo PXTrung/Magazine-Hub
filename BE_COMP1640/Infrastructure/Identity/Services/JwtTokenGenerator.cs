@@ -17,6 +17,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
     }
     public string GenerateToken(
         Guid id,
+        Guid? facultyId,
         string email,
         string firstName,
         string lastName,
@@ -26,6 +27,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         var claims = new List<Claim>
         {
             new Claim("id", id.ToString()),
+            new Claim("facultyId", facultyId.ToString() ?? string.Empty ),
             new Claim(ClaimTypes.Email, email),
             new Claim(ClaimTypes.GivenName, firstName),
             new Claim(ClaimTypes.Surname, lastName)

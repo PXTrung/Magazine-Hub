@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Common.Models;
 using AutoMapper;
 using ErrorOr;
 using MediatR;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Periods.Commands.UpdatePeriod
 {
-    public class UpdatePeriodCommandHandler : IRequestHandler<UpdatePeriodCommand, ErrorOr<Success>>
+    public class UpdatePeriodCommandHandler : IRequestHandler<UpdatePeriodCommand, ErrorOr<SuccessResult>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -19,7 +20,7 @@ namespace Application.Features.Periods.Commands.UpdatePeriod
         }
 
 
-        public async Task<ErrorOr<Success>> Handle(UpdatePeriodCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<SuccessResult>> Handle(UpdatePeriodCommand request, CancellationToken cancellationToken)
         {
             var periodEntity = await _context.Periods.FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
 
@@ -27,7 +28,7 @@ namespace Application.Features.Periods.Commands.UpdatePeriod
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return Result.Success;
+            return new SuccessResult(title: "Updated a period successfully");
         }
     }
 }

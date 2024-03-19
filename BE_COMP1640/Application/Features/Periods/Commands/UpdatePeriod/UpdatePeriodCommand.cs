@@ -1,9 +1,10 @@
-﻿using ErrorOr;
+﻿using Application.Common.Models;
+using ErrorOr;
 using MediatR;
 
 namespace Application.Features.Periods.Commands.UpdatePeriod
 {
-    public record UpdatePeriodCommand : IRequest<ErrorOr<Success>>
+    public record UpdatePeriodCommand : IRequest<ErrorOr<SuccessResult>>
     {
         public Guid Id { get; set; }
 

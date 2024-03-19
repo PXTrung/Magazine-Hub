@@ -1,10 +1,11 @@
-﻿using ErrorOr;
+﻿using Application.Common.Models;
+using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Contributions.Commands.UpdateContribution
 {
-    public record UpdateContributionCommand : IRequest<ErrorOr<Success>>
+    public record UpdateContributionCommand : IRequest<ErrorOr<SuccessResult>>
     {
         public UpdateContributionCommand(Guid id, string? title, string? description, IFormFile? imageFile, IFormFile? documentFile)
         {

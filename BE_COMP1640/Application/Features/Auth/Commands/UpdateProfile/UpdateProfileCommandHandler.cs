@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Common.Models;
 using Domain.Entities;
 using ErrorOr;
 using MediatR;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Features.Auth.Commands.UpdateProfile
 {
-    public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand, ErrorOr<Success>>
+    public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand, ErrorOr<SuccessResult>>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ICurrentUserProvider _currentUserProvider;
@@ -18,7 +19,7 @@ namespace Application.Features.Auth.Commands.UpdateProfile
             _currentUserProvider = currentUserProvider;
         }
 
-        public async Task<ErrorOr<Success>> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<SuccessResult>> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
         {
             var currentUser = _currentUserProvider.GetCurrentUser();
             //check if current user is null
@@ -34,7 +35,7 @@ namespace Application.Features.Auth.Commands.UpdateProfile
 
             if (!result.Succeeded) return Error.Unexpected(description: "Updated profile failed, please retry");
 
-            return Result.Success;
+            return new SuccessResult(title: "Updated profile successfully!");
         }
     }
 }

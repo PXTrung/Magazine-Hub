@@ -11,7 +11,7 @@ namespace Infrastructure.Persistence.Interceptors
     {
         private readonly ICurrentUserProvider _currentUserProvider;
         private readonly TimeProvider _dateTime;
-        private CurrentUser CurrentUser => _currentUserProvider.GetCurrentUser();
+        private CurrentUser? CurrentUser => _currentUserProvider.GetCurrentUser();
 
         public AuditableEntityInterceptor(
             ICurrentUserProvider currentUserProvider,
@@ -20,6 +20,7 @@ namespace Infrastructure.Persistence.Interceptors
             _currentUserProvider = currentUserProvider;
             _dateTime = dateTime;
         }
+
 
         public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
         {
@@ -46,7 +47,7 @@ namespace Infrastructure.Persistence.Interceptors
                     var utcNow = _dateTime.GetUtcNow();
                     if (entry.State == EntityState.Added)
                     {
-                        entry.Entity.CreatedById = CurrentUser.Id;
+                        entry.Entity.CreatedById ??= CurrentUser?.Id;
                         entry.Entity.CreatedAt = utcNow;
                     }
                     entry.Entity.LastModifiedAt = utcNow;

@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,10 +22,25 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
 
     public DbSet<ApplicationUser> Users => Set<ApplicationUser>();
 
+    public DbSet<ApplicationRole> Roles => Set<ApplicationRole>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+        builder.Entity<ApplicationUser>()
+            .HasMany(u => u.Roles)
+            .WithMany()
+            .UsingEntity<IdentityUserRole<Guid>>(
+                j => j.HasOne<ApplicationRole>().WithMany().HasForeignKey(ur => ur.RoleId),
+                j => j.HasOne<ApplicationUser>().WithMany().HasForeignKey(ur => ur.UserId),
+                j =>
+                {
+                    j.ToTable("UserRoles");
+                });
+
+
     }
 
 }

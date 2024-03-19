@@ -27,13 +27,13 @@ namespace API.Controllers
         ///     Create a new Faculty
         /// </summary>
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] CreateFacultyCommand request)
         {
             var result = await _sender.Send(request);
 
             return result.Match(
-                _ => StatusCode(201),
+                _ => StatusCode(201, new { Title = "Created a faculty successfully!" }),
                 Problem);
         }
 

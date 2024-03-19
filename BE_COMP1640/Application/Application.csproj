@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Auth\Queries\" />
     <Folder Include="Features\Feedbacks\Commands\" />
     <Folder Include="Features\Feedbacks\Commands\" />
     <Folder Include="Features\Feedbacks\Queries\" />

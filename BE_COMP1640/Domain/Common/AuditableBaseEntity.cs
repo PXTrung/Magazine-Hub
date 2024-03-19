@@ -4,7 +4,7 @@ namespace Domain.Common;
 
 public abstract class AuditableBaseEntity : BaseEntity
 {
-    public Guid CreatedById { get; set; }
+    public Guid? CreatedById { get; set; }
 
     public ApplicationUser CreatedBy { get; set; }
 

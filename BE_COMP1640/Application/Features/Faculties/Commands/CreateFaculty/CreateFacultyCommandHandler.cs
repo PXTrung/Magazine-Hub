@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Common.Models;
 using AutoMapper;
 using Domain.Entities;
 using ErrorOr;
@@ -6,7 +7,7 @@ using MediatR;
 
 namespace Application.Features.Faculties.Commands.CreateFaculty
 {
-    public class CreateFacultyCommandHandler : IRequestHandler<CreateFacultyCommand, ErrorOr<Success>>
+    public class CreateFacultyCommandHandler : IRequestHandler<CreateFacultyCommand, ErrorOr<SuccessResult>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -17,12 +18,12 @@ namespace Application.Features.Faculties.Commands.CreateFaculty
             _mapper = mapper;
         }
 
-        public async Task<ErrorOr<Success>> Handle(CreateFacultyCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<SuccessResult>> Handle(CreateFacultyCommand request, CancellationToken cancellationToken)
         {
             var facultyEntity = _mapper.Map<Faculty>(request);
             await _context.Faculties.AddAsync(facultyEntity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
-            return Result.Success;
+            return new SuccessResult(title: "Created faculty successfully");
         }
     }
 }

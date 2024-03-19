@@ -7,6 +7,13 @@ namespace Application.Features.Contributions.Commands.CreateContribution
     {
         public CreateContributionCommandValidator()
         {
+            RuleFor(x => x.Title)
+                .NotEmpty().WithMessage("Title is required.")
+                .MaximumLength(255).WithMessage("Title must not exceed 255 characters.");
+
+            RuleFor(x => x.Description)
+                .MaximumLength(1000).WithMessage("Description must not exceed 1000 characters.");
+
             RuleFor(x => x.ImageFile)
                 .NotEmpty().WithMessage("Image file is required.")
                 .Must(BeAValidImageFile).WithMessage("Unsupported image file extension. Support extensions: .jpg, .jpeg, .png, .webp")
@@ -16,13 +23,6 @@ namespace Application.Features.Contributions.Commands.CreateContribution
                 .NotEmpty().WithMessage("Document file is required.")
                 .Must(BeAValidDocumentFile).WithMessage("Unsupported document file extension. Support extensions: .doc, .docx, .pdf")
                 .Must(BeUnder20Mb).WithMessage("Document file size should be less than 10MB.");
-
-            RuleFor(x => x.Title)
-                .NotEmpty().WithMessage("Title is required.")
-                .MaximumLength(255).WithMessage("Title must not exceed 255 characters.");
-
-            RuleFor(x => x.Description)
-                .MaximumLength(1000).WithMessage("Description must not exceed 1000 characters.");
         }
 
         private bool BeAValidImageFile(IFormFile? file)

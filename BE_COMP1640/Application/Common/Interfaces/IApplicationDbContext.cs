@@ -14,5 +14,10 @@ public interface IApplicationDbContext
     public DbSet<Media> Media { get; }
 
     public DbSet<Period> Periods { get; }
+
+    public DbSet<ApplicationUser> Users { get; }
+
+    public DbSet<ApplicationRole> Roles { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

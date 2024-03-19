@@ -35,7 +35,7 @@ namespace Infrastructure.Persistence.Configurations
 
             builder.HasOne<Period>(c => c.Period)
                 .WithMany(s => s.Contributions)
-                .HasForeignKey(s => s.SubmissionDeadlineId)
+                .HasForeignKey(s => s.PeriodId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(c => c.Image)

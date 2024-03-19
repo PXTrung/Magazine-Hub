@@ -1,9 +1,10 @@
-﻿using ErrorOr;
+﻿using Application.Common.Models;
+using ErrorOr;
 using MediatR;
 
 namespace Application.Features.Faculties.Commands.CreateFaculty
 {
-    public class CreateFacultyCommand : IRequest<ErrorOr<Success>>
+    public class CreateFacultyCommand : IRequest<ErrorOr<SuccessResult>>
     {
 
         /// <example>IT</example>
