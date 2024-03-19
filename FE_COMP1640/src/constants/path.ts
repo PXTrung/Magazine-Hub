@@ -7,6 +7,9 @@ const PATHS = {
       LOGIN: "login",
       REGISTER: "register",
    },
+   CONTRIBUTION: {
+      IDENTIFY: "contribution",
+   },
 };
 
 export { PATHS };

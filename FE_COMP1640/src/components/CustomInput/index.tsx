@@ -13,6 +13,7 @@ interface InputProps {
    placeholder?: string;
    value?: string;
    style?: string;
+   accept?: string;
 }
 const Input = ({
    label,
@@ -25,6 +26,7 @@ const Input = ({
    placeholder,
    value,
    style,
+   accept,
 }: InputProps) => {
    const [inputValue, setInputValue] = useState(value);
    useEffect(() => {
@@ -48,6 +50,7 @@ const Input = ({
                placeholder={placeholder}
                autoComplete="new-password"
                defaultValue={inputValue}
+               accept={accept || "text"}
                {...(register && register(id, { required }))}
                className={clsx(
                   "mt-1 p-2 w-full border rounded outline-gray-700",
