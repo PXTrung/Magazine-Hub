@@ -3,6 +3,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../authValidationSchemas";
 import Input from "../../../components/CustomInput";
+import { ENDPOINTS } from "../../../api";
 
 const LoginForm = () => {
    const {
@@ -13,22 +14,23 @@ const LoginForm = () => {
       resolver: yupResolver<FieldValues>(loginSchema),
    });
 
-   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-      console.log(data);
-      // await fetch("http://localhost:8000/api/v1/users/register", {
-      //    method: "POST",
-      //    headers: {
-      //       "Content-Type": "application/json",
-      //    },
-      //    body: JSON.stringify(user),
-      // })
-      //    .then((response) => {
-      //       console.log("status: ", response.status);
-      //       console.log("message: ", response.json);
-      //    })
-      //    .catch((error) => {
-      //       console.error("Lỗi:", error);
-      //    });
+   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+      console.log(JSON.stringify(data));
+      await fetch(ENDPOINTS.LOGIN, {
+         method: "POST",
+         mode: "no-cors",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify(data),
+      })
+         .then((response) => {
+            console.log("status: ", response.status);
+            console.log("message: ", response.json);
+         })
+         .catch((error) => {
+            console.error("Lỗi:", error);
+         });
    };
 
    return (

@@ -4,11 +4,22 @@ using Infrastructure;
 using Infrastructure.Persistence;
 using Microsoft.Extensions.FileProviders;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddPresentation(builder.Configuration);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:3000",
+                                              "http://www.contoso.com"); // add the allowed origins  
+                      });
+});
 
 // Add services to the container.
 
@@ -52,7 +63,7 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseStaticFiles();
-
+app.UseCors(MyAllowSpecificOrigins);
 app.MapControllers();
 
 app.Run();
