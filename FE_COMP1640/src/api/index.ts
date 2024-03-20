@@ -1,5 +1,5 @@
 // Define the base URL for the API
-const API_BASE_URL = "http://localhost:5001/api/";
+const API_BASE_URL = "https://localhost:7009/api/";
 
 // Define functions to construct endpoint URLs
 function constructEndpoint(endpoint: string) {
