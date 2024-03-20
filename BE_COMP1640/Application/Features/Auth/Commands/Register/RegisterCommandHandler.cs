@@ -51,6 +51,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<S
 
         if (!result.Succeeded) return Error.Unexpected(description: "Something went wrong, please try register again");
 
+        await _userManager.AddToRoleAsync(newUser, "Contributor");
+
         var confirmEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
 
         confirmEmailToken = HttpUtility.UrlEncode(confirmEmailToken);

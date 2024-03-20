@@ -27,31 +27,37 @@ const Authentication = () => {
       setIsLoading(true);
       setTimeout(() => {
          setIsLoading(false);
-      }, 2000);
+      }, 1000);
    }, [location.pathname]);
 
    const variant = useMemo(() => location.pathname, [location.pathname]);
 
    return (
-      <div className="min-w-screen min-h-screen bg-slate-100 flex justify-center items-center">
-         <div className="bg-white my-5 p-8 rounded shadow-xl w-[420px]">
-            <Suspense fallback={loading()}>
-               <Outlet />
-            </Suspense>
-            <div className="flex flex-col gap-8 justify-center items-center text-base mt-8 px-2 text-gray-500">
-               <div className="flex gap-2">
-                  <div>{variants[variant]?.text || ""}</div>
-                  <Link
-                     to={variants[variant]?.to || ""}
-                     replace
-                     className="cursor-pointer text-blue-500 hover:underline"
-                  >
-                     {variants[variant]?.linkText || ""}
-                  </Link>
+      <>
+         {isLoading ? (
+            <Loading />
+         ) : (
+            <div className="min-w-screen min-h-screen bg-slate-100 flex justify-center items-center">
+               <div className="relative bg-white my-5 p-8 rounded shadow-xl w-[420px]">
+                  <Suspense fallback={loading()}>
+                     <Outlet />
+                  </Suspense>
+                  <div className="flex flex-col gap-8 justify-center items-center text-base mt-8 px-2 text-gray-500">
+                     <div className="flex gap-2">
+                        <div>{variants[variant]?.text || ""}</div>
+                        <Link
+                           to={variants[variant]?.to || ""}
+                           replace
+                           className="cursor-pointer text-blue-500 hover:underline"
+                        >
+                           {variants[variant]?.linkText || ""}
+                        </Link>
+                     </div>
+                  </div>
                </div>
             </div>
-         </div>
-      </div>
+         )}
+      </>
    );
 };
 

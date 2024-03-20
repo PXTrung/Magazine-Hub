@@ -8,6 +8,7 @@ import {
    useForm,
 } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { ENDPOINTS } from "../../../constants/endpoint";
 
 interface FormData {
    title: string;
@@ -40,24 +41,6 @@ const schema = yup.object().shape({
 
          return !files || files?.[0]?.size < 5000000;
       }),
-
-   // document: yup
-   //    .mixed()
-   //    .required("Document is required")
-   //    .test(
-   //       "fileSize",
-   //       "File size is too large",
-   //       (value) => value && value[0].size <= 10000000,
-   //    )
-   //    .test(
-   //       "fileType",
-   //       "Unsupported file format",
-   //       (value) =>
-   //          value &&
-   //          (value[0].type === "application/msword" ||
-   //             value[0].type ===
-   //                "application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
-   //    ),
 });
 
 const UploadForm = () => {
@@ -69,9 +52,28 @@ const UploadForm = () => {
       resolver: yupResolver<FieldValues>(schema),
    });
 
-   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+   const jwt = localStorage.getItem("currentUser");
+
+   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
       console.log(data);
-      // Handle form submission here
+      await fetch(ENDPOINTS.CONTRIBUTION, {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+            bearer: `${jwt}`,
+         },
+         body: JSON.stringify(data),
+      })
+         .then((response) => {
+            console.log("status: ", response.json());
+            if (response.status === 200) {
+               alert("upload successfully");
+            }
+         })
+         .catch((error) => {
+            alert("Lỗi:" + error);
+            console.error("Lỗi:", error);
+         });
    };
    return (
       <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
