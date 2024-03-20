@@ -41,24 +41,6 @@ const schema = yup.object().shape({
 
          return !files || files?.[0]?.size < 5000000;
       }),
-
-   // document: yup
-   //    .mixed()
-   //    .required("Document is required")
-   //    .test(
-   //       "fileSize",
-   //       "File size is too large",
-   //       (value) => value && value[0].size <= 10000000,
-   //    )
-   //    .test(
-   //       "fileType",
-   //       "Unsupported file format",
-   //       (value) =>
-   //          value &&
-   //          (value[0].type === "application/msword" ||
-   //             value[0].type ===
-   //                "application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
-   //    ),
 });
 
 const UploadForm = () => {
@@ -70,12 +52,15 @@ const UploadForm = () => {
       resolver: yupResolver<FieldValues>(schema),
    });
 
+   const jwt = localStorage.getItem("currentUser");
+
    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
       console.log(data);
       await fetch(ENDPOINTS.CONTRIBUTION, {
          method: "POST",
          headers: {
             "Content-Type": "application/json",
+            bearer: `${jwt}`,
          },
          body: JSON.stringify(data),
       })
