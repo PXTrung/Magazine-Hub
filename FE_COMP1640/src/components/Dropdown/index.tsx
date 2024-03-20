@@ -15,7 +15,7 @@ interface DropdownProps {
    register?: UseFormRegister<FieldValues>;
    errors?: FieldErrors;
    disabled?: boolean;
-   value?: string;
+   value?: object[];
    style?: string;
 }
 
@@ -38,7 +38,7 @@ const Dropdown = ({
    value,
    style,
 }: DropdownProps) => {
-   const [selected, setSelected] = useState<person>(people[0]);
+   const [selected, setSelected] = useState(value?.[0]);
    const [query, setQuery] = useState("");
 
    const filteredPeople =

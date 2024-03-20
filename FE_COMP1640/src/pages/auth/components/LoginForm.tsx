@@ -1,72 +1,85 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../authValidationSchemas";
 import Input from "../../../components/CustomInput";
-import { ENDPOINTS } from "../../../api";
-import { jwtDecode } from "jwt-decode";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../../redux/slices/loginSlice";
+import { AppDispatch, RootState } from "../../../redux/store";
+import Loading from "../../../components/loading/Loading";
+import { PATHS } from "../../../constants/path";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FieldValues>({
-    resolver: yupResolver<FieldValues>(loginSchema),
-  });
+   const dispatch = useDispatch<AppDispatch>();
+   const location = useLocation();
+   const { isError, message, isLoading, isLogin, userInfor } = useSelector(
+      (state: RootState) => state.userLoginStore,
+   );
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(JSON.stringify(data));
-    const payload = await fetch(ENDPOINTS.LOGIN, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        localStorage.setItem("jwtToken", response.data);
-        const decodedToken = jwtDecode(response.data);
-        console.log(decodedToken);
-      })
-      .catch((error) => {
-        console.error("Lỗi:", error);
-      });
-  };
+   const {
+      register,
+      handleSubmit,
+      formState: { errors },
+   } = useForm<FieldValues>({
+      resolver: yupResolver<FieldValues>(loginSchema),
+   });
 
-  return (
-    <div>
-      <h1 className="text-2xl font-semibold mb-6">Login</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          register={register}
-          errors={errors}
-          required
-          id="email"
-          label="Email"
-          type="text"
-          placeholder="example@gmail.com"
-        />
-        <Input
-          register={register}
-          errors={errors}
-          required
-          id="password"
-          label="Password"
-          type="password"
-          placeholder="Enter your password"
-        />
+   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+      try {
+         await dispatch(login(data));
+      } catch (error: any) {
+         console.log(error.message);
+      }
+   };
 
-        <button
-          type="submit"
-          className="bg-blue-500 text-white p-2 rounded w-full"
-        >
-          Log in
-        </button>
-      </form>
-    </div>
-  );
+   return (
+      <>
+         {isLoading && <Loading />}
+         {isLogin && (
+            <Navigate
+               to={{
+                  pathname:
+                     location.state?.from || `/${PATHS.CONTRIBUTION.IDENTIFY}`,
+               }}
+            />
+         )}
+         <div>
+            <h1 className="text-2xl font-semibold mb-6">Login</h1>
+            <form onSubmit={handleSubmit(onSubmit)}>
+               <Input
+                  register={register}
+                  errors={errors}
+                  required
+                  id="email"
+                  label="Email"
+                  type="text"
+                  placeholder="example@gmail.com"
+               />
+               <Input
+                  register={register}
+                  errors={errors}
+                  required
+                  id="password"
+                  label="Password"
+                  type="password"
+                  placeholder="Enter your password"
+               />
+
+               {message !== "" && (
+                  <p className="text-red-500 text-xs mb-3">{message}</p>
+               )}
+
+               <button
+                  type="submit"
+                  className="bg-blue-500 text-white p-2 rounded w-full"
+               >
+                  Log in
+               </button>
+            </form>
+         </div>
+      </>
+   );
 };
 
 export default LoginForm;

@@ -8,6 +8,7 @@ import {
    useForm,
 } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { ENDPOINTS } from "../../../constants/endpoint";
 
 interface FormData {
    title: string;
@@ -69,9 +70,25 @@ const UploadForm = () => {
       resolver: yupResolver<FieldValues>(schema),
    });
 
-   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
       console.log(data);
-      // Handle form submission here
+      await fetch(ENDPOINTS.CONTRIBUTION, {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify(data),
+      })
+         .then((response) => {
+            console.log("status: ", response.json());
+            if (response.status === 200) {
+               alert("upload successfully");
+            }
+         })
+         .catch((error) => {
+            alert("Lỗi:" + error);
+            console.error("Lỗi:", error);
+         });
    };
    return (
       <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
