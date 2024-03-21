@@ -1,9 +1,12 @@
 ﻿using API.RequestModels.Periods;
+using API.Sieve;
 using Application.Features.Periods.Commands.CreatePeriod;
 using Application.Features.Periods.Commands.UpdatePeriod;
+using Application.Features.Periods.Queries.ListPeriod;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sieve.Models;
 using Sieve.Services;
 
 namespace API.Controllers
@@ -28,12 +31,12 @@ namespace API.Controllers
         [HttpPost]
         [Authorize]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromForm] CreatePeriodCommand request)
+        public async Task<IActionResult> CreatePeriod([FromBody] CreatePeriodCommand request)
         {
             var result = await _sender.Send(request);
 
             return result.Match(
-                _ => StatusCode(201),
+                value => StatusCode(201, value),
                 Problem);
         }
 
@@ -53,8 +56,22 @@ namespace API.Controllers
             var result = await _sender.Send(command);
 
             return result.Match(
-                _ => NoContent(),
+                value => base.Ok(value),
                 Problem);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ListPeriod([FromQuery] SieveModel sieveModel)
+        {
+            var result = await _sender.Send(new ListPeriodQuery());
+
+            if (result.IsError)
+            {
+                return Problem(result.Errors);
+            }
+
+
+            return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel));
         }
 
     }

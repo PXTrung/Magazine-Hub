@@ -28,12 +28,12 @@ namespace API.Controllers
         /// </summary>
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody] CreateFacultyCommand request)
+        public async Task<IActionResult> CreateFaculty([FromBody] CreateFacultyCommand request)
         {
             var result = await _sender.Send(request);
 
             return result.Match(
-                _ => StatusCode(201, new { Title = "Created a faculty successfully!" }),
+                value => StatusCode(201, value),
                 Problem);
         }
 

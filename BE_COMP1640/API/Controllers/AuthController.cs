@@ -38,7 +38,7 @@ public class AuthController : ApiController
         var authResult = await _sender.Send(request);
 
         return authResult.Match(
-            value => base.Ok(value),
+            value => base.StatusCode(201, value),
             Problem);
     }
 
