@@ -23,7 +23,7 @@ namespace API.Controllers
         }
 
         /// <summary>
-        ///    Create a new Period
+        ///  [Coordinator] Create a new Period
         /// </summary>
         [HttpPost]
         [Authorize(Roles = "Coordinator")]
@@ -36,8 +36,11 @@ namespace API.Controllers
                 Problem);
         }
 
+        /// <summary>
+        ///  [Coordinator, Contributor] Get a list of feedbacks
+        /// </summary>
         [HttpGet]
-        [Authorize(Roles = "Coordinator")]
+        [Authorize(Roles = "Contributor, Coordinator")]
         public async Task<IActionResult> ListFeedback([FromQuery] SieveModel sieveModel)
         {
             var result = await _sender.Send(new ListFeedbackQuery());

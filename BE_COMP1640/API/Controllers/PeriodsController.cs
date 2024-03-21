@@ -26,7 +26,7 @@ namespace API.Controllers
 
 
         /// <summary>
-        ///    Create a new Period
+        ///   [Admin] Create a new Period
         /// </summary>
         [HttpPost]
         [Authorize]
@@ -42,7 +42,7 @@ namespace API.Controllers
 
 
         /// <summary>
-        ///    Update a Period by id
+        ///   [Admin] Update a Period by id
         /// </summary>
         [HttpPut]
         [Route("{id:guid}")]
@@ -60,6 +60,9 @@ namespace API.Controllers
                 Problem);
         }
 
+        /// <summary>
+        ///    Get a list of periods
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> ListPeriod([FromQuery] SieveModel sieveModel)
         {
