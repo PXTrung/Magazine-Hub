@@ -30,7 +30,7 @@ namespace API.Controllers
 
 
         /// <summary>
-        ///     Creating a new Contribution
+        ///    [Contributor] Creating a new Contribution
         /// </summary>
         [HttpPost]
         [Authorize(Roles = "Contributor")]
@@ -43,7 +43,7 @@ namespace API.Controllers
         }
 
         /// <summary>
-        ///     Update one Contribution by id
+        ///   [Contributor] Update one Contribution by id
         /// </summary>
         [HttpPut]
         [Route("{id:guid}")]
@@ -63,7 +63,7 @@ namespace API.Controllers
 
 
         /// <summary>
-        ///     Get list of Contributions
+        ///    [Contributor] Get list of Contributions
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> ListContribution([FromQuery] SieveModel sieveModel)
@@ -82,7 +82,7 @@ namespace API.Controllers
 
 
         /// <summary>
-        ///     Get one Contribution by id
+        ///    Get one Contribution by id
         /// </summary>
         [HttpGet]
         [Route("{id:guid}")]

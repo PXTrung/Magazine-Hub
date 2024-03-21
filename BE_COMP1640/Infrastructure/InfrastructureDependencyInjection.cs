@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
+using Hangfire;
 using Infrastructure.Email;
 using Infrastructure.Identity.Services;
 using Infrastructure.Persistence;
@@ -12,10 +13,11 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
-using System.Text.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Infrastructure;
 
@@ -51,6 +53,16 @@ public static class InfrastructureDependencyInjection
                 .EnableSensitiveDataLogging();
         });
 
+        services.AddHangfire(cfg =>
+        {
+            cfg.UseInMemoryStorage();
+            cfg.UseSerializerSettings(new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All
+            });
+        });
+
+        services.AddHangfireServer();
     }
 
     private static void AddIdentity(this IServiceCollection services, IConfiguration configuration)

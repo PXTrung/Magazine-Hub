@@ -5,7 +5,6 @@ using Infrastructure.Persistence;
 using Microsoft.Extensions.FileProviders;
 
 
-
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
@@ -13,14 +12,12 @@ builder.Services.AddPresentation(builder.Configuration);
 
 builder.Services.AddCors(options =>
 {
-
-    options.AddDefaultPolicy(
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:3000")
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-        });
+    options.AddDefaultPolicy(policy =>
+                      {
+                          policy.AllowAnyOrigin()
+                              .AllowAnyMethod()
+                              .AllowAnyHeader();
+                      });
 });
 
 // Add services to the container.
@@ -67,6 +64,7 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseStaticFiles();
+app.UseCors();
 app.MapControllers();
 
 app.Run();

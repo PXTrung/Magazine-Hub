@@ -17,5 +17,7 @@ namespace Application.Features.Contributions.Commands.CreateContribution
 
         public IFormFile DocumentFile { get; set; }
 
+        public Guid PeriodId { get; set; }
+
     }
 }

@@ -3,7 +3,7 @@ using Sieve.Services;
 
 namespace API.Sieve.Configurations
 {
-    public class ListUserDtoSieveCOnfiguration : ISieveConfiguration
+    public class ListUserDtoSieveConfiguration : ISieveConfiguration
     {
         public void Configure(SievePropertyMapper mapper)
         {

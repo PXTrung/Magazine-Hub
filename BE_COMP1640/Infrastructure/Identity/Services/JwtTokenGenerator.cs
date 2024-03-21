@@ -33,7 +33,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             new Claim(ClaimTypes.Surname, lastName)
         };
 
-
+        //Adding roles into jwt claim
         foreach (var role in roles)
         {
             claims.Add(new Claim(ClaimTypes.Role, role));
