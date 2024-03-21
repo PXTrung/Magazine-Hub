@@ -404,3 +404,8 @@ API/MediaFiles/Images/*
 API/MediaFiles/Documents/*
 !API/MediaFiles/Images/.gitkeep
 !API/MediaFiles/Documents/.gitkeep
+
+#ignore database 
+API/LocalDatabase.db
+API/LocalDatabase.db-wal
+API/LocalDatabase.db-shm
