@@ -30,8 +30,9 @@ const authRoute = {
    children: [
       {
          path: "",
-         element: <Navigate to={`${PATHS.AUTH.REGISTER}`} replace />,
+         element: <Navigate to={`${PATHS.AUTH.LOGIN}`} replace />,
       },
+
       {
          path: PATHS.AUTH.LOGIN,
          element: <LazyLoadingComponent component={LoginForm} />,

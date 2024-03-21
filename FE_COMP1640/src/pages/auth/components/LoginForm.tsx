@@ -1,11 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../authValidationSchemas";
 import Input from "../../../components/CustomInput";
-import { ENDPOINTS } from "../../../api";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../../redux/slices/loginSlice";
+import { AppDispatch, RootState } from "../../../redux/store";
+import Loading from "../../../components/loading/Loading";
+import { PATHS } from "../../../constants/path";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
+   const dispatch = useDispatch<AppDispatch>();
+   const location = useLocation();
+   const { isError, message, isLoading, isLogin, userInfor } = useSelector(
+      (state: RootState) => state.userLoginStore,
+   );
+
    const {
       register,
       handleSubmit,
@@ -15,55 +26,59 @@ const LoginForm = () => {
    });
 
    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-      console.log(JSON.stringify(data));
-      await fetch(ENDPOINTS.LOGIN, {
-         method: "POST",
-         mode: "no-cors",
-         headers: {
-            "Content-Type": "application/json",
-         },
-         body: JSON.stringify(data),
-      })
-         .then((response) => {
-            console.log("status: ", response.status);
-            console.log("message: ", response.json);
-         })
-         .catch((error) => {
-            console.error("Lỗi:", error);
-         });
+      try {
+         await dispatch(login(data));
+      } catch (error: any) {
+         console.log(error.message);
+      }
    };
 
    return (
-      <div>
-         <h1 className="text-2xl font-semibold mb-6">Login</h1>
-         <form onSubmit={handleSubmit(onSubmit)}>
-            <Input
-               register={register}
-               errors={errors}
-               required
-               id="email"
-               label="Email"
-               type="text"
-               placeholder="example@gmail.com"
+      <>
+         {isLoading && <Loading />}
+         {isLogin && (
+            <Navigate
+               to={{
+                  pathname:
+                     location.state?.from || `/${PATHS.CONTRIBUTION.IDENTIFY}`,
+               }}
             />
-            <Input
-               register={register}
-               errors={errors}
-               required
-               id="password"
-               label="Password"
-               type="password"
-               placeholder="Enter your password"
-            />
+         )}
+         <div>
+            <h1 className="text-2xl font-semibold mb-6">Login</h1>
+            <form onSubmit={handleSubmit(onSubmit)}>
+               <Input
+                  register={register}
+                  errors={errors}
+                  required
+                  id="email"
+                  label="Email"
+                  type="text"
+                  placeholder="example@gmail.com"
+               />
+               <Input
+                  register={register}
+                  errors={errors}
+                  required
+                  id="password"
+                  label="Password"
+                  type="password"
+                  placeholder="Enter your password"
+               />
 
-            <button
-               type="submit"
-               className="bg-blue-500 text-white p-2 rounded w-full"
-            >
-               Log in
-            </button>
-         </form>
-      </div>
+               {message !== "" && (
+                  <p className="text-red-500 text-xs mb-3">{message}</p>
+               )}
+
+               <button
+                  type="submit"
+                  className="bg-blue-500 text-white p-2 rounded w-full"
+               >
+                  Log in
+               </button>
+            </form>
+         </div>
+      </>
    );
 };
 

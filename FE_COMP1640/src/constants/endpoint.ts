@@ -10,4 +10,6 @@ function constructEndpoint(endpoint: string) {
 export const ENDPOINTS = {
    LOGIN: constructEndpoint("Auth/Login"),
    REGISTER: constructEndpoint("Auth/Register"),
+   FALCUTY: constructEndpoint("Falcuties"),
+   CONTRIBUTION: constructEndpoint("Contributions"),
 };

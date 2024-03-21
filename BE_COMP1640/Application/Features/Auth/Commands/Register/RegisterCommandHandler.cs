@@ -54,6 +54,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<S
 
         if (!result.Succeeded) return Error.Unexpected(description: "Something went wrong, please try register again");
 
+   
+
         //Add "Contributor" as default role for new user
         await _userManager.AddToRoleAsync(newUser, "Contributor");
 
