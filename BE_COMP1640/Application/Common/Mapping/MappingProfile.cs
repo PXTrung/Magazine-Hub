@@ -8,6 +8,8 @@ using Application.Features.Contributions.Queries.GetContribution;
 using Application.Features.Contributions.Queries.ListContribution;
 using Application.Features.Faculties.Commands.CreateFaculty;
 using Application.Features.Faculties.Queries.ListFaculty;
+using Application.Features.Feedbacks.Commands.CreateFeedback;
+using Application.Features.Feedbacks.Queries.ListFeedback;
 using Application.Features.Periods.Commands.CreatePeriod;
 using Application.Features.Periods.Commands.UpdatePeriod;
 using AutoMapper;
@@ -76,6 +78,9 @@ public class MappingProfile : Profile
         CreateMap<CreateFacultyCommand, Faculty>();
         CreateMap<Faculty, ListFacultyDto>().ReverseMap();
 
+        //Mapping of Feedback
+        CreateMap<CreateFeedbackCommand, Feedback>();
+        CreateMap<Feedback, ListFeedbackDto>();
 
     }
 

@@ -3,8 +3,10 @@ using Application.Common.Models;
 using AutoMapper;
 using Domain.Entities;
 using ErrorOr;
+using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Web;
 
 
@@ -34,23 +36,28 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<S
     }
     public async Task<ErrorOr<SuccessResult>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByEmailAsync(request.Email);
+        //Check if email and password exist
+        var emailExist = await _userManager.Users.AnyAsync(u => u.NormalizedEmail == request.Email.ToUpperInvariant(), cancellationToken);
 
-        if (user != null) return Error.Conflict(description: "User already exists");
+        if (emailExist) return Error.Conflict(description: "User already exists");
 
-        var faculty = await _context.Faculties.FindAsync(request.FacultyId);
+        var faculty = await _context.Faculties.FirstOrDefaultAsync(f => f.Id == request.FacultyId, cancellationToken);
 
         if (faculty == null) return Error.NotFound(description: "Faculty not found");
 
+        //Mapping 
         var newUser = _mapper.Map<ApplicationUser>(request);
 
 
-
-
+        //Create new user
         var result = await _userManager.CreateAsync(newUser, request.Password);
 
         if (!result.Succeeded) return Error.Unexpected(description: "Something went wrong, please try register again");
 
+        //Add "Contributor" as default role for new user
+        await _userManager.AddToRoleAsync(newUser, "Contributor");
+
+        //Generate and sending confirming email
         var confirmEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
 
         confirmEmailToken = HttpUtility.UrlEncode(confirmEmailToken);
@@ -58,11 +65,13 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<S
         var confirmationLink =
             _linkGenerator.GenerateLink(url: $"api/Auth/ConfirmEmail?token={confirmEmailToken}&email={newUser.Email}");
 
-        await _emailService.SendEmailAsync(toEmailAddress: newUser.Email,
-            subject: "Email confirmation from MagazineHub, please click the link",
-            message: $"Please click the following link to activate the account: {confirmationLink}");
-
+        BackgroundJob.Enqueue(() => _emailService.SendEmailAsync(newUser.Email,
+            "Email confirmation from MagazineHub, please click the link",
+            $"Please click the following link to activate the account: {confirmationLink}"));
 
         return new SuccessResult(title: "Register successfully, please check your email for confirmation!");
+
+
+
     }
 }

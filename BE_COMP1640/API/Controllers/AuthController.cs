@@ -29,7 +29,7 @@ public class AuthController : ApiController
 
 
     /// <summary>
-    ///     Registering a new account
+    ///    Registering a new account
     /// </summary>
     [HttpPost]
     [Route("Register")]
@@ -38,12 +38,12 @@ public class AuthController : ApiController
         var authResult = await _sender.Send(request);
 
         return authResult.Match(
-            value => base.Ok(value),
+            value => base.StatusCode(201, value),
             Problem);
     }
 
     /// <summary>
-    ///     Login to get JWT
+    ///   Login to get JWT
     /// </summary>
     [HttpPost]
     [Route("Login")]
@@ -58,7 +58,7 @@ public class AuthController : ApiController
 
 
     /// <summary>
-    ///     Update oneself profile
+    ///   [MustAuthenticated]  Update oneself profile
     /// </summary>
     [HttpPut]
     [Route("UpdateProfile")]
@@ -73,7 +73,7 @@ public class AuthController : ApiController
     }
 
     /// <summary>
-    ///    [Ignore] Just only for confirming email via sent email
+    ///    (Ignore this) Just only for confirming email via sent email
     /// </summary>
     [HttpGet]
     [Route("ConfirmEmail")]
@@ -88,7 +88,7 @@ public class AuthController : ApiController
     }
 
     /// <summary>
-    ///     List all users in the system
+    ///    List all users in the system
     /// </summary>
     [HttpGet]
     [Route("Users")]
@@ -126,7 +126,7 @@ public class AuthController : ApiController
     }
 
     /// <summary>
-    ///     Assign role to user
+    ///   [Admin]  Assign role to user
     /// </summary>
     [HttpPut]
     [Route("AssignRole")]
