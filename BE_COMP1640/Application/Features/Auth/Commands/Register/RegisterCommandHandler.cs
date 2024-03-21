@@ -44,9 +44,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<S
 
         var newUser = _mapper.Map<ApplicationUser>(request);
 
-
-
-
         var result = await _userManager.CreateAsync(newUser, request.Password);
 
         if (!result.Succeeded) return Error.Unexpected(description: "Something went wrong, please try register again");

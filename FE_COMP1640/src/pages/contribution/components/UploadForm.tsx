@@ -13,14 +13,14 @@ import { ENDPOINTS } from "../../../constants/endpoint";
 interface FormData {
   title: string;
   description: string;
-  image: FileList;
-  document: FileList;
+  imageFile: FileList;
+  documentFile: FileList;
 }
 
 const schema = yup.object().shape({
   title: yup.string().required("Title is required"),
   description: yup.string().required("Description is required"),
-  image: yup
+  imageFile: yup
     .mixed<FileList>()
     .test("require", "Upload your image", (files) => {
       console.log(files?.[0]);
@@ -55,14 +55,19 @@ const UploadForm = () => {
   const jwt = localStorage.getItem("jwtToken");
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("imageFile", data.imageFile[0]);
+    formData.append("documentFile", data.documentFile[0]);
+
     console.log(data);
     await fetch(ENDPOINTS.CONTRIBUTION, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${jwt}`,
       },
-      body: JSON.stringify(data),
+      body: formData,
     })
       .then((response) => {
         console.log("status: ", response.json());
@@ -99,8 +104,8 @@ const UploadForm = () => {
           register={register}
           errors={errors}
           required
-          id="image"
-          label="image"
+          id="imageFile"
+          label="imageFile"
           type="file"
           accept="image/*"
         ></Input>
@@ -108,8 +113,8 @@ const UploadForm = () => {
           register={register}
           errors={errors}
           required
-          id="document"
-          label="document"
+          id="documentFile"
+          label="documentFile"
           type="file"
           accept=".docx, .doc"
         ></Input>

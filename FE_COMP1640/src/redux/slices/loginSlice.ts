@@ -14,7 +14,7 @@ export const login = createAsyncThunk(
          const res = await api.user.loginToGetToken(data);
          return res.data as LoginResponse;
       } catch (error) {
-         return rejectWithValue("Email or password is wrong"); // Pass error message to rejected action
+         return rejectWithValue("Email or password is wrong, or you didn't verify your email"); // Pass error message to rejected action
       }
    },
 );
