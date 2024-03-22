@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../authValidationSchemas";
@@ -8,13 +8,13 @@ import { login } from "../../../redux/slices/loginSlice";
 import { AppDispatch, RootState } from "../../../redux/store";
 import Loading from "../../../components/loading/Loading";
 import { PATHS } from "../../../constants/path";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 const LoginForm = () => {
    const dispatch = useDispatch<AppDispatch>();
    const location = useLocation();
    const { isError, message, isLoading, isLogin, userInfor } = useSelector(
-      (state: RootState) => state.userLoginStore,
+      (state: RootState) => state.userLogin,
    );
 
    const {
@@ -32,6 +32,8 @@ const LoginForm = () => {
          console.log(error.message);
       }
    };
+
+   console.log(userInfor);
 
    return (
       <>
@@ -66,7 +68,7 @@ const LoginForm = () => {
                   placeholder="Enter your password"
                />
 
-               {message !== "" && (
+               {isError && (
                   <p className="text-red-500 text-xs mb-3">{message}</p>
                )}
 
