@@ -1,8 +1,8 @@
 /* eslint-disable import/no-anonymous-default-export */
 import user from "../modules/user";
-import product from "../modules/contribution";
+import contribution from "../modules/contribution";
 
 export default {
-  user,
-  product
+   user,
+   contribution,
 };

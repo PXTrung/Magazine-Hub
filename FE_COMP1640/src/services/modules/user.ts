@@ -3,8 +3,8 @@ import axios from "axios";
 import { ENDPOINTS } from "../../constants/endpoint";
 
 export default {
-   loginToGetToken: (data: object) => {
-      return axios.post(ENDPOINTS.LOGIN, data);
+   loginToGetToken: async (data: object) => {
+      return await axios.post(ENDPOINTS.LOGIN, data);
    },
    register: (data: object) => {
       return axios.post(ENDPOINTS.REGISTER, data);

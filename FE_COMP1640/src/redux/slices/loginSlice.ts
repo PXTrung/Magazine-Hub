@@ -1,26 +1,25 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
 import { jwtDecode } from "jwt-decode";
-
-interface LoginResponse {
-   message: string;
-   data: string;
-}
 
 export const login = createAsyncThunk(
    "login",
    async (data: object, { rejectWithValue }) => {
       try {
          const res = await api.user.loginToGetToken(data);
-         return res.data as LoginResponse;
-      } catch (error) {
-         return rejectWithValue("Email or password is wrong, or you didn't verify your email"); // Pass error message to rejected action
+         return res.data;
+      } catch (error: any) {
+         return rejectWithValue(error.response.data.title);
       }
    },
 );
 
 interface UserInformation {
-   // Define the structure of user information
+   firstName: string;
+   lastName: string;
+   role: string;
+   email: string;
+   token: string;
 }
 
 interface UserLoginState {
@@ -48,16 +47,37 @@ const userLoginSlice = createSlice({
          state.isLoading = true;
       });
       builder.addCase(login.fulfilled, (state, action) => {
-         state.isLoading = false;
          const token = action.payload.data;
-         localStorage.setItem("jwtToken", token); // Store token in localStorage
-         state.userInfor = jwtDecode(token); // Decode token and store user info
+         let userData: any = jwtDecode(token);
+
+         state.isLoading = false;
+         state.userInfor = {
+            firstName:
+               userData[
+                  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname"
+               ],
+            lastName:
+               userData[
+                  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"
+               ],
+            role: userData[
+               "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+            ],
+            email: userData[
+               "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+            ],
+            token: token,
+         };
+
          state.isLogin = true;
+         state.message = "";
       });
       builder.addCase(login.rejected, (state, action) => {
          state.isLoading = false;
+         state.isLogin = false;
          state.isError = true;
-         state.message = action.payload as string; // Set error message
+         state.message =
+            (action.payload as string) || "An error occurred during login.";
       });
    },
 });
