@@ -98,6 +98,9 @@ namespace API.Controllers
                 Problem);
         }
 
+        /// <summary>
+        ///  [Coordinator] Approve/Reject contribution by it Id
+        /// </summary>
         [HttpPut]
         [Route("ChangeApproval")]
         public async Task<IActionResult> ChangeContributionApproval(

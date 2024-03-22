@@ -29,9 +29,13 @@ namespace Application.Features.Contributions.Commands.ChangeContributionApproval
 
         public async Task<ErrorOr<SuccessResult>> Handle(ChangeContributionApprovalCommand request, CancellationToken cancellationToken)
         {
+            var coordinator = _currentUserProvider.GetCurrentUser();
+            if (coordinator == null) return Error.Unauthorized(description: "You are not authorize to this");
+
             var contribution = await _context.Contributions
                 .Include(c => c.CreatedBy)
-                .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
+                .FirstOrDefaultAsync(c => c.Id == request.Id && c.CreatedBy.FacultyId == coordinator.FacultyId, cancellationToken);
+
             if (contribution == null) return Error.NotFound(description: "Contribution not found");
 
             var status = request.Approved ? ContributionStatus.Approved : ContributionStatus.Rejected;
@@ -40,7 +44,6 @@ namespace Application.Features.Contributions.Commands.ChangeContributionApproval
             await _context.SaveChangesAsync(cancellationToken);
 
             var contributor = contribution.CreatedBy;
-            var coordinator = _currentUserProvider.GetCurrentUser();
 
 
             //Sending email notification to the Contributor
