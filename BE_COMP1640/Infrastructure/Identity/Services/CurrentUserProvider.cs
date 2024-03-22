@@ -31,7 +31,7 @@ public class CurrentUserProvider : ICurrentUserProvider
         var lastName = GetSingleClaimValue(ClaimTypes.Surname) ?? string.Empty;
         var email = GetSingleClaimValue(ClaimTypes.Email) ?? string.Empty;
 
-        return new CurrentUser(id, facultyId, email, firstName, lastName, roles);
+        return new CurrentUser(id, facultyId, firstName, lastName, email, roles);
     }
 
     public bool CheckIfCurrentUserExist()

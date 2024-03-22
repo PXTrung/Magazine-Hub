@@ -11,7 +11,7 @@ namespace API.Sieve
         public int TotalPages { get; }
         public int TotalCount { get; }
 
-        public PaginatedList(IReadOnlyCollection<T> items, int count, int currentPage = 1, int pageSize = 10)
+        public PaginatedList(IReadOnlyCollection<T> items, int count, int currentPage = 1, int pageSize = 20)
         {
             CurrentPage = currentPage;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);

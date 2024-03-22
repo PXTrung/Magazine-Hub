@@ -1,6 +1,7 @@
 ﻿using API.RequestModels.Contributions;
 using API.Sieve;
 using Application.Common.Interfaces;
+using Application.Features.Contributions.Commands.ChangeContributionApproval;
 using Application.Features.Contributions.Commands.CreateContribution;
 using Application.Features.Contributions.Commands.UpdateContribution;
 using Application.Features.Contributions.Queries.GetContribution;
@@ -63,7 +64,7 @@ namespace API.Controllers
 
 
         /// <summary>
-        ///    [Contributor] Get list of Contributions
+        ///    Get list of Contributions
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> ListContribution([FromQuery] SieveModel sieveModel)
@@ -91,6 +92,18 @@ namespace API.Controllers
             var query = new GetContributionQuery(id);
 
             var result = await _sender.Send(query);
+
+            return result.Match(
+                value => base.Ok(value),
+                Problem);
+        }
+
+        [HttpPut]
+        [Route("ChangeApproval")]
+        public async Task<IActionResult> ChangeContributionApproval(
+            [FromBody] ChangeContributionApprovalCommand request)
+        {
+            var result = await _sender.Send(request);
 
             return result.Match(
                 value => base.Ok(value),
