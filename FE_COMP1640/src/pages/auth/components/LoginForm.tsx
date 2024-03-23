@@ -41,8 +41,7 @@ const LoginForm = () => {
          {isLogin && (
             <Navigate
                to={{
-                  pathname:
-                     location.state?.from || `/${PATHS.CONTRIBUTION.IDENTIFY}`,
+                  pathname: location.state?.from || `/${PATHS.HOME.IDENTITY}`,
                }}
             />
          )}

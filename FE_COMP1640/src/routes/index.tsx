@@ -48,7 +48,7 @@ export default function AllRoutes() {
    return useRoutes([
       authRoute,
       {
-         path: "/",
+         path: PATHS.HOME.IDENTITY,
          element: <LandingPage />,
       },
       {

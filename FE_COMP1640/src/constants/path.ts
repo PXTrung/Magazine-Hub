@@ -1,6 +1,6 @@
 const PATHS = {
    HOME: {
-      IDENTITY: "",
+      IDENTITY: "home",
    },
    AUTH: {
       IDENTIFY: "auth",

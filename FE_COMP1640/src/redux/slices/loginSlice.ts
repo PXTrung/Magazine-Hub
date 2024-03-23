@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
 import { jwtDecode } from "jwt-decode";
+import { IUserInformation } from "../../types/user.type";
 
 export const login = createAsyncThunk(
    "login",
@@ -14,17 +15,9 @@ export const login = createAsyncThunk(
    },
 );
 
-interface UserInformation {
-   firstName: string;
-   lastName: string;
-   role: string;
-   email: string;
-   token: string;
-}
-
 interface UserLoginState {
    isLoading: boolean;
-   userInfor: UserInformation | null;
+   userInfor: IUserInformation | null;
    isError: boolean;
    message: string;
    isLogin: boolean;
@@ -41,7 +34,11 @@ const initialState: UserLoginState = {
 const userLoginSlice = createSlice({
    name: "login",
    initialState,
-   reducers: {},
+   reducers: {
+      logout: () => {
+         return initialState;
+      },
+   },
    extraReducers: (builder) => {
       builder.addCase(login.pending, (state) => {
          state.isLoading = true;
@@ -82,4 +79,5 @@ const userLoginSlice = createSlice({
    },
 });
 
+export const { logout } = userLoginSlice.actions;
 export default userLoginSlice.reducer;

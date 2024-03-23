@@ -1,0 +1,27 @@
+import clsx from "clsx";
+import React from "react";
+
+interface IButtonProps {
+   label: string;
+   type: "primary" | "secondary";
+   style?: string;
+   onClick?: () => {};
+}
+
+const Button = ({ label, onClick, style, type }: IButtonProps) => {
+   return (
+      <button
+         className={clsx(
+            "rounded px-4 py-2 min-w-28 hover:shadow hover:shadow-black/25 hover:opacity-95 transition-all duration-150",
+            type === "primary" && "bg-blue-600 text-white",
+            type === "secondary" && "bg-blue-100 text-blue-600",
+            style,
+         )}
+         onClick={onClick}
+      >
+         {label}
+      </button>
+   );
+};
+
+export default Button;
