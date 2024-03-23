@@ -1,9 +1,8 @@
 ﻿using ErrorOr;
 using MediatR;
 
-namespace Application.Features.Feedbacks.Queries.ListFeedback
+namespace Application.Features.Feedbacks.Queries.ListFeedback;
+
+public class ListFeedbackQuery : IRequest<ErrorOr<IQueryable<ListFeedbackDto>>>
 {
-    public class ListFeedbackQuery : IRequest<ErrorOr<IQueryable<ListFeedbackDto>>>
-    {
-    }
 }

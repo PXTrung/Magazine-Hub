@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using Sieve.Models;
 using Sieve.Services;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace API;
 
@@ -17,7 +18,10 @@ public static class DependencyInjection
         services.Configure<SieveOptions>(configuration.GetSection("Sieve"));
         services.AddScoped<ISieveProcessor, ApplicationSieveProcessor>();
 
-        services.AddControllers();
+        services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        });
 
         services.AddEndpointsApiExplorer();
 

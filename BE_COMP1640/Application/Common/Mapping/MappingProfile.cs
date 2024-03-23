@@ -30,7 +30,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.DocumentUrl, opt => opt.MapFrom(src => src.Document.UrlFilePath))
             .ForMember(dest => dest.FacultyName,
                 opt => opt.MapFrom(src => src.CreatedBy.Faculty != null ? src.CreatedBy.Faculty.Name : null))
-            .ForMember(dest => dest.FacultyId, opt => opt.MapFrom(src => src.CreatedBy.Faculty != null ? src.CreatedBy.Faculty.Id : (Guid?)null));
+            .ForMember(dest => dest.FacultyId,
+                opt => opt.MapFrom(src => src.CreatedBy.Faculty != null ? src.CreatedBy.Faculty.Id : (Guid?)null));
 
         CreateMap<Contribution, GetContributionDto>()
             .ForMember(dest => dest.CreatedByEmail, opt => opt.MapFrom(src => src.CreatedBy.Email))

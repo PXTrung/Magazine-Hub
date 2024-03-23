@@ -1,11 +1,10 @@
 ﻿using Application.Common.Models;
 
-namespace Application.Common.Interfaces
-{
-    public interface ICurrentUserProvider
-    {
-        CurrentUser? GetCurrentUser();
+namespace Application.Common.Interfaces;
 
-        bool CheckIfCurrentUserExist();
-    }
+public interface ICurrentUserProvider
+{
+    CurrentUser? GetCurrentUser();
+
+    bool CheckIfCurrentUserExist();
 }

@@ -1,8 +1,7 @@
-﻿namespace Domain.Enums
+﻿namespace Domain.Enums;
+
+public enum MediaType
 {
-    public enum MediaType
-    {
-        Image = 0,
-        Document = 1
-    }
+    Image = 0,
+    Document = 1
 }
