@@ -1,8 +1,7 @@
-﻿namespace API.RequestModels.Periods
+﻿namespace API.RequestModels.Periods;
+
+public class UpdatePeriodRequest
 {
-    public class UpdatePeriodRequest
-    {
-        public DateTime FirstSubmissionDeadline { get; set; }
-        public DateTime SecondSubmissionDeadline { get; set; }
-    }
+    public DateTime FirstSubmissionDeadline { get; set; }
+    public DateTime SecondSubmissionDeadline { get; set; }
 }

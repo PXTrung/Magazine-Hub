@@ -1,14 +1,13 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.Faculties.Commands.CreateFaculty
+namespace Application.Features.Faculties.Commands.CreateFaculty;
+
+public class CreateFacultyCommandValidator : AbstractValidator<CreateFacultyCommand>
 {
-    public class CreateFacultyCommandValidator : AbstractValidator<CreateFacultyCommand>
+    public CreateFacultyCommandValidator()
     {
-        public CreateFacultyCommandValidator()
-        {
-            RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("Name is required")
-                .MaximumLength(50).WithMessage("Name must not exceed 50 characters.");
-        }
+        RuleFor(x => x.Name)
+            .NotEmpty().WithMessage("Name is required")
+            .MaximumLength(50).WithMessage("Name must not exceed 50 characters.");
     }
 }

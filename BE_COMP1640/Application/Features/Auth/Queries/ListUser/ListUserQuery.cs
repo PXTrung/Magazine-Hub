@@ -1,9 +1,8 @@
 ﻿using ErrorOr;
 using MediatR;
 
-namespace Application.Features.Auth.Queries.ListUser
+namespace Application.Features.Auth.Queries.ListUser;
+
+public class ListUserQuery : IRequest<ErrorOr<IQueryable<ListUserDto>>>
 {
-    public class ListUserQuery : IRequest<ErrorOr<IQueryable<ListUserDto>>>
-    {
-    }
 }

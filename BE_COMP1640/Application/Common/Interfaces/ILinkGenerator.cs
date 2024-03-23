@@ -1,7 +1,6 @@
-﻿namespace Application.Common.Interfaces
+﻿namespace Application.Common.Interfaces;
+
+public interface ILinkGenerator
 {
-    public interface ILinkGenerator
-    {
-        string GenerateLink(string url);
-    }
+    string GenerateLink(string url);
 }
