@@ -1,4 +1,6 @@
-﻿namespace Application.Features.Contributions.Queries.GetContribution;
+﻿using Domain.Enums;
+
+namespace Application.Features.Contributions.Queries.GetContribution;
 
 public class GetContributionDto
 {
@@ -8,7 +10,7 @@ public class GetContributionDto
 
     public string Description { get; set; }
 
-    public string Status { get; set; }
+    public ContributionStatus Status { get; set; }
 
     public DateTimeOffset CreatedAt { get; set; }
 

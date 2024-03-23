@@ -49,7 +49,6 @@ public class ContributionsController : ApiController
     /// </summary>
     [HttpPut]
     [Route("{id:guid}")]
-    [Authorize]
     [Authorize(Roles = "Contributor")]
     public async Task<IActionResult> UpdateContribution([FromRoute] Guid id, [FromForm] UpdateContributionRequest request)
     {
@@ -104,6 +103,7 @@ public class ContributionsController : ApiController
     /// </summary>
     [HttpPut]
     [Route("Approval")]
+    [Authorize(Roles = "Coordinator")]
     public async Task<IActionResult> ApproveContribution(
         [FromBody] ApproveContributionCommand request)
     {
@@ -115,10 +115,11 @@ public class ContributionsController : ApiController
     }
 
     /// <summary>
-    ///  [Coordinator] Publish/Unpublished a contribution by it Id
+    ///  [Manager] Publish/Unpublished a contribution by it Id
     /// </summary>
     [HttpPut]
     [Route("Publishment")]
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> PublishContribution([FromBody] PublishContributionCommand request)
     {
         var result = await _sender.Send(request);

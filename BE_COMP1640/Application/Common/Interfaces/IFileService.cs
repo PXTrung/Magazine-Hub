@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Application.Common.Interfaces;
 
-public interface IFileManager
+public interface IFileService
 {
     Task<Media> SaveFileAsync(IFormFile file, string folderName);
 

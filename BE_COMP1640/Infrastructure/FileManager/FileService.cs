@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.FileManager;
 
-public class FileManager : IFileManager
+public class FileService : IFileService
 {
     private readonly IWebHostEnvironment _hostEnvironment;
     private readonly IHttpContextAccessor _contextAccessor;
 
-    public FileManager(IWebHostEnvironment hostEnvironment, IHttpContextAccessor contextAccessor)
+    public FileService(IWebHostEnvironment hostEnvironment, IHttpContextAccessor contextAccessor)
     {
         _hostEnvironment = hostEnvironment;
         _contextAccessor = contextAccessor;
