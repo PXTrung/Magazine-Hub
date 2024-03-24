@@ -2,7 +2,6 @@
 using Domain.Entities;
 using Hangfire;
 using Infrastructure.Email;
-using Infrastructure.FileManager;
 using Infrastructure.Identity.Services;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
@@ -146,7 +145,7 @@ public static class InfrastructureDependencyInjection
         services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ILinkGenerator, LinkGenerator>();
-        services.AddScoped<IFileService, FileService>();
+        services.AddScoped<IFileService, FileService.FileService>();
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
     }
 

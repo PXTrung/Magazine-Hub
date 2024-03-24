@@ -11,4 +11,6 @@ public interface IFileService
 
     string GetFileUrl(string folderName, string fileName);
 
+    Task<byte[]> ZipFilesAsync(IEnumerable<Media> mediaList, string folderName);
+
 }

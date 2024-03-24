@@ -2,8 +2,9 @@
 using Domain.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using System.IO.Compression;
 
-namespace Infrastructure.FileManager;
+namespace Infrastructure.FileService;
 
 public class FileService : IFileService
 {
@@ -15,6 +16,8 @@ public class FileService : IFileService
         _hostEnvironment = hostEnvironment;
         _contextAccessor = contextAccessor;
     }
+
+
 
     public async Task<Media> SaveFileAsync(IFormFile file, string folderName)
     {
@@ -36,6 +39,24 @@ public class FileService : IFileService
         var newFilePath = await SaveFileToFolder(file, folderPath, oldFile.Id);
 
         UpdateMediaEntity(file, folderName, oldFile, newFilePath);
+    }
+
+
+    public async Task<byte[]> ZipFilesAsync(IEnumerable<Media> mediaList, string folderName)
+    {
+        using var memoryStream = new MemoryStream();
+        using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+        {
+            foreach (var media in mediaList)
+            {
+                var entry = archive.CreateEntry($"{media.FileName}.{media.FileExtension}");
+                await using var entryStream = entry.Open();
+                await using var fileStream = File.OpenRead(GetFilePathForMedia(folderName, media));
+                await fileStream.CopyToAsync(entryStream);
+            }
+        }
+
+        return memoryStream.ToArray();
     }
 
     private string EnsureFolderExists(string folderName)
