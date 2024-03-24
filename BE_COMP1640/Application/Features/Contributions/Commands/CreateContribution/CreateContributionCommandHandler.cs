@@ -14,20 +14,20 @@ public class CreateContributionCommandHandler : IRequestHandler<CreateContributi
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
-    private readonly IFileManager _fileManager;
+    private readonly IFileService _fileService;
     private readonly IEmailService _emailService;
     private readonly ICurrentUserProvider _currentUserProvider;
 
 
     public CreateContributionCommandHandler(IApplicationDbContext context,
         IMapper mapper,
-        IFileManager fileManager,
+        IFileService fileService,
         IEmailService emailService,
         ICurrentUserProvider currentUserProvider)
     {
         _context = context;
         _mapper = mapper;
-        _fileManager = fileManager;
+        _fileService = fileService;
         _emailService = emailService;
         _currentUserProvider = currentUserProvider;
     }
@@ -36,12 +36,12 @@ public class CreateContributionCommandHandler : IRequestHandler<CreateContributi
     {
         //Mapping and make status as Submitted
         var contributionEntity = _mapper.Map<Contribution>(request);
-        contributionEntity.Status = ContributionStatus.Submitted;
+        contributionEntity.Status = ContributionStatus.Processing;
 
         //Save Image file and create Media entity
-        var imageEntity = await _fileManager.SaveFileAsync(request.ImageFile, "Images");
+        var imageEntity = await _fileService.SaveFileAsync(request.ImageFile, "Images");
         //Save Document file and create Media entity
-        var documentEntity = await _fileManager.SaveFileAsync(request.DocumentFile, "Documents");
+        var documentEntity = await _fileService.SaveFileAsync(request.DocumentFile, "Documents");
 
         //Add Media entities
         await _context.Media.AddRangeAsync([imageEntity, documentEntity], cancellationToken);
@@ -65,9 +65,9 @@ public class CreateContributionCommandHandler : IRequestHandler<CreateContributi
         foreach (var coordinator in coordinatorsToSendEmail)
         {
             BackgroundJob.Enqueue(() => _emailService.SendEmailAsync(coordinator.Email,
-                "New contribution submitted",
+                "New contribution SUBMITTED",
                 $"Hi {coordinator.FirstName} {coordinator.LastName}" +
-                $"<p>A new contribution belong to your faculty has been submitted by <strong>{currentUser.Email}</strong> with the title: <strong>{contributionEntity.Title}</strong>. Please review and handle the contribution</p>"));
+                $"<p>A new contribution belong to your faculty has been <strong>SUBMITTED<strong/> by <strong>{currentUser.Email}</strong> with the title: <strong>{contributionEntity.Title}</strong>. Please review and handle the contribution</p>"));
         }
 
         return new SuccessResult(title: "Submitted contribution successfully!");

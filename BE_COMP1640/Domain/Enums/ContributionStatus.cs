@@ -2,9 +2,9 @@
 
 public enum ContributionStatus
 {
-    Submitted = 0,
-    Approved = 1,
-    Rejected = 2,
-    Published = 3,
-    Todo = 4
+    Processing = 0,
+    Processed = 1,
+    Approved = 2,
+    Rejected = 3,
+    Published = 4,
 }

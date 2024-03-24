@@ -5,6 +5,7 @@ using Application.Features.Contributions.Commands.ApproveContribution;
 using Application.Features.Contributions.Commands.CreateContribution;
 using Application.Features.Contributions.Commands.PublishContribution;
 using Application.Features.Contributions.Commands.UpdateContribution;
+using Application.Features.Contributions.Queries.DownloadContribution;
 using Application.Features.Contributions.Queries.GetContribution;
 using Application.Features.Contributions.Queries.ListContribution;
 using MediatR;
@@ -49,7 +50,6 @@ public class ContributionsController : ApiController
     /// </summary>
     [HttpPut]
     [Route("{id:guid}")]
-    [Authorize]
     [Authorize(Roles = "Contributor")]
     public async Task<IActionResult> UpdateContribution([FromRoute] Guid id, [FromForm] UpdateContributionRequest request)
     {
@@ -104,6 +104,7 @@ public class ContributionsController : ApiController
     /// </summary>
     [HttpPut]
     [Route("Approval")]
+    [Authorize(Roles = "Coordinator")]
     public async Task<IActionResult> ApproveContribution(
         [FromBody] ApproveContributionCommand request)
     {
@@ -115,10 +116,11 @@ public class ContributionsController : ApiController
     }
 
     /// <summary>
-    ///  [Coordinator] Publish/Unpublished a contribution by it Id
+    ///  [Manager] Publish/Unpublished a contribution by it Id
     /// </summary>
     [HttpPut]
     [Route("Publishment")]
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> PublishContribution([FromBody] PublishContributionCommand request)
     {
         var result = await _sender.Send(request);
@@ -128,5 +130,18 @@ public class ContributionsController : ApiController
             Problem);
     }
 
+    [HttpGet]
+    [Route("ZipAllContributions")]
+    public async Task<IActionResult> ZipAllContributions()
+    {
+        var result = await _sender.Send(new DownloadContributionQuery());
+        if (result.IsError)
+        {
+            return Problem(result.Errors);
+        }
+
+
+        return File(result.Value, "application/zip", "AllContributions.zip");
+    }
 
 }
