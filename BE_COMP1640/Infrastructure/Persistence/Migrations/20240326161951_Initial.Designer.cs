@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240326122458_Initial")]
+    [Migration("20240326161951_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -193,9 +193,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<long>("CreatedAt")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid?>("CreatedById")
-                        .HasColumnType("TEXT");
-
                     b.Property<long>("LastModifiedAt")
                         .HasColumnType("INTEGER");
 
@@ -205,8 +202,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
 
                     b.ToTable("Faculties");
                 });
@@ -252,9 +247,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<long>("CreatedAt")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid?>("CreatedById")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("FileExtension")
                         .HasColumnType("TEXT");
 
@@ -274,8 +266,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
 
                     b.ToTable("Media");
                 });
@@ -458,16 +448,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Period");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Faculty", b =>
-                {
-                    b.HasOne("Domain.Entities.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("CreatedBy");
-                });
-
             modelBuilder.Entity("Domain.Entities.Feedback", b =>
                 {
                     b.HasOne("Domain.Entities.Contribution", "Contribution")
@@ -482,16 +462,6 @@ namespace Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Contribution");
-
-                    b.Navigation("CreatedBy");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Media", b =>
-                {
-                    b.HasOne("Domain.Entities.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("CreatedBy");
                 });

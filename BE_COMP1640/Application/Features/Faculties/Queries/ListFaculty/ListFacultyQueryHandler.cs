@@ -22,7 +22,6 @@ public class ListFacultyQueryHandler : IRequestHandler<ListFacultyQuery, ErrorOr
     public Task<ErrorOr<IQueryable<ListFacultyDto>>> Handle(ListFacultyQuery request, CancellationToken cancellationToken)
     {
         var facultyEntities = _context.Faculties
-            .Include(c => c.CreatedBy)
             .AsNoTracking();
 
 

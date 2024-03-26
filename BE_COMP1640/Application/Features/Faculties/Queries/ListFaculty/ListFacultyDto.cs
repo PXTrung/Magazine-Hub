@@ -10,6 +10,5 @@ public class ListFacultyDto
 
     public DateTimeOffset? LastModifiedAt { get; set; }
 
-    public string CreatedByEmail { get; set; }
 
 }

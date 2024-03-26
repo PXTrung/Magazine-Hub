@@ -13,10 +13,6 @@ public class FacultyConfiguration : IEntityTypeConfiguration<Faculty>
             .HasMaxLength(100);
 
 
-        builder.HasOne<ApplicationUser>(c => c.CreatedBy)
-            .WithMany()
-            .HasForeignKey(c => c.CreatedById)
-            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasMany<ApplicationUser>(f => f.Members)
             .WithOne(u => u.Faculty)

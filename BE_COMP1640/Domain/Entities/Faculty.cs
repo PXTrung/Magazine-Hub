@@ -2,7 +2,7 @@
 
 namespace Domain.Entities;
 
-public class Faculty : AuditableBaseEntity
+public class Faculty : BaseEntity
 {
     public string Name { get; set; }
 

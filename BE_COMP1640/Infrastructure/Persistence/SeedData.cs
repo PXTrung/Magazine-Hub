@@ -81,7 +81,7 @@ public static class SeedData
                 var faculties = new List<string> { "Graphic Design", "IT", "Business", "Medical" };
                 foreach (var facultyName in faculties)
                 {
-                    context.Faculties.Add(new Faculty { Name = facultyName, CreatedById = admin.Id });
+                    context.Faculties.Add(new Faculty { Name = facultyName });
                 }
             }
 
