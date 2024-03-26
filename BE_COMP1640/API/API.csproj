@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="MediaFiles\Documents\" />
-    <Folder Include="MediaFiles\Images\" />
     <Folder Include="MediaFiles\Avatars\" />
   </ItemGroup>
 

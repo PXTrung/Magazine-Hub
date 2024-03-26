@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -137,7 +138,6 @@ public static class SeedData
 
             await context.SaveChangesAsync();
         }
-
         if (!context.Contributions.Any())
         {
             var newContributions = new List<Contribution>();
@@ -146,29 +146,21 @@ public static class SeedData
 
             foreach (var contributor in contributors)
             {
-                var contributorContributions = new List<Contribution>
+                for (int i = 0; i < 3; i++) // Repeat 3 times for each status
+                {
+                    var contributionNumber = i + 1;
+                    foreach (ContributionStatus status in Enum.GetValues(typeof(ContributionStatus)))
                     {
-                        new Contribution
+                        var contribution = new Contribution
                         {
-                            Title = $"Contribution 1 by {contributor.FirstName}",
-                            Description = $"Description of Contribution 1 by {contributor.FirstName}",
+                            Title = $"Contribution {contributionNumber} by {contributor.FirstName}",
+                            Description = $"Description of Contribution {contributionNumber} by {contributor.FirstName}",
+                            Status = status,
                             CreatedById = contributor.Id
-                        },
-                        new Contribution
-                        {
-                            Title = $"Contribution 2 by {contributor.FirstName}",
-                            Description = $"Description of Contribution 2 by {contributor.FirstName}",
-                            CreatedById = contributor.Id
-                        },
-                        new Contribution
-                        {
-                            Title = $"Contribution 3 by {contributor.FirstName}",
-                            Description = $"Description of Contribution 3 by {contributor.FirstName}",
-                            CreatedById = contributor.Id
-                        }
-                    };
-
-                newContributions.AddRange(contributorContributions);
+                        };
+                        newContributions.Add(contribution);
+                    }
+                }
             }
 
             await context.Contributions.AddRangeAsync(newContributions);

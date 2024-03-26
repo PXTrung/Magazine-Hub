@@ -89,6 +89,9 @@ public class AuthController : ApiController
             Problem);
     }
 
+    /// <summary>
+    ///    Send Reset password OTP via Email
+    /// </summary>
     [HttpPost]
     [Route("SendResetPasswordOTP")]
     public async Task<IActionResult> SendResetPasswordOTP([FromBody] GetResetPasswordOTPQuery request)
@@ -101,6 +104,9 @@ public class AuthController : ApiController
             Problem);
     }
 
+    /// <summary>
+    ///    Using sent OTP with new password to set a new password
+    /// </summary>
     [HttpPost]
     [Route("ResetPassword")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand request)
