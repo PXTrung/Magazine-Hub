@@ -18,5 +18,8 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public ICollection<ApplicationRole> Roles { get; set; }
 
+    public Guid? AvatarId { get; set; }
+
+    public Media Avatar { get; set; }
 
 }

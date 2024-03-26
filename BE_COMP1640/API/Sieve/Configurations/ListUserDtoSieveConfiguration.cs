@@ -15,6 +15,10 @@ public class ListUserDtoSieveConfiguration : ISieveConfiguration
             .CanFilter()
             .CanSort();
 
+        mapper.Property<ListUserDto>(c => c.Role)
+            .CanFilter()
+            .CanSort();
+
         mapper.Property<ListUserDto>(c => c.FacultyName)
             .CanFilter()
             .CanSort();

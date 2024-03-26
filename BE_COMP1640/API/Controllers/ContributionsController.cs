@@ -130,6 +130,10 @@ public class ContributionsController : ApiController
             Problem);
     }
 
+
+    /// <summary>
+    ///  [Manager] Download all contributions as zip file
+    /// </summary>
     [HttpGet]
     [Route("ZipAllContributions")]
     public async Task<IActionResult> ZipAllContributions()

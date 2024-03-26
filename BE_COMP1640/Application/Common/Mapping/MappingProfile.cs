@@ -1,5 +1,6 @@
 ﻿using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.Register;
+using Application.Features.Auth.Commands.UpdateProfile;
 using Application.Features.Auth.Queries.ListRole;
 using Application.Features.Auth.Queries.ListUser;
 using Application.Features.Contributions.Commands.CreateContribution;
@@ -12,6 +13,7 @@ using Application.Features.Feedbacks.Commands.CreateFeedback;
 using Application.Features.Feedbacks.Queries.ListFeedback;
 using Application.Features.Periods.Commands.CreatePeriod;
 using Application.Features.Periods.Commands.UpdatePeriod;
+using Application.Features.Periods.Queries.ListPeriod;
 using AutoMapper;
 using Domain.Entities;
 
@@ -21,20 +23,22 @@ public class MappingProfile : Profile
 {
 
 
+
     public MappingProfile()
     {
         //Mapping of contributions 
         CreateMap<Contribution, ListContributionDto>()
             .ForMember(dest => dest.CreatedByEmail, opt => opt.MapFrom(src => src.CreatedBy.Email))
+            .ForMember(dest => dest.CreatedByFullName,
+                opt => opt.MapFrom(src => src.CreatedBy.FirstName + " " + src.CreatedBy.LastName))
             .ForMember(dest => dest.CoverImageUrl, opt => opt.MapFrom(src => src.Image.UrlFilePath))
-            .ForMember(dest => dest.DocumentUrl, opt => opt.MapFrom(src => src.Document.UrlFilePath))
             .ForMember(dest => dest.FacultyName,
                 opt => opt.MapFrom(src => src.CreatedBy.Faculty != null ? src.CreatedBy.Faculty.Name : null))
-            .ForMember(dest => dest.FacultyId,
-                opt => opt.MapFrom(src => src.CreatedBy.Faculty != null ? src.CreatedBy.Faculty.Id : (Guid?)null));
+            .ForMember(dest => dest.FacultyId, opt => opt.MapFrom(src => src.CreatedBy.FacultyId));
 
         CreateMap<Contribution, GetContributionDto>()
             .ForMember(dest => dest.CreatedByEmail, opt => opt.MapFrom(src => src.CreatedBy.Email))
+            .ForMember(dest => dest.CreatedByFullName, opt => opt.MapFrom(src => src.CreatedBy.FirstName + " " + src.CreatedBy.LastName))
             .ForMember(dest => dest.CoverImageUrl, opt => opt.MapFrom(src => src.Image.UrlFilePath))
             .ForMember(dest => dest.DocumentUrl, opt => opt.MapFrom(src => src.Document.UrlFilePath));
 
@@ -58,16 +62,23 @@ public class MappingProfile : Profile
         CreateMap<RegisterCommand, ApplicationUser>()
             .ForMember(dest => dest.UserName, opt => opt.MapFrom((src => src.Email)));
 
+        CreateMap<UpdateProfileCommand, ApplicationUser>()
+            .ForMember(dest => dest.Avatar, opt => opt.Ignore())
+            .ForMember(dest => dest.LastName, opt => opt.Condition(src => !string.IsNullOrEmpty(src.LastName)))
+            .ForMember(dest => dest.FirstName, opt => opt.Condition(src => !string.IsNullOrEmpty(src.FirstName)));
+
         CreateMap<ApplicationUser, ListUserDto>()
             .ForMember(dest => dest.FacultyName,
                 opt => opt.MapFrom(src => src.Faculty != null ? src.Faculty.Name : null))
-            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FirstName + src.LastName))
-            .ForMember(dest => dest.Role,
-                opt => opt.MapFrom(src => string.Join(", ", src.Roles.AsEnumerable().Select(r => r.Name))))
-            .ForMember(dest => dest.FacultyId, opt => opt.MapFrom(src => src.Faculty != null ? src.Faculty.Id : (Guid?)null));
-
+            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName))
+            .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Roles.FirstOrDefault().Name))
+            //.ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Roles.Select(r => r.Name).Aggregate((current, next) => current + ", " + next)))
+            .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.Avatar.UrlFilePath));
 
         CreateMap<ApplicationRole, ListRoleDto>();
+
+
+
 
         //Mapping of Period
         CreateMap<CreatePeriodCommand, Period>();
@@ -75,13 +86,32 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Id, opt => opt.Ignore());
 
 
+        CreateMap<Period, ListPeriodDto>()
+            .ForMember(dest => dest.CreatedByEmail, opt => opt.MapFrom(src => src.CreatedBy.Email))
+            .ForMember(dest => dest.CreatedByFullName,
+                opt => opt.MapFrom(src => src.CreatedBy.FirstName + " " + src.CreatedBy.LastName));
+
+
+
+
         //Mapping of Faculty
         CreateMap<CreateFacultyCommand, Faculty>();
         CreateMap<Faculty, ListFacultyDto>().ReverseMap();
 
+
+
+
         //Mapping of Feedback
         CreateMap<CreateFeedbackCommand, Feedback>();
+
+        CreateMap<Feedback, ListFeedbackDto>()
+            .ForMember(dest => dest.CreatedByEmail, opt => opt.MapFrom(src => src.CreatedBy.Email))
+            .ForMember(dest => dest.CreatedByFullName,
+                opt => opt.MapFrom(src => src.CreatedBy.FirstName + " " + src.CreatedBy.LastName));
+
+
         CreateMap<Feedback, ListFeedbackDto>();
+
 
     }
 

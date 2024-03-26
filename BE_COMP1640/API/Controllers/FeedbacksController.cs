@@ -23,7 +23,7 @@ public class FeedbacksController : ApiController
     }
 
     /// <summary>
-    ///  [Coordinator] Create a new Period
+    ///  [Coordinator] Create a new Feedback for a contribution
     /// </summary>
     [HttpPost]
     [Authorize(Roles = "Coordinator")]

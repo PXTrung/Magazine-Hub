@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -82,6 +83,7 @@ namespace Infrastructure.Persistence.Migrations
                     FirstName = table.Column<string>(type: "TEXT", nullable: false),
                     LastName = table.Column<string>(type: "TEXT", nullable: false),
                     FacultyId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    AvatarId = table.Column<Guid>(type: "TEXT", nullable: true),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -93,7 +95,7 @@ namespace Infrastructure.Persistence.Migrations
                     PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                    LockoutEnd = table.Column<long>(type: "INTEGER", nullable: true),
                     LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
                     AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -128,8 +130,8 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    LastModifiedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<long>(type: "INTEGER", nullable: false),
+                    LastModifiedAt = table.Column<long>(type: "INTEGER", nullable: false),
                     CreatedById = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -152,8 +154,8 @@ namespace Infrastructure.Persistence.Migrations
                     UrlFilePath = table.Column<string>(type: "TEXT", nullable: true),
                     LocalFilePath = table.Column<string>(type: "TEXT", nullable: true),
                     FileSizeInBytes = table.Column<long>(type: "INTEGER", nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    LastModifiedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<long>(type: "INTEGER", nullable: false),
+                    LastModifiedAt = table.Column<long>(type: "INTEGER", nullable: false),
                     CreatedById = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -174,8 +176,8 @@ namespace Infrastructure.Persistence.Migrations
                     AcademicYear = table.Column<int>(type: "INTEGER", nullable: false),
                     FirstSubmissionDeadline = table.Column<DateTime>(type: "TEXT", nullable: false),
                     SecondSubmissionDeadline = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    LastModifiedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<long>(type: "INTEGER", nullable: false),
+                    LastModifiedAt = table.Column<long>(type: "INTEGER", nullable: false),
                     CreatedById = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -220,12 +222,11 @@ namespace Infrastructure.Persistence.Migrations
                     Title = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
                     Status = table.Column<string>(type: "TEXT", nullable: false),
-                    FacultyId = table.Column<Guid>(type: "TEXT", nullable: true),
                     PeriodId = table.Column<Guid>(type: "TEXT", nullable: true),
                     ImageId = table.Column<Guid>(type: "TEXT", nullable: true),
                     DocumentId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    LastModifiedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<long>(type: "INTEGER", nullable: false),
+                    LastModifiedAt = table.Column<long>(type: "INTEGER", nullable: false),
                     CreatedById = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -235,11 +236,6 @@ namespace Infrastructure.Persistence.Migrations
                         name: "FK_Contributions_AspNetUsers_CreatedById",
                         column: x => x.CreatedById,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Contributions_Faculties_FacultyId",
-                        column: x => x.FacultyId,
-                        principalTable: "Faculties",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Contributions_Media_DocumentId",
@@ -265,8 +261,8 @@ namespace Infrastructure.Persistence.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Content = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
                     ContributionId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    LastModifiedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<long>(type: "INTEGER", nullable: false),
+                    LastModifiedAt = table.Column<long>(type: "INTEGER", nullable: false),
                     CreatedById = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -311,6 +307,12 @@ namespace Infrastructure.Persistence.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_AvatarId",
+                table: "AspNetUsers",
+                column: "AvatarId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_FacultyId",
                 table: "AspNetUsers",
                 column: "FacultyId");
@@ -331,11 +333,6 @@ namespace Infrastructure.Persistence.Migrations
                 table: "Contributions",
                 column: "DocumentId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Contributions_FacultyId",
-                table: "Contributions",
-                column: "FacultyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contributions_ImageId",
@@ -400,6 +397,13 @@ namespace Infrastructure.Persistence.Migrations
                 column: "FacultyId",
                 principalTable: "Faculties",
                 principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUsers_Media_AvatarId",
+                table: "AspNetUsers",
+                column: "AvatarId",
+                principalTable: "Media",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
@@ -408,6 +412,10 @@ namespace Infrastructure.Persistence.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_Faculties_AspNetUsers_CreatedById",
                 table: "Faculties");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Media_AspNetUsers_CreatedById",
+                table: "Media");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -434,9 +442,6 @@ namespace Infrastructure.Persistence.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Media");
-
-            migrationBuilder.DropTable(
                 name: "Periods");
 
             migrationBuilder.DropTable(
@@ -444,6 +449,9 @@ namespace Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Faculties");
+
+            migrationBuilder.DropTable(
+                name: "Media");
         }
     }
 }

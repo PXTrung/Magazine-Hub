@@ -24,7 +24,6 @@ public class ListPeriodQueryHandler : IRequestHandler<ListPeriodQuery, ErrorOr<I
             .AsNoTracking();
 
 
-
         var result = _mapper.ProjectTo<ListPeriodDto>(periodEntities);
 
         return Task.FromResult(result.ToErrorOr());

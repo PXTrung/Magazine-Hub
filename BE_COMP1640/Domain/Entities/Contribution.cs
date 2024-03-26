@@ -11,10 +11,6 @@ public class Contribution : AuditableBaseEntity
 
     public ICollection<Feedback> Feedbacks { get; set; } // One-to-many
 
-    public Faculty Faculty { get; set; } // Many-to-one
-
-    public Guid? FacultyId { get; set; } // Foreign key
-
     public Guid? PeriodId { get; set; }
 
     public Period Period { get; set; } // One-to-one

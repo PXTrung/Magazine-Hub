@@ -22,6 +22,7 @@ public class ListUserQueryHandler : IRequestHandler<ListUserQuery, ErrorOr<IQuer
         var userEntities = _context.Users
             .Include(u => u.Faculty)
             .Include(u => u.Roles)
+            .Include(u => u.Avatar)
             .AsNoTracking();
 
         var result = _mapper.ProjectTo<ListUserDto>(userEntities);

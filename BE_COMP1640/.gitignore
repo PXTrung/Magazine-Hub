@@ -402,8 +402,11 @@ FodyWeavers.xsd
 # Server media files resources (.jpg,...)
 API/MediaFiles/Images/*
 API/MediaFiles/Documents/*
+API/MediaFiles/Avatars/*
 !API/MediaFiles/Images/.gitkeep
 !API/MediaFiles/Documents/.gitkeep
+!API/MediaFiles/Avatars/.gitkeep
+
 
 #ignore database 
 API/LocalDatabase.db
