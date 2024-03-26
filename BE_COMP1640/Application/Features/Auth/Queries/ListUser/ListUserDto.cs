@@ -12,5 +12,7 @@ public class ListUserDto
 
     public string FacultyName { get; set; }
 
-    public Guid FacultyId { get; set; }
+    public Guid? FacultyId { get; set; }
+
+    public string AvatarUrl { get; set; }
 }

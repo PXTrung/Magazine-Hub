@@ -11,10 +11,6 @@ public class ListContributionDtoSieveConfiguration : ISieveConfiguration
             .CanFilter()
             .CanSort();
 
-        mapper.Property<ListContributionDto>(c => c.Description)
-            .CanFilter()
-            .CanSort();
-
         mapper.Property<ListContributionDto>(c => c.Status)
             .CanFilter()
             .CanSort();
@@ -28,6 +24,10 @@ public class ListContributionDtoSieveConfiguration : ISieveConfiguration
             .CanSort();
 
         mapper.Property<ListContributionDto>(c => c.CreatedByEmail)
+            .CanFilter()
+            .CanSort();
+
+        mapper.Property<ListContributionDto>(c => c.CreatedByFullName)
             .CanFilter()
             .CanSort();
 

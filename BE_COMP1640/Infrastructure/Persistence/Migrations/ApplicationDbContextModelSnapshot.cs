@@ -53,6 +53,9 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<Guid?>("AvatarId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
@@ -78,8 +81,8 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("TEXT");
+                    b.Property<long?>("LockoutEnd")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -110,6 +113,9 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AvatarId")
+                        .IsUnique();
+
                     b.HasIndex("FacultyId");
 
                     b.HasIndex("NormalizedEmail")
@@ -128,8 +134,8 @@ namespace Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid?>("CreatedById")
                         .HasColumnType("TEXT");
@@ -142,14 +148,11 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<Guid?>("DocumentId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("FacultyId")
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid?>("ImageId")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTimeOffset>("LastModifiedAt")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("LastModifiedAt")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid?>("PeriodId")
                         .HasColumnType("TEXT");
@@ -170,8 +173,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasIndex("DocumentId")
                         .IsUnique();
 
-                    b.HasIndex("FacultyId");
-
                     b.HasIndex("ImageId")
                         .IsUnique();
 
@@ -186,14 +187,14 @@ namespace Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid?>("CreatedById")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTimeOffset>("LastModifiedAt")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("LastModifiedAt")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -221,14 +222,14 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<Guid>("ContributionId")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid?>("CreatedById")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTimeOffset>("LastModifiedAt")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("LastModifiedAt")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -245,8 +246,8 @@ namespace Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid?>("CreatedById")
                         .HasColumnType("TEXT");
@@ -260,8 +261,8 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<long?>("FileSizeInBytes")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTimeOffset>("LastModifiedAt")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("LastModifiedAt")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("LocalFilePath")
                         .HasColumnType("TEXT");
@@ -285,8 +286,8 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<int>("AcademicYear")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid?>("CreatedById")
                         .HasColumnType("TEXT");
@@ -294,8 +295,8 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("FirstSubmissionDeadline")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTimeOffset>("LastModifiedAt")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("LastModifiedAt")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("SecondSubmissionDeadline")
                         .HasColumnType("TEXT");
@@ -408,10 +409,17 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
                 {
+                    b.HasOne("Domain.Entities.Media", "Avatar")
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.ApplicationUser", "AvatarId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.HasOne("Domain.Entities.Faculty", "Faculty")
                         .WithMany("Members")
                         .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Avatar");
 
                     b.Navigation("Faculty");
                 });
@@ -428,11 +436,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasForeignKey("Domain.Entities.Contribution", "DocumentId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("Domain.Entities.Faculty", "Faculty")
-                        .WithMany("Contributions")
-                        .HasForeignKey("FacultyId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("Domain.Entities.Media", "Image")
                         .WithOne()
                         .HasForeignKey("Domain.Entities.Contribution", "ImageId")
@@ -446,8 +449,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("CreatedBy");
 
                     b.Navigation("Document");
-
-                    b.Navigation("Faculty");
 
                     b.Navigation("Image");
 
@@ -567,8 +568,6 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Faculty", b =>
                 {
-                    b.Navigation("Contributions");
-
                     b.Navigation("Members");
                 });
 

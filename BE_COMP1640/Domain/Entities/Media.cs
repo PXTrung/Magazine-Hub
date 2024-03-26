@@ -1,13 +1,9 @@
 ﻿using Domain.Common;
-using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities;
 
 public class Media : AuditableBaseEntity
 {
-    [NotMapped]
-    public IFormFile File { get; set; }
 
     public string? FileName { get; set; }
 

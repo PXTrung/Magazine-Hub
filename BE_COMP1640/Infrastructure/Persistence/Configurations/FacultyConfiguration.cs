@@ -12,11 +12,6 @@ public class FacultyConfiguration : IEntityTypeConfiguration<Faculty>
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.HasMany(f => f.Contributions)
-            .WithOne(c => c.Faculty)
-            .HasForeignKey(c => c.FacultyId)
-            .OnDelete(DeleteBehavior.NoAction);
-
 
         builder.HasOne<ApplicationUser>(c => c.CreatedBy)
             .WithMany()

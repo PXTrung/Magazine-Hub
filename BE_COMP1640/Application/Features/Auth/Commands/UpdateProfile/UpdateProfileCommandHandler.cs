@@ -1,39 +1,62 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
-using Domain.Entities;
+using AutoMapper;
 using ErrorOr;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Auth.Commands.UpdateProfile;
 
 public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand, ErrorOr<SuccessResult>>
 {
-    private readonly UserManager<ApplicationUser> _userManager;
     private readonly ICurrentUserProvider _currentUserProvider;
+    private readonly IApplicationDbContext _context;
+    private readonly IFileService _fileService;
+    private readonly IMapper _mapper;
 
-    public UpdateProfileCommandHandler(UserManager<ApplicationUser> userManager,
-        ICurrentUserProvider currentUserProvider)
+    public UpdateProfileCommandHandler(ICurrentUserProvider currentUserProvider,
+        IApplicationDbContext context,
+        IFileService fileService,
+        IMapper mapper)
     {
-        _userManager = userManager;
         _currentUserProvider = currentUserProvider;
+        _context = context;
+        _fileService = fileService;
+        _mapper = mapper;
     }
 
     public async Task<ErrorOr<SuccessResult>> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
     {
         var currentUser = _currentUserProvider.GetCurrentUser();
         //check if current user is null
-        var user = await _userManager.FindByIdAsync(currentUser.Id.ToString());
+        if (currentUser == null) return Error.Unauthorized(description: "You must login first");
 
-        if (user == null) return Error.Unauthorized(description: "User not found");
+        var userEntity = await _context.Users
+            .Include(u => u.Avatar)
+            .FirstOrDefaultAsync(c => c.Id == currentUser.Id, cancellationToken);
 
-        user.FirstName = request.FirstName;
+        if (userEntity == null) return Error.Unauthorized(description: "User not found");
 
-        user.LastName = request.LastName;
+        _mapper.Map(request, userEntity);
 
-        var result = await _userManager.UpdateAsync(user);
+        if (request.AvatarFile != null)
+        {
+            if (userEntity.AvatarId == null)
+            {
+                var avatar = await _fileService.SaveFileAsync(request.AvatarFile, "Avatars");
 
-        if (!result.Succeeded) return Error.Unexpected(description: "Updated profile failed, please retry");
+                await _context.Media.AddAsync(avatar, cancellationToken);
+
+                userEntity.AvatarId = avatar.Id;
+            }
+            else
+            {
+                await _fileService.UpdateFileAsync(request.AvatarFile, "Avatars", userEntity.Avatar);
+            }
+        }
+
+        await _context.SaveChangesAsync(cancellationToken);
+
 
         return new SuccessResult(title: "Updated profile successfully!");
     }
