@@ -1,3 +1,9 @@
+const PARAMETER = {
+   CONTRIBUTION_FILTER: ":filter",
+   CONTRIBUTION_ID: ":id",
+   CONTRIBUTION_SLUG: ":slug",
+};
+
 const PATHS = {
    HOME: {
       IDENTITY: "home",
@@ -9,7 +15,8 @@ const PATHS = {
    },
    CONTRIBUTION: {
       IDENTIFY: "contribution",
+      DETAIL: `${PARAMETER.CONTRIBUTION_SLUG}`,
    },
 };
 
-export { PATHS };
+export { PATHS, PARAMETER };

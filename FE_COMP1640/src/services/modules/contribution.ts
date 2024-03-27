@@ -5,12 +5,20 @@ import { ENDPOINTS } from "../../constants/endpoint";
 
 export default {
    contribute: (data: IUploadContribution) => {
-      console.log(typeof data.uploadData);
-
-      return axios.post(ENDPOINTS.CONTRIBUTION, data.uploadData, {
+      return axios.post(ENDPOINTS.CONTRIBUTION.ALL, data.uploadData, {
          headers: {
             Authorization: `Bearer ${data.token}`,
          },
+      });
+   },
+   getContributionByStatus: (filter: string) => {
+      return axios.get(ENDPOINTS.CONTRIBUTION.FILTER, {
+         headers: {
+            Authorization: `Bearer ${sessionStorage.getItem(
+               "currentUserToken",
+            )}`,
+         },
+         params: { filter: filter },
       });
    },
 };

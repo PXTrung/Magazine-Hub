@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
-import { IUploadContribution } from "../../types/contribution.type";
+import {
+   IContributionData,
+   IUploadContribution,
+} from "../../types/contribution.type";
 
 export const contribute = createAsyncThunk(
    "contribute",
@@ -14,11 +17,26 @@ export const contribute = createAsyncThunk(
    },
 );
 
+export const getAllContributions = createAsyncThunk(
+   "getAllContributions",
+   async (filter: string, { rejectWithValue }) => {
+      try {
+         const res = await api.contribution.getContributionByStatus(filter);
+         console.log(res.data);
+
+         return res.data;
+      } catch (error: any) {
+         return rejectWithValue(error.response.data.title);
+      }
+   },
+);
+
 interface ContributionState {
    isLoading: boolean;
    isError: boolean;
    message: string;
    status: string;
+   list: IContributionData[];
 }
 
 const initialState: ContributionState = {
@@ -26,6 +44,7 @@ const initialState: ContributionState = {
    isError: false,
    message: "",
    status: "",
+   list: [],
 };
 
 const contributionSlice = createSlice({
@@ -42,6 +61,20 @@ const contributionSlice = createSlice({
          console.log(action.payload);
       });
       builder.addCase(contribute.rejected, (state, action) => {
+         state.isLoading = false;
+         state.isError = true;
+         state.message =
+            (action.payload as string) || "An error occurred during login.";
+      });
+      builder.addCase(getAllContributions.pending, (state) => {
+         state.isLoading = true;
+      });
+      builder.addCase(getAllContributions.fulfilled, (state, action) => {
+         state.isLoading = false;
+         state.message = "";
+         state.list = action.payload?.items;
+      });
+      builder.addCase(getAllContributions.rejected, (state, action) => {
          state.isLoading = false;
          state.isError = true;
          state.message =

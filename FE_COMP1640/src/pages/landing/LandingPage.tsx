@@ -1,13 +1,25 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { PATHS } from "../../constants/path";
-import Header from "./components/Header";
+import React, { useEffect } from "react";
+import HeroSection from "./components/HeroSection";
+import VerticalContributionList from "./components/VerticalContributionList";
+import HorizontalContributionList from "./components/HorizonContributionList";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { getAllContributions } from "../../redux/slices/contributionSlice";
 
 const LandingPage = () => {
+   const { list } = useSelector((state: RootState) => state.contribution);
+   const dispatch = useDispatch<AppDispatch>();
+
+   useEffect(() => {
+      dispatch(getAllContributions("status=published"));
+   }, [dispatch]);
+
    return (
-      <div className="w-screen min-h-screen bg-slate-100">
-         <Header />
-      </div>
+      <>
+         <HeroSection />
+         <VerticalContributionList category="Business" data={list} />
+         {/* <HorizontalContributionList /> */}
+      </>
    );
 };
 

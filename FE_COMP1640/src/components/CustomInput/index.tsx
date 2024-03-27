@@ -38,7 +38,7 @@ const Input = ({
          <div className={clsx("mb-3", style?.toString())}>
             <label
                htmlFor={id}
-               className="mr-1 text-gray-800 text-sm font-normal"
+               className="mr-1 text-gray-700 text-base font-normal"
             >
                {label}
             </label>
@@ -54,7 +54,9 @@ const Input = ({
                {...(register && register(id, { required }))}
                className={clsx(
                   "mt-1 p-2 w-full border rounded outline-gray-700",
-                  errors?.[id] && "border-rose-500 outline-rose-500 ring-0",
+                  errors?.[id]
+                     ? "border-rose-500 outline-rose-500 ring-0"
+                     : "border-gray-400",
                )}
             />
 

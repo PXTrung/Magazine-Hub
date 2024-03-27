@@ -27,7 +27,9 @@ const LoginForm = () => {
 
    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
       try {
-         await dispatch(login(data));
+         await dispatch(
+            login({ password: data?.password, email: data?.email }),
+         );
       } catch (error: any) {
          console.log(error.message);
       }
@@ -73,7 +75,7 @@ const LoginForm = () => {
 
                <button
                   type="submit"
-                  className="bg-blue-500 text-white p-2 rounded w-full"
+                  className="bg-blue-600 text-white p-2 rounded w-full"
                >
                   Log in
                </button>

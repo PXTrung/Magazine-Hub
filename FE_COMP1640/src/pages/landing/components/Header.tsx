@@ -13,10 +13,10 @@ const Header = () => {
       (state: RootState) => state.userLogin,
    );
    return (
-      <div className="w-full bg-white shadow-lg flex flex-row justify-center items-center">
+      <div className="w-full absolute top-0 left-0 bg-white shadow-2xl flex flex-row justify-center items-center z-30">
          <div
             className={`h-16 lg:h-24 w-full md:w-full lg:w-[960px] xl:w-[1200px] flex flex-row justify-between items-center 
-                        px-4 md:px-10 `}
+                        px-4 md:px-10 lg:p-0`}
          >
             <div className="lg:hidden">
                <svg
@@ -38,7 +38,7 @@ const Header = () => {
                <Searchbar />
             </div>
             <div className="w-1/4 flex justify-center">
-               <span className="text-xl font-semibold">LOGO</span>
+               <span className="text-3xl font-bold">LOGO</span>
             </div>
 
             <div className="lg:hidden">
@@ -63,11 +63,7 @@ const Header = () => {
                ) : (
                   <div className="flex ">
                      <Link to={`/auth/${PATHS.AUTH.REGISTER}`}>
-                        <Button
-                           label="Register"
-                           type={"secondary"}
-                           style="mr-2"
-                        />
+                        <Button label="Register" type={"border"} style="mr-2" />
                      </Link>
                      <Link to={`/auth/${PATHS.AUTH.LOGIN}`}>
                         <Button label="Login" type={"primary"} />

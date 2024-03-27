@@ -6,7 +6,7 @@ const Loading = () => {
    });
 
    return (
-      <div className="absolute z-50 w-full h-full top-0 left-0 flex justify-center items-center bg-black/5">
+      <div className="fixed z-50 h-screen min-w-[100vw] w-full top-0 left-0 flex justify-center items-center bg-black/25">
          <div
             className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-blue-500 motion-reduce:animate-[spin_1.5s_linear_infinite]"
             role="status"

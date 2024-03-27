@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
 import { jwtDecode } from "jwt-decode";
-import { IUserInformation } from "../../types/user.type";
+import { ILogin, IUserInformation } from "../../types/user.type";
 
 export const login = createAsyncThunk(
    "login",
-   async (data: object, { rejectWithValue }) => {
+   async (data: ILogin, { rejectWithValue }) => {
       try {
          const res = await api.user.loginToGetToken(data);
          return res.data;
@@ -35,7 +35,7 @@ const userLoginSlice = createSlice({
    name: "login",
    initialState,
    reducers: {
-      logout: () => {
+      destroy: () => {
          return initialState;
       },
    },
@@ -45,6 +45,7 @@ const userLoginSlice = createSlice({
       });
       builder.addCase(login.fulfilled, (state, action) => {
          const token = action.payload.data;
+         sessionStorage.setItem("currentUserToken", token);
          let userData: any = jwtDecode(token);
 
          state.isLoading = false;
@@ -79,5 +80,5 @@ const userLoginSlice = createSlice({
    },
 });
 
-export const { logout } = userLoginSlice.actions;
+export const { destroy } = userLoginSlice.actions;
 export default userLoginSlice.reducer;
