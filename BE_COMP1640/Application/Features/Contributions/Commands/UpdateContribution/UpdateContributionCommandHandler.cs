@@ -39,11 +39,16 @@ public class UpdateContributionCommandHandler : IRequestHandler<UpdateContributi
         var contributionEntity = await _context.Contributions
             .Include(c => c.Image)
             .Include(c => c.Document)
-            .FirstOrDefaultAsync(c => c.Id == request.Id && c.CreatedById == _currentUserProvider.GetCurrentUser().Id, cancellationToken);
-
-        _mapper.Map(request, contributionEntity);
+            .Include(c => c.Period)
+            .FirstOrDefaultAsync(c => c.Id == request.Id && c.CreatedById == currentUser.Id, cancellationToken);
 
         if (contributionEntity == null) return Error.NotFound("Contribution not found");
+
+
+        if (DateTime.UtcNow > contributionEntity.Period.SecondSubmissionDeadline)
+            return Error.Validation(description: "Second submission deadline has passed. You cannot update this contribution.");
+
+        _mapper.Map(request, contributionEntity);
 
 
         if (request.ImageFile != null) await _fileService.UpdateFileAsync(request.ImageFile, "Images", contributionEntity.Image);

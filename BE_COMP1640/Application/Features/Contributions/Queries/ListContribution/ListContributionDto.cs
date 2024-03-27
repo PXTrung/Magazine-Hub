@@ -18,6 +18,8 @@ public class ListContributionDto
 
     public Guid? FacultyId { get; set; }
 
+    public Guid? PeriodId { get; set; }
+
     public string CoverImageUrl { get; set; }
 
     public DateTimeOffset? CreatedAt { get; set; }

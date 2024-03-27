@@ -138,33 +138,56 @@ public static class SeedData
 
             await context.SaveChangesAsync();
         }
-        if (!context.Contributions.Any())
+        if (!context.Periods.Any())
         {
-            var newContributions = new List<Contribution>();
+            var periods = new List<Period>();
 
-            var contributors = await userManager.GetUsersInRoleAsync("Contributor");
-
-            foreach (var contributor in contributors)
+            // Seed 3 periods for the years 2024, 2025, and 2026
+            for (int year = 2024; year <= 2026; year++)
             {
-                for (int i = 0; i < 3; i++) // Repeat 3 times for each status
+                var period = new Period
                 {
-                    var contributionNumber = i + 1;
-                    foreach (ContributionStatus status in Enum.GetValues(typeof(ContributionStatus)))
-                    {
-                        var contribution = new Contribution
-                        {
-                            Title = $"Contribution {contributionNumber} by {contributor.FirstName}",
-                            Description = $"Description of Contribution {contributionNumber} by {contributor.FirstName}",
-                            Status = status,
-                            CreatedById = contributor.Id
-                        };
-                        newContributions.Add(contribution);
-                    }
-                }
+                    AcademicYear = year,
+                    FirstSubmissionDeadline = new DateTime(year, 6, 30), // Assuming the first submission deadline is June 30th of each year
+                    SecondSubmissionDeadline = new DateTime(year, 12, 31) // Assuming the second submission deadline is December 31st of each year
+                };
+
+                periods.Add(period);
             }
 
-            await context.Contributions.AddRangeAsync(newContributions);
+            context.Periods.AddRange(periods);
             await context.SaveChangesAsync();
+
+            // Seed contributions for each period
+            foreach (var period in periods)
+            {
+                var newContributions = new List<Contribution>();
+
+                var contributors = await userManager.GetUsersInRoleAsync("Contributor");
+
+                foreach (var contributor in contributors)
+                {
+                    for (int i = 0; i < 3; i++) // Repeat 3 times for each status
+                    {
+                        var contributionNumber = i + 1;
+                        foreach (ContributionStatus status in Enum.GetValues(typeof(ContributionStatus)))
+                        {
+                            var contribution = new Contribution
+                            {
+                                Title = $"Contribution {contributionNumber} by {contributor.FirstName}",
+                                Description = $"Description of Contribution {contributionNumber} by {contributor.FirstName}",
+                                Status = status,
+                                CreatedById = contributor.Id,
+                                PeriodId = period.Id
+                            };
+                            newContributions.Add(contribution);
+                        }
+                    }
+                }
+
+                context.Contributions.AddRange(newContributions);
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

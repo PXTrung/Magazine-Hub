@@ -17,5 +17,7 @@ public record CreateContributionCommand : IRequest<ErrorOr<SuccessResult>>
 
     public IFormFile DocumentFile { get; set; }
 
+    public Guid PeriodId { get; set; }
+
 
 }
