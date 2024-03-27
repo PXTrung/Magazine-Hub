@@ -8,6 +8,8 @@ public class ListContributionDto
 
     public string Title { get; set; }
 
+    public string Description { get; set; }
+
     public ContributionStatus Status { get; set; }
 
     public string CreatedByEmail { get; set; }
