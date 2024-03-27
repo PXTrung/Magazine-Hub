@@ -172,13 +172,27 @@ public static class SeedData
                         var contributionNumber = i + 1;
                         foreach (ContributionStatus status in Enum.GetValues(typeof(ContributionStatus)))
                         {
+                            //seed Document
+                            var document = new Media
+                            {
+                                UrlFilePath = "https://www.w3.org/Protocols/HTTP/1.1/rfc2616.pdf"
+                            };
+
+                            //seed Image
+                            var image = new Media
+                            {
+                                UrlFilePath = "https://dictionary.cambridge.org/vi/images/full/magazi_noun_002_22002.jpg?version=5.0.389"
+                            };
+
                             var contribution = new Contribution
                             {
                                 Title = $"Contribution {contributionNumber} by {contributor.FirstName}",
                                 Description = $"Description of Contribution {contributionNumber} by {contributor.FirstName}",
                                 Status = status,
                                 CreatedById = contributor.Id,
-                                PeriodId = period.Id
+                                PeriodId = period.Id,
+                                Image = image,
+                                Document = document
                             };
                             newContributions.Add(contribution);
                         }
