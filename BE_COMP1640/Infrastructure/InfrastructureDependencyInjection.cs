@@ -145,7 +145,7 @@ public static class InfrastructureDependencyInjection
         services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ILinkGenerator, LinkGenerator>();
-        services.AddScoped<IFileManager, FileManager.FileManager>();
+        services.AddScoped<IFileService, FileService.FileService>();
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
     }
 

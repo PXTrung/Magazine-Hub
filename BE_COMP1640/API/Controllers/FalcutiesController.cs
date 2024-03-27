@@ -7,53 +7,52 @@ using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
 using Sieve.Services;
 
-namespace API.Controllers
+namespace API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class FalcutiesController : ApiController
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class FalcutiesController : ApiController
+    private readonly ISender _sender;
+    private readonly ISieveProcessor _sieveProcessor;
+
+    public FalcutiesController(ISender sender, ISieveProcessor sieveProcessor)
     {
-        private readonly ISender _sender;
-        private readonly ISieveProcessor _sieveProcessor;
-
-        public FalcutiesController(ISender sender, ISieveProcessor sieveProcessor)
-        {
-            _sender = sender;
-            _sieveProcessor = sieveProcessor;
-        }
-
-
-        /// <summary>
-        ///     Create a new Faculty
-        /// </summary>
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateFaculty([FromBody] CreateFacultyCommand request)
-        {
-            var result = await _sender.Send(request);
-
-            return result.Match(
-                value => StatusCode(201, value),
-                Problem);
-        }
-
-        /// <summary>
-        ///    Get list of Faculties
-        /// </summary>
-        [HttpGet]
-        public async Task<IActionResult> ListFaculties([FromQuery] SieveModel sieveModel)
-        {
-            var result = await _sender.Send(new ListFacultyQuery());
-
-
-            if (result.IsError)
-            {
-                return Problem(result.Errors);
-            }
-
-
-            return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel));
-        }
-
+        _sender = sender;
+        _sieveProcessor = sieveProcessor;
     }
+
+
+    /// <summary>
+    ///     Create a new Faculty
+    /// </summary>
+    [HttpPost]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> CreateFaculty([FromBody] CreateFacultyCommand request)
+    {
+        var result = await _sender.Send(request);
+
+        return result.Match(
+            value => StatusCode(201, value),
+            Problem);
+    }
+
+    /// <summary>
+    ///    Get list of Faculties
+    /// </summary>
+    [HttpGet]
+    public async Task<IActionResult> ListFaculties([FromQuery] SieveModel sieveModel)
+    {
+        var result = await _sender.Send(new ListFacultyQuery());
+
+
+        if (result.IsError)
+        {
+            return Problem(result.Errors);
+        }
+
+
+        return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel));
+    }
+
 }

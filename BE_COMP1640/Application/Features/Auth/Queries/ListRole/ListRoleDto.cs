@@ -1,9 +1,8 @@
-﻿namespace Application.Features.Auth.Queries.ListRole
-{
-    public class ListRoleDto
-    {
-        public Guid Id { get; set; }
+﻿namespace Application.Features.Auth.Queries.ListRole;
 
-        public string Name { get; set; }
-    }
+public class ListRoleDto
+{
+    public Guid Id { get; set; }
+
+    public string Name { get; set; }
 }

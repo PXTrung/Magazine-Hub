@@ -1,50 +1,76 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using AutoMapper;
+using Domain.Enums;
 using ErrorOr;
+using Hangfire;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Features.Contributions.Commands.UpdateContribution
+namespace Application.Features.Contributions.Commands.UpdateContribution;
+
+public class UpdateContributionCommandHandler : IRequestHandler<UpdateContributionCommand, ErrorOr<SuccessResult>>
 {
-    public class UpdateContributionCommandHandler : IRequestHandler<UpdateContributionCommand, ErrorOr<SuccessResult>>
+    private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
+    private readonly IFileService _fileService;
+    private readonly ICurrentUserProvider _currentUserProvider;
+    private readonly IEmailService _emailService;
+
+    public UpdateContributionCommandHandler(IApplicationDbContext context,
+        IMapper mapper,
+        IFileService fileService,
+        ICurrentUserProvider currentUserProvider,
+        IEmailService emailService)
     {
-        private readonly IApplicationDbContext _context;
-        private readonly IMapper _mapper;
-        private readonly IFileManager _fileManager;
-        private readonly ICurrentUserProvider _currentUserProvider;
+        _context = context;
+        _mapper = mapper;
+        _fileService = fileService;
+        _currentUserProvider = currentUserProvider;
+        _emailService = emailService;
+    }
 
-        public UpdateContributionCommandHandler(IApplicationDbContext context,
-            IMapper mapper,
-            IFileManager fileManager,
-            ICurrentUserProvider currentUserProvider)
+    public async Task<ErrorOr<SuccessResult>> Handle(UpdateContributionCommand request, CancellationToken cancellationToken)
+    {
+        var currentUser = _currentUserProvider.GetCurrentUser();
+
+        if (currentUser == null) return Error.Unauthorized(description: "You are not authorized to this resource");
+
+        var contributionEntity = await _context.Contributions
+            .Include(c => c.Image)
+            .Include(c => c.Document)
+            .FirstOrDefaultAsync(c => c.Id == request.Id && c.CreatedById == _currentUserProvider.GetCurrentUser().Id, cancellationToken);
+
+        _mapper.Map(request, contributionEntity);
+
+        if (contributionEntity == null) return Error.NotFound("Contribution not found");
+
+
+        if (request.ImageFile != null) await _fileService.UpdateFileAsync(request.ImageFile, "Images", contributionEntity.Image);
+
+        if (request.DocumentFile != null) await _fileService.UpdateFileAsync(request.DocumentFile, "Documents", contributionEntity.Document);
+
+        if (contributionEntity.Status == ContributionStatus.Processed)
         {
-            _context = context;
-            _mapper = mapper;
-            _fileManager = fileManager;
-            _currentUserProvider = currentUserProvider;
+            contributionEntity.Status = ContributionStatus.Processing;
         }
 
-        public async Task<ErrorOr<SuccessResult>> Handle(UpdateContributionCommand request, CancellationToken cancellationToken)
+        await _context.SaveChangesAsync(cancellationToken);
+
+        var coordinatorsToSendEmail = await _context.Users
+            .Include(u => u.Roles)
+            .Where(u => u.FacultyId == currentUser.FacultyId && u.Roles.Any(r => r.NormalizedName == "COORDINATOR"))
+            .ToListAsync(cancellationToken);
+
+        foreach (var coordinator in coordinatorsToSendEmail)
         {
-
-            var contributionEntity = await _context.Contributions
-                .Include(c => c.Image)
-                .Include(c => c.Document)
-                .FirstOrDefaultAsync(c => c.Id == request.Id && c.CreatedById == _currentUserProvider.GetCurrentUser().Id, cancellationToken);
-
-            _mapper.Map(request, contributionEntity);
-
-            if (contributionEntity == null) return Error.NotFound("Contribution not found");
-
-
-            if (request.ImageFile != null) await _fileManager.UpdateFileAsync(request.ImageFile, "Images", contributionEntity.Image);
-
-            if (request.DocumentFile != null) await _fileManager.UpdateFileAsync(request.DocumentFile, "Documents", contributionEntity.Document);
-
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return new SuccessResult(title: "Updated contribution successfully!");
+            BackgroundJob.Enqueue(() => _emailService.SendEmailAsync(coordinator.Email,
+                "Contribution has been UPDATED",
+                $"Hi {coordinator.FirstName} {coordinator.LastName}" +
+                $"<p>A contribution belong to your faculty has been <strong>UPDATED<strong/> by <strong>{currentUser.Email}</strong> with the title: <strong>{contributionEntity.Title}</strong>. Please review and give new feedbacks</p>"));
         }
+
+
+        return new SuccessResult(title: "Updated contribution successfully!");
     }
 }

@@ -6,8 +6,6 @@ public class Faculty : AuditableBaseEntity
 {
     public string Name { get; set; }
 
-    public ICollection<Contribution> Contributions { get; set; }
-
     public ICollection<ApplicationUser> Members { get; set; }
 
 }

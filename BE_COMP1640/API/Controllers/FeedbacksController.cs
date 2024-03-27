@@ -7,52 +7,51 @@ using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
 using Sieve.Services;
 
-namespace API.Controllers
+namespace API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class FeedbacksController : ApiController
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class FeedbacksController : ApiController
+    private readonly ISender _sender;
+    private readonly ISieveProcessor _sieveProcessor;
+
+    public FeedbacksController(ISender sender, ISieveProcessor sieveProcessor)
     {
-        private readonly ISender _sender;
-        private readonly ISieveProcessor _sieveProcessor;
+        _sender = sender;
+        _sieveProcessor = sieveProcessor;
+    }
 
-        public FeedbacksController(ISender sender, ISieveProcessor sieveProcessor)
+    /// <summary>
+    ///  [Coordinator] Create a new Feedback for a contribution
+    /// </summary>
+    [HttpPost]
+    [Authorize(Roles = "Coordinator")]
+    public async Task<IActionResult> CreateFeedback([FromBody] CreateFeedbackCommand request)
+    {
+        var result = await _sender.Send(request);
+
+        return result.Match(
+            value => StatusCode(201, value),
+            Problem);
+    }
+
+    /// <summary>
+    ///  [Coordinator, Contributor] Get a list of feedbacks
+    /// </summary>
+    [HttpGet]
+    [Authorize(Roles = "Contributor, Coordinator")]
+    public async Task<IActionResult> ListFeedback([FromQuery] SieveModel sieveModel)
+    {
+        var result = await _sender.Send(new ListFeedbackQuery());
+
+
+        if (result.IsError)
         {
-            _sender = sender;
-            _sieveProcessor = sieveProcessor;
+            return Problem(result.Errors);
         }
 
-        /// <summary>
-        ///  [Coordinator] Create a new Period
-        /// </summary>
-        [HttpPost]
-        [Authorize(Roles = "Coordinator")]
-        public async Task<IActionResult> CreateFeedback([FromBody] CreateFeedbackCommand request)
-        {
-            var result = await _sender.Send(request);
 
-            return result.Match(
-                value => StatusCode(201, value),
-                Problem);
-        }
-
-        /// <summary>
-        ///  [Coordinator, Contributor] Get a list of feedbacks
-        /// </summary>
-        [HttpGet]
-        [Authorize(Roles = "Contributor, Coordinator")]
-        public async Task<IActionResult> ListFeedback([FromQuery] SieveModel sieveModel)
-        {
-            var result = await _sender.Send(new ListFeedbackQuery());
-
-
-            if (result.IsError)
-            {
-                return Problem(result.Errors);
-            }
-
-
-            return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel));
-        }
+        return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel));
     }
 }

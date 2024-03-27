@@ -3,7 +3,9 @@ using Application.Features.Auth.Commands.AssignRole;
 using Application.Features.Auth.Commands.ConfirmEmail;
 using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.Register;
+using Application.Features.Auth.Commands.ResetPassword;
 using Application.Features.Auth.Commands.UpdateProfile;
+using Application.Features.Auth.Queries.GetResetPasswordOTP;
 using Application.Features.Auth.Queries.ListRole;
 using Application.Features.Auth.Queries.ListUser;
 using MediatR;
@@ -63,7 +65,7 @@ public class AuthController : ApiController
     [HttpPut]
     [Route("UpdateProfile")]
     [Authorize]
-    public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileCommand command)
+    public async Task<IActionResult> UpdateProfile([FromForm] UpdateProfileCommand command)
     {
         var result = await _sender.Send(command);
 
@@ -77,7 +79,7 @@ public class AuthController : ApiController
     /// </summary>
     [HttpGet]
     [Route("ConfirmEmail")]
-    public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailCommand command)
+    public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailCommand command)
     {
 
         var result = await _sender.Send(command);
@@ -86,6 +88,38 @@ public class AuthController : ApiController
             value => base.Ok("Confirmed email successfully, now you can login"),
             Problem);
     }
+
+    /// <summary>
+    ///    Send Reset password OTP via Email
+    /// </summary>
+    [HttpPost]
+    [Route("SendResetPasswordOTP")]
+    public async Task<IActionResult> SendResetPasswordOTP([FromBody] GetResetPasswordOTPQuery request)
+    {
+
+        var result = await _sender.Send(request);
+
+        return result.Match(
+            value => base.Ok(value),
+            Problem);
+    }
+
+    /// <summary>
+    ///    Using sent OTP with new password to set a new password
+    /// </summary>
+    [HttpPost]
+    [Route("ResetPassword")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand request)
+    {
+
+        var result = await _sender.Send(request);
+
+        return result.Match(
+            value => base.Ok(value),
+            Problem);
+    }
+
+
 
     /// <summary>
     ///    List all users in the system

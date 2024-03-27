@@ -1,41 +1,63 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
-using Domain.Entities;
+using AutoMapper;
 using ErrorOr;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
-namespace Application.Features.Auth.Commands.UpdateProfile
+namespace Application.Features.Auth.Commands.UpdateProfile;
+
+public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand, ErrorOr<SuccessResult>>
 {
-    public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand, ErrorOr<SuccessResult>>
+    private readonly ICurrentUserProvider _currentUserProvider;
+    private readonly IApplicationDbContext _context;
+    private readonly IFileService _fileService;
+    private readonly IMapper _mapper;
+
+    public UpdateProfileCommandHandler(ICurrentUserProvider currentUserProvider,
+        IApplicationDbContext context,
+        IFileService fileService,
+        IMapper mapper)
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ICurrentUserProvider _currentUserProvider;
+        _currentUserProvider = currentUserProvider;
+        _context = context;
+        _fileService = fileService;
+        _mapper = mapper;
+    }
 
-        public UpdateProfileCommandHandler(UserManager<ApplicationUser> userManager,
-            ICurrentUserProvider currentUserProvider)
+    public async Task<ErrorOr<SuccessResult>> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
+    {
+        var currentUser = _currentUserProvider.GetCurrentUser();
+        //check if current user is null
+        if (currentUser == null) return Error.Unauthorized(description: "You must login first");
+
+        var userEntity = await _context.Users
+            .Include(u => u.Avatar)
+            .FirstOrDefaultAsync(c => c.Id == currentUser.Id, cancellationToken);
+
+        if (userEntity == null) return Error.Unauthorized(description: "User not found");
+
+        _mapper.Map(request, userEntity);
+
+        if (request.AvatarFile != null)
         {
-            _userManager = userManager;
-            _currentUserProvider = currentUserProvider;
+            if (userEntity.AvatarId == null)
+            {
+                var avatar = await _fileService.SaveFileAsync(request.AvatarFile, "Avatars");
+
+                await _context.Media.AddAsync(avatar, cancellationToken);
+
+                userEntity.AvatarId = avatar.Id;
+            }
+            else
+            {
+                await _fileService.UpdateFileAsync(request.AvatarFile, "Avatars", userEntity.Avatar);
+            }
         }
 
-        public async Task<ErrorOr<SuccessResult>> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
-        {
-            var currentUser = _currentUserProvider.GetCurrentUser();
-            //check if current user is null
-            var user = await _userManager.FindByIdAsync(currentUser.Id.ToString());
+        await _context.SaveChangesAsync(cancellationToken);
 
-            if (user == null) return Error.Unauthorized(description: "User not found");
 
-            user.FirstName = request.FirstName;
-
-            user.LastName = request.LastName;
-
-            var result = await _userManager.UpdateAsync(user);
-
-            if (!result.Succeeded) return Error.Unexpected(description: "Updated profile failed, please retry");
-
-            return new SuccessResult(title: "Updated profile successfully!");
-        }
+        return new SuccessResult(title: "Updated profile successfully!");
     }
 }

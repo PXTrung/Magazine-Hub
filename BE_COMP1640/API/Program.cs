@@ -63,6 +63,12 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/MediaFiles/Documents"
 });
 
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "MediaFiles", "Avatars")),
+    RequestPath = "/MediaFiles/Avatars"
+});
+
 app.UseStaticFiles();
 app.UseCors();
 app.MapControllers();

@@ -1,7 +1,6 @@
-﻿namespace Application.Common.Interfaces
+﻿namespace Application.Common.Interfaces;
+
+public interface IEmailService
 {
-    public interface IEmailService
-    {
-        Task SendEmailAsync(string toEmailAddress, string subject, string message);
-    }
+    Task SendEmailAsync(string toEmailAddress, string subject, string message);
 }
