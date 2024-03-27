@@ -23,6 +23,10 @@ public class CreateContributionCommandValidator : AbstractValidator<CreateContri
             .NotEmpty().WithMessage("Document file is required.")
             .Must(BeAValidDocumentFile).WithMessage("Unsupported document file extension. Support extensions: .doc, .docx, .pdf")
             .Must(BeUnder20Mb).WithMessage("Document file size should be less than 10MB.");
+
+        RuleFor(x => x.PeriodId)
+            .NotEmpty().WithMessage("PeriodId is required");
+
     }
 
     private bool BeAValidImageFile(IFormFile? file)

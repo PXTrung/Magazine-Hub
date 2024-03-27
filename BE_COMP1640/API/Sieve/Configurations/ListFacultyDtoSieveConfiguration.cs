@@ -19,9 +19,6 @@ public class ListFacultyDtoSieveConfiguration : ISieveConfiguration
             .CanFilter()
             .CanSort();
 
-        mapper.Property<ListFacultyDto>(c => c.CreatedByEmail)
-            .CanFilter()
-            .CanSort();
 
 
     }

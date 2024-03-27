@@ -2,7 +2,7 @@
 
 namespace Domain.Entities;
 
-public class Media : AuditableBaseEntity
+public class Media : BaseEntity
 {
 
     public string? FileName { get; set; }

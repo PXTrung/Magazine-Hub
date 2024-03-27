@@ -40,16 +40,28 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
     {
         if (context == null) return;
 
-        foreach (var entry in context.ChangeTracker.Entries<AuditableBaseEntity>())
+        foreach (var entry in context.ChangeTracker.Entries<BaseEntity>())
         {
             if (entry.State is EntityState.Added or EntityState.Modified || entry.HasChangedOwnedEntities())
             {
                 var utcNow = _dateTime.GetUtcNow();
                 if (entry.State == EntityState.Added)
                 {
-                    entry.Entity.CreatedById ??= CurrentUser?.Id;
-                    entry.Entity.CreatedAt = utcNow;
+                    var createdByIdProperty = entry.Entity.GetType().GetProperty("CreatedById");
+                    if (createdByIdProperty != null)
+                    {
+                        // Lấy giá trị của thuộc tính "CreatedById"
+                        var createdByIdValue = createdByIdProperty.GetValue(entry.Entity);
+
+                        // Nếu giá trị là null hoặc một giá trị mặc định, gán giá trị mới
+                        if (createdByIdValue == null || createdByIdValue.Equals(default(Guid)))
+                        {
+                            // Gán giá trị mới từ CurrentUser?.Id
+                            createdByIdProperty.SetValue(entry.Entity, CurrentUser?.Id);
+                        }
+                    }
                 }
+                entry.Entity.CreatedAt = utcNow;
                 entry.Entity.LastModifiedAt = utcNow;
             }
         }

@@ -23,6 +23,10 @@ public class ListContributionDtoSieveConfiguration : ISieveConfiguration
             .CanFilter()
             .CanSort();
 
+        mapper.Property<ListContributionDto>(c => c.PeriodId)
+            .CanFilter()
+            .CanSort();
+
         mapper.Property<ListContributionDto>(c => c.CreatedByEmail)
             .CanFilter()
             .CanSort();

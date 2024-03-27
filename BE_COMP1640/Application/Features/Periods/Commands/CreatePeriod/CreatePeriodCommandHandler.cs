@@ -4,6 +4,7 @@ using AutoMapper;
 using Domain.Entities;
 using ErrorOr;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Periods.Commands.CreatePeriod;
 
@@ -21,6 +22,11 @@ public class CreatePeriodCommandHandler : IRequestHandler<CreatePeriodCommand, E
 
     public async Task<ErrorOr<SuccessResult>> Handle(CreatePeriodCommand request, CancellationToken cancellationToken)
     {
+        var isAcademicYearExisted =
+            await _context.Periods.AnyAsync(p => p.AcademicYear == request.AcademicYear, cancellationToken);
+
+        if (isAcademicYearExisted) return Error.Conflict(description: "Academic year existed, please set period for another academic year");
+
         var periodEntity = _mapper.Map<Period>(request);
 
         await _context.Periods.AddAsync(periodEntity, cancellationToken);

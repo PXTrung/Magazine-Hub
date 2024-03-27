@@ -34,6 +34,13 @@ public class CreateContributionCommandHandler : IRequestHandler<CreateContributi
 
     public async Task<ErrorOr<SuccessResult>> Handle(CreateContributionCommand request, CancellationToken cancellationToken)
     {
+        var period = await _context.Periods.FirstOrDefaultAsync(p => p.Id == request.PeriodId, cancellationToken);
+
+        if (period == null) return Error.NotFound(description: "Period with the given Id not found");
+
+        if (DateTime.UtcNow > period.FirstSubmissionDeadline)
+            return Error.Validation(description: "First submission deadline of this period has passed. You cannot submit a mre contribution");
+
         //Mapping and make status as Submitted
         var contributionEntity = _mapper.Map<Contribution>(request);
         contributionEntity.Status = ContributionStatus.Processing;
