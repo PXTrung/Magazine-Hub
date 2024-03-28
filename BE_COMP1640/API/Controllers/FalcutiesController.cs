@@ -15,11 +15,13 @@ public class FalcutiesController : ApiController
 {
     private readonly ISender _sender;
     private readonly ISieveProcessor _sieveProcessor;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public FalcutiesController(ISender sender, ISieveProcessor sieveProcessor)
+    public FalcutiesController(ISender sender, ISieveProcessor sieveProcessor, IHttpContextAccessor httpContextAccessor)
     {
         _sender = sender;
         _sieveProcessor = sieveProcessor;
+        _httpContextAccessor = httpContextAccessor;
     }
 
 
@@ -52,7 +54,7 @@ public class FalcutiesController : ApiController
         }
 
 
-        return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel));
+        return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel, _httpContextAccessor));
     }
 
 }

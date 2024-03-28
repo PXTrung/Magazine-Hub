@@ -15,11 +15,14 @@ public class FeedbacksController : ApiController
 {
     private readonly ISender _sender;
     private readonly ISieveProcessor _sieveProcessor;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public FeedbacksController(ISender sender, ISieveProcessor sieveProcessor)
+    public FeedbacksController(ISender sender, ISieveProcessor sieveProcessor,
+        IHttpContextAccessor httpContextAccessor)
     {
         _sender = sender;
         _sieveProcessor = sieveProcessor;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     /// <summary>
@@ -52,6 +55,6 @@ public class FeedbacksController : ApiController
         }
 
 
-        return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel));
+        return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel, _httpContextAccessor));
     }
 }

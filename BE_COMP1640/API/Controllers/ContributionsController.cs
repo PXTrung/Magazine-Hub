@@ -23,12 +23,16 @@ public class ContributionsController : ApiController
     private readonly ISender _sender;
     private readonly ISieveProcessor _sieveProcessor;
     private readonly ICurrentUserProvider _currentUserProvider;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public ContributionsController(ISender sender, ISieveProcessor sieveProcessor, ICurrentUserProvider currentUserProvider)
+    public ContributionsController(ISender sender, ISieveProcessor sieveProcessor,
+        ICurrentUserProvider currentUserProvider,
+        IHttpContextAccessor httpContextAccessor)
     {
         _sender = sender;
         _sieveProcessor = sieveProcessor;
         _currentUserProvider = currentUserProvider;
+        _httpContextAccessor = httpContextAccessor;
     }
 
 
@@ -79,7 +83,7 @@ public class ContributionsController : ApiController
         }
 
 
-        return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel));
+        return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel, _httpContextAccessor));
     }
 
 

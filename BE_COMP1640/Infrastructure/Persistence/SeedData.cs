@@ -156,7 +156,6 @@ public static class SeedData
             }
 
             context.Periods.AddRange(periods);
-            await context.SaveChangesAsync();
 
             // Seed contributions for each period
             foreach (var period in periods)
@@ -186,8 +185,8 @@ public static class SeedData
 
                             var contribution = new Contribution
                             {
-                                Title = $"Contribution {contributionNumber} by {contributor.FirstName}",
-                                Description = $"Description of Contribution {contributionNumber} by {contributor.FirstName}",
+                                Title = $"Contribution {contributionNumber} by {contributor.FirstName} in {period.AcademicYear}",
+                                Description = $"Description of Contribution {contributionNumber} by {contributor.FirstName} in {period.AcademicYear}",
                                 Status = status,
                                 CreatedById = contributor.Id,
                                 PeriodId = period.Id,

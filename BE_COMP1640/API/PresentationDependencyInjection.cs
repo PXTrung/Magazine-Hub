@@ -15,6 +15,7 @@ public static class DependencyInjection
     public static IServiceCollection AddPresentation(this IServiceCollection services, IConfiguration configuration)
     {
         //Adding Sieve
+        services.AddHttpContextAccessor();
         services.Configure<SieveOptions>(configuration.GetSection("Sieve"));
         services.AddScoped<ISieveProcessor, ApplicationSieveProcessor>();
 
