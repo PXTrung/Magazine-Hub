@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { PATHS } from "../../constants/path";
 import { IContributionData } from "../../types/contribution.type";
+import clsx from "clsx";
 
 interface IContributionProps {
    type: "vertical" | "horizontal";
@@ -11,33 +12,69 @@ const Contribution = (data: IContributionProps) => {
    return (
       <Link
          to={`/${PATHS.CONTRIBUTION.IDENTITY}/${data.contribution.id}`}
-         className="w-fit mb-2 md:mb-3 lg:mb-0"
+         className="w-full"
       >
-         <div className="w-full h-40 md:h-48 lg:h-40 bg-white shadow border rounded grid grid-cols-3 overflow-hidden hover:cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-300">
+         <div
+            className={clsx(
+               data.type === "horizontal" &&
+                  "w-full h-40 md:h-48 lg:h-40 bg-white shadow border rounded grid grid-cols-3 overflow-hidden hover:cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-300",
+               data.type === "vertical" &&
+                  "md:w-full flex flex-col justify-center items-center rounded-lg overflow-hidden bg-white shadow-md hover:cursor-pointer hover:shadow-lg transition-all duration-200",
+            )}
+         >
             <img
                src={
-                  data?.contribution?.coverImageUrl ||
+                  data.contribution.coverImageUrl ||
                   "https://th.bing.com/th/id/R.e7b98af026b39429f7b0e71a1f728ee7?rik=0WQqQyiogQB1LQ&pid=ImgRaw&r=0"
                }
                alt=""
-               className="h-full object-cover col-span-1"
+               className={clsx(
+                  data.type === "horizontal" &&
+                     "h-40 md:h-48 lg:h-40 object-cover col-span-1",
+
+                  data.type === "vertical" && "object-cover w-full h-[180px]",
+               )}
             />
-            <div className="h-full flex-1 p-5 col-span-2">
-               <div className="flex flex-col w-full mb-6">
-                  <h3 className="text-lg text-gray-900 font-semibold mb-2 line-clamp-1">
-                     {data.contribution.title}
-                  </h3>
-                  <span className="w-full text-sm text-gray-700 line-clamp-2">
-                     {data.contribution.description ||
-                        `Lorem ipsum dolor sit
+            <div
+               className={clsx(
+                  data.type === "horizontal" &&
+                     "h-full flex-1 p-5 col-span-2 flex flex-col",
+                  data.type === "vertical" &&
+                     "flex flex-col object-cover w-full h-[180px] p-6",
+               )}
+            >
+               <h3
+                  className={clsx(
+                     data.type === "horizontal" &&
+                        "text-lg text-gray-900 font-semibold mb-2 line-clamp-1",
+
+                     data.type === "vertical" &&
+                        "text-lg text-gray-900 font-semibold mb-2 truncate",
+                  )}
+               >
+                  {data.contribution.title}
+               </h3>
+               <span
+                  className={clsx(
+                     data.type === "horizontal" &&
+                        "w-full flex-1 text-sm text-gray-700 line-clamp-2",
+
+                     data.type === "vertical" &&
+                        "w-full flex-1 text-sm text-gray-700 line-clamp-3",
+                  )}
+               >
+                  {data.contribution.description ||
+                     `Lorem ipsum dolor sit
                      amet consectetur adipisicing elit. Officia ducimus iste,
                      inventore, necessitatibus earum nihil saepe amet facere in
                      odio eos minima mollitia voluptate modi debitis! Qui
                      deserunt quis impedit?`}
-                  </span>
-               </div>
-
-               <span className="w-full text-left text-sm font-medium text-blue-600 hover:cursor-pointer">
+               </span>
+               <span
+                  className={clsx(
+                     "w-full text-left text-sm font-medium text-blue-600 hover:cursor-pointer",
+                  )}
+               >
                   Read more
                </span>
             </div>

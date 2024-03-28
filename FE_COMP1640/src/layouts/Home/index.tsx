@@ -13,12 +13,14 @@ const Home = () => {
    });
 
    return (
-      <div className="relative w-screen pr-[5px] min-h-screen bg-gray-100 flex flex-col justify-start items-center">
+      <div className="relative w-screen pr-[5px] min-h-screen bg-white md:bg-gray-100 flex flex-col justify-start items-center">
          <Header />
-         <Suspense>
-            <Outlet />
-         </Suspense>
-         <Footer />
+         <div className="w-full mt-16 lg:mt-24 mb-10 lg:mb-16 px-4 md:px-10 lg:p-0 lg:w-[960px] xl:w-[1200px]">
+            <Suspense>
+               <Outlet />
+            </Suspense>
+            <Footer />
+         </div>
       </div>
    );
 };

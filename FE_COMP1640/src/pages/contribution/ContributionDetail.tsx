@@ -50,11 +50,11 @@ const ContributionDetail = () => {
             <Loading />
          ) : (
             <div
-               className="w-full h-full flex-1 mt-16 mb-10 lg:mt-32 lg:mb-16 lg:w-[960px] xl:w-[1200px]
-                           px-4 md:px-10 lg:p-0 pt-5 bg-white lg:bg-transparent lg:grid lg:grid-cols-3 lg:gap-5"
+               className="w-full h-full flex-1 pt-5 md:pt-10 my-5 md:my-0
+                         bg-white md:bg-transparent md:grid md:grid-cols-3 md:gap-5"
             >
-               <div className="flex flex-col justify-center items-center pb-8 lg:px-5 lg:col-span-2">
-                  <div className="w-full pt-2 lg:pt-0 md:pb-5 lg:pb-0 border-b">
+               <div className="flex flex-col justify-center items-center lg:px-5 md:col-span-2">
+                  <div className="w-full lg:pt-0 border-b">
                      <div className="w-full flex justify-between items-center text-gray-400 font-normal text-sm">
                         <span className="font-medium">
                            {detail?.createdByFullName || "Nguyen Van A"}
@@ -86,7 +86,7 @@ const ContributionDetail = () => {
                      />
                   </div>
                </div>
-               <div className="lg:col-span-1 bg-gray-300"></div>
+               <div className="md:col-span-1 bg-gray-300"></div>
             </div>
          )}
          {isError && <span>{message}</span>}

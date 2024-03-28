@@ -9,3 +9,12 @@ export interface IUserInformation {
    role: string;
    email: string;
 }
+
+export interface IRegister {
+   email: string;
+   facultyId: string;
+   password: string;
+   confirmPassword: string;
+   firstName: string;
+   lastName: string;
+}

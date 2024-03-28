@@ -16,7 +16,7 @@ interface ContributionState {
    isError: boolean;
    message: string;
    status: string;
-   list: IFaculty[];
+   faculty: IFaculty[];
 }
 
 const initialState: ContributionState = {
@@ -24,7 +24,7 @@ const initialState: ContributionState = {
    isError: false,
    message: "",
    status: "",
-   list: [],
+   faculty: [],
 };
 
 const facultySlice = createSlice({
@@ -38,7 +38,7 @@ const facultySlice = createSlice({
       builder.addCase(getFaculty.fulfilled, (state, action) => {
          state.isLoading = false;
          state.message = "";
-         state.list = action.payload.items;
+         state.faculty = action.payload.items;
       });
       builder.addCase(getFaculty.rejected, (state, action) => {
          state.isLoading = false;

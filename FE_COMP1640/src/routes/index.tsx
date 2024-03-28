@@ -1,6 +1,6 @@
 import { Suspense, lazy } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
-import { PATHS } from "../constants/path";
+import { PARAMETER, PATHS } from "../constants/path";
 import Loading from "../components/loading/Loading";
 import LandingPage from "../pages/landing/LandingPage";
 
@@ -13,6 +13,9 @@ const RegisterForm = lazy(
 const Home = lazy(() => import("../layouts/Home/index"));
 const ContributionDetail = lazy(
    () => import("../pages/contribution/ContributionDetail"),
+);
+const ContributionCategory = lazy(
+   () => import("../pages/contribution/ContributionCategory"),
 );
 
 type LoadComponentProps = {
@@ -56,8 +59,8 @@ const contributionRoute = {
          element: <LazyLoadingComponent component={ContributionDetail} />,
       },
       {
-         path: PATHS.CONTRIBUTION.CATEGORY,
-         element: <LazyLoadingComponent component={ContributionDetail} />,
+         path: `${PATHS.CONTRIBUTION.CATEGORY}/${PARAMETER.CATEGORY}`,
+         element: <LazyLoadingComponent component={ContributionCategory} />,
       },
    ],
 };
