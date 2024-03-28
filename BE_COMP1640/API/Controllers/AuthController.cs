@@ -22,11 +22,14 @@ public class AuthController : ApiController
 {
     private readonly ISender _sender;
     private readonly ISieveProcessor _sieveProcessor;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AuthController(ISender sender, ISieveProcessor sieveProcessor)
+    public AuthController(ISender sender, ISieveProcessor sieveProcessor,
+        IHttpContextAccessor httpContextAccessor)
     {
         _sender = sender;
         _sieveProcessor = sieveProcessor;
+        _httpContextAccessor = httpContextAccessor;
     }
 
 
@@ -138,7 +141,7 @@ public class AuthController : ApiController
         }
 
 
-        return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel));
+        return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel, _httpContextAccessor));
 
     }
 
@@ -156,7 +159,7 @@ public class AuthController : ApiController
             return Problem(result.Errors);
         }
 
-        return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel));
+        return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel, _httpContextAccessor));
     }
 
     /// <summary>
