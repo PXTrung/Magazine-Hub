@@ -17,11 +17,13 @@ public class PeriodsController : ApiController
 {
     private readonly ISender _sender;
     private readonly ISieveProcessor _sieveProcessor;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public PeriodsController(ISender sender, ISieveProcessor sieveProcessor)
+    public PeriodsController(ISender sender, ISieveProcessor sieveProcessor, IHttpContextAccessor httpContextAccessor)
     {
         _sender = sender;
         _sieveProcessor = sieveProcessor;
+        _httpContextAccessor = httpContextAccessor;
     }
 
 
@@ -74,7 +76,7 @@ public class PeriodsController : ApiController
         }
 
 
-        return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel));
+        return base.Ok(await result.Value.ToPaginatedListAsync(_sieveProcessor, sieveModel, _httpContextAccessor));
     }
 
 }

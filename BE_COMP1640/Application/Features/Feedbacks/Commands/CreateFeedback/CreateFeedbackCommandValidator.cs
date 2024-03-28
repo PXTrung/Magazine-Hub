@@ -8,6 +8,6 @@ public class CreateFeedbackCommandValidator : AbstractValidator<CreateFeedbackCo
     {
         RuleFor(x => x.Content)
             .NotEmpty().WithMessage("Content must be provided")
-            .MaximumLength(255).WithMessage("Content must not exceed 255 characters.");
+            .MaximumLength(1000).WithMessage("Content must not exceed 1000 characters.");
     }
 }

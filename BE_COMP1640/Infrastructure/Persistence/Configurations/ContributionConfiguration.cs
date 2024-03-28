@@ -10,11 +10,11 @@ public class ContributionConfiguration : IEntityTypeConfiguration<Contribution>
     {
 
         builder.Property(c => c.Title)
-            .HasMaxLength(100)
+            .HasMaxLength(255)
             .IsRequired();
 
         builder.Property(c => c.Description)
-            .HasMaxLength(500)
+            .HasMaxLength(1000)
             .IsRequired();
 
         builder.Property(c => c.Status)

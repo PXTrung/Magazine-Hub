@@ -9,7 +9,7 @@ public class FeedBackConfiguration : IEntityTypeConfiguration<Feedback>
     public void Configure(EntityTypeBuilder<Feedback> builder)
     {
         builder.Property(f => f.Content)
-            .HasMaxLength(500)
+            .HasMaxLength(1000)
             .IsRequired();
 
         builder.HasOne<ApplicationUser>(f => f.CreatedBy)
