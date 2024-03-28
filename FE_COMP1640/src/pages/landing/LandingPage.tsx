@@ -1,15 +1,26 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { PATHS } from "../../constants/path";
+import React, { useEffect } from "react";
+import HeroSection from "./components/HeroSection";
+import VerticalContributionList from "./components/VerticalContributionList";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { getAllContributions } from "../../redux/slices/contributionSlice";
+import { getFaculty } from "../../redux/slices/facultySlice";
+import ContributionList from "../contribution/components/ContributionList";
 
 const LandingPage = () => {
+   const { list } = useSelector((state: RootState) => state.contribution);
+   const dispatch = useDispatch<AppDispatch>();
+
+   useEffect(() => {
+      dispatch(getAllContributions("status=published"));
+      dispatch(getFaculty());
+   }, [dispatch]);
+
    return (
-      <div className="m-4">
-         <div>this is home page for guest</div>
-         <button className="w-36 rounded border p-2 mt-4 bg-blue-600 text-white">
-            <Link to={`/auth/${PATHS.AUTH.LOGIN}`}>click to Login</Link>
-         </button>
-      </div>
+      <>
+         <HeroSection />
+         <ContributionList category="Business" data={list} />
+      </>
    );
 };
 

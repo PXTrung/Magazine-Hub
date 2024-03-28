@@ -1,16 +1,26 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios";
-import { IUploadContribution } from "../../types/contribution.type";
 import { ENDPOINTS } from "../../constants/endpoint";
 
 export default {
-   contribute: (data: IUploadContribution) => {
-      console.log(typeof data.uploadData);
-
-      return axios.post(ENDPOINTS.CONTRIBUTION, data.uploadData, {
+   contribute: async (data: FormData) => {
+      return await axios.post(ENDPOINTS.CONTRIBUTION.ALL, data, {
          headers: {
-            Authorization: `Bearer ${data.token}`,
+            // Authorization: `Bearer ${data.token}`,
          },
       });
+   },
+   getContributionByStatus: (filter: string) => {
+      return axios.get(ENDPOINTS.CONTRIBUTION.FILTER, {
+         headers: {
+            Authorization: `Bearer ${sessionStorage.getItem(
+               "currentUserToken",
+            )}`,
+         },
+         params: { filter: filter },
+      });
+   },
+   getContributionById: async (id: string) => {
+      return await axios.get(`${ENDPOINTS.CONTRIBUTION.ALL}/${id}`);
    },
 };

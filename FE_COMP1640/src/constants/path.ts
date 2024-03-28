@@ -1,15 +1,24 @@
+const PARAMETER = {
+   ID: ":id",
+   CATEGORY: ":category",
+   CONTRIBUTION_FILTER: ":filter",
+   CONTRIBUTION_SLUG: "",
+};
+
 const PATHS = {
    HOME: {
-      IDENTITY: "",
+      IDENTITY: "home",
    },
    AUTH: {
-      IDENTIFY: "auth",
+      IDENTITY: "auth",
       LOGIN: "login",
       REGISTER: "register",
    },
    CONTRIBUTION: {
-      IDENTIFY: "contribution",
+      IDENTITY: "contribution",
+      DETAIL: `${PARAMETER.ID}`,
+      CATEGORY: `category/:falcuty`,
    },
 };
 
-export { PATHS };
+export { PATHS, PARAMETER };

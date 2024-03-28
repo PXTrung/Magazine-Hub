@@ -10,7 +10,10 @@ const LoginForm = lazy(() => import("../pages/auth/components/LoginForm"));
 const RegisterForm = lazy(
    () => import("../pages/auth/components/RegisterForm"),
 );
-const Contribution = lazy(() => import("../pages/contribution/Contribution"));
+const Home = lazy(() => import("../layouts/Home/index"));
+const ContributionDetail = lazy(
+   () => import("../pages/contribution/ContributionDetail"),
+);
 
 type LoadComponentProps = {
    component: React.LazyExoticComponent<() => JSX.Element>;
@@ -25,7 +28,7 @@ const LazyLoadingComponent = ({ component: Component }: LoadComponentProps) => {
 };
 
 const authRoute = {
-   path: PATHS.AUTH.IDENTIFY,
+   path: PATHS.AUTH.IDENTITY,
    element: <LazyLoadingComponent component={Authentication} />,
    children: [
       {
@@ -44,16 +47,38 @@ const authRoute = {
    ],
 };
 
+const contributionRoute = {
+   path: PATHS.CONTRIBUTION.IDENTITY,
+   element: <LazyLoadingComponent component={Home} />,
+   children: [
+      {
+         path: PATHS.CONTRIBUTION.DETAIL,
+         element: <LazyLoadingComponent component={ContributionDetail} />,
+      },
+      {
+         path: PATHS.CONTRIBUTION.CATEGORY,
+         element: <LazyLoadingComponent component={ContributionDetail} />,
+      },
+   ],
+};
+
 export default function AllRoutes() {
    return useRoutes([
       authRoute,
+      contributionRoute,
       {
-         path: "/",
-         element: <LandingPage />,
-      },
-      {
-         path: PATHS.CONTRIBUTION.IDENTIFY,
-         element: <LazyLoadingComponent component={Contribution} />,
+         path: "",
+         element: <LazyLoadingComponent component={Home} />,
+         children: [
+            {
+               path: "",
+               element: <Navigate to={`${PATHS.HOME.IDENTITY}`} replace />,
+            },
+            {
+               path: PATHS.HOME.IDENTITY,
+               element: <LandingPage />,
+            },
+         ],
       },
    ]);
 }

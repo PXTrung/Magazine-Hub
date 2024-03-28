@@ -6,7 +6,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../redux/store";
 import { contribute } from "../../../redux/slices/contributionSlice";
-import { IUploadContribution } from "../../../types/contribution.type";
 
 const schema = yup.object().shape({
    Title: yup.string().required("Title is required"),
@@ -34,7 +33,6 @@ const schema = yup.object().shape({
 });
 
 const UploadForm = () => {
-   const { userInfor } = useSelector((state: RootState) => state.userLogin);
    const dispatch = useDispatch<AppDispatch>();
    const {
       register,
@@ -52,12 +50,7 @@ const UploadForm = () => {
       formData.append("description", data?.Title);
       formData.append("documentFile", data?.DocumentFile[0]);
 
-      const contributionData: IUploadContribution = {
-         uploadData: formData,
-         token: userInfor?.token || "",
-      };
-
-      dispatch(contribute(contributionData));
+      dispatch(contribute(formData));
    };
 
    return (
