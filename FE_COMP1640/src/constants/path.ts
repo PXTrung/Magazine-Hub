@@ -1,7 +1,8 @@
 const PARAMETER = {
+   ID: ":id",
+   CATEGORY: ":category",
    CONTRIBUTION_FILTER: ":filter",
-   CONTRIBUTION_ID: ":id",
-   CONTRIBUTION_SLUG: ":slug",
+   CONTRIBUTION_SLUG: "",
 };
 
 const PATHS = {
@@ -9,13 +10,14 @@ const PATHS = {
       IDENTITY: "home",
    },
    AUTH: {
-      IDENTIFY: "auth",
+      IDENTITY: "auth",
       LOGIN: "login",
       REGISTER: "register",
    },
    CONTRIBUTION: {
-      IDENTIFY: "contribution",
-      DETAIL: `${PARAMETER.CONTRIBUTION_SLUG}`,
+      IDENTITY: "contribution",
+      DETAIL: `${PARAMETER.ID}`,
+      CATEGORY: `category/:falcuty`,
    },
 };
 

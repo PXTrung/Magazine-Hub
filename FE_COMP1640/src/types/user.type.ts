@@ -8,5 +8,4 @@ export interface IUserInformation {
    lastName: string;
    role: string;
    email: string;
-   token: string;
 }

@@ -2,9 +2,22 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
 import { jwtDecode } from "jwt-decode";
 import { ILogin, IUserInformation } from "../../types/user.type";
+import authUtils from "../../utils/auth";
 
 export const login = createAsyncThunk(
    "login",
+   async (data: ILogin, { rejectWithValue }) => {
+      try {
+         const res = await api.user.loginToGetToken(data);
+         return res.data;
+      } catch (error: any) {
+         return rejectWithValue(error.response.data.title);
+      }
+   },
+);
+
+export const register = createAsyncThunk(
+   "register",
    async (data: ILogin, { rejectWithValue }) => {
       try {
          const res = await api.user.loginToGetToken(data);
@@ -28,15 +41,24 @@ const initialState: UserLoginState = {
    userInfor: null,
    isError: false,
    message: "",
-   isLogin: false,
+   isLogin: authUtils.getSessionToken() ? true : false,
 };
 
-const userLoginSlice = createSlice({
-   name: "login",
+const authSlice = createSlice({
+   name: "auth",
    initialState,
    reducers: {
       destroy: () => {
-         return initialState;
+         authUtils.setSessionToken();
+         return { ...initialState, isLogin: false };
+      },
+      getCurrentUser: (state) => {
+         let token = authUtils.getSessionToken() || "";
+         let user = authUtils.decodeToken(token);
+
+         if (user) {
+            state.userInfor = user;
+         } else return state;
       },
    },
    extraReducers: (builder) => {
@@ -44,29 +66,11 @@ const userLoginSlice = createSlice({
          state.isLoading = true;
       });
       builder.addCase(login.fulfilled, (state, action) => {
-         const token = action.payload.data;
-         sessionStorage.setItem("currentUserToken", token);
-         let userData: any = jwtDecode(token);
+         let token = action.payload.data;
+         authUtils.setSessionToken(token);
 
          state.isLoading = false;
-         state.userInfor = {
-            firstName:
-               userData[
-                  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname"
-               ],
-            lastName:
-               userData[
-                  "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"
-               ],
-            role: userData[
-               "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-            ],
-            email: userData[
-               "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
-            ],
-            token: token,
-         };
-
+         state.userInfor = authUtils.decodeToken(token);
          state.isLogin = true;
          state.message = "";
       });
@@ -80,5 +84,5 @@ const userLoginSlice = createSlice({
    },
 });
 
-export const { destroy } = userLoginSlice.actions;
-export default userLoginSlice.reducer;
+export const { destroy, getCurrentUser } = authSlice.actions;
+export default authSlice.reducer;

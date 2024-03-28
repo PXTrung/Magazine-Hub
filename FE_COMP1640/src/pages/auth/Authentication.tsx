@@ -1,10 +1,10 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import Loading from "../../components/loading/Loading";
 import { PATHS } from "../../constants/path";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../redux/store";
-import { destroy } from "../../redux/slices/loginSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { destroy } from "../../redux/slices/authSlice";
 
 const loading = () => <Loading />;
 
@@ -24,6 +24,7 @@ const variants = {
 const Authentication = () => {
    const dispatch = useDispatch<AppDispatch>();
    const [isLoading, setIsLoading] = useState(false);
+   const { userInfor } = useSelector((state: RootState) => state.auth);
 
    const location = useLocation();
 
@@ -31,7 +32,6 @@ const Authentication = () => {
       setIsLoading(true);
       setTimeout(() => {
          setIsLoading(false);
-         dispatch(destroy());
       }, 2000);
    }, [location.pathname, dispatch]);
 
@@ -39,10 +39,17 @@ const Authentication = () => {
 
    return (
       <>
+         {userInfor && (
+            <Navigate
+               to={{
+                  pathname: `/${PATHS.HOME.IDENTITY}`,
+               }}
+            />
+         )}
          {isLoading ? (
             <Loading />
          ) : (
-            <div className="relative min-w-screen min-h-screen flex justify-center items-center">
+            <div className="relative min-w-screen min-h-screen flex justify-center items-center px-4">
                <Link to={`/${PATHS.HOME.IDENTITY}`}>
                   <div className="absolute px-4 py-2 flex flex-row justify-between items-center rounded-md top-4 left-4 md:left-10 md:top-8 z-20 text-white font-medium bg-black/20 hover:bg-black/30 transition-all duration-200">
                      <svg
@@ -62,7 +69,7 @@ const Authentication = () => {
                      <span>Back to home</span>
                   </div>
                </Link>
-               <div className="relative bg-white/80 my-5 p-8 rounded shadow-2xl w-[420px] z-20">
+               <div className="relative bg-white/80 my-16 p-8 rounded shadow-2xl w-[420px] z-20">
                   <Suspense fallback={loading()}>
                      <Outlet />
                   </Suspense>
@@ -82,9 +89,9 @@ const Authentication = () => {
                <img
                   src="https://fschool.fpt.edu.vn/wp-content/uploads/2024/03/FS-Thanh-Hoa-2048x1280.jpg"
                   alt=""
-                  className="absolute w-full h-full top-0 left-0 object-cover bg-black/10 z-0"
+                  className="fixed w-screen h-screen top-0 left-0 object-cover bg-black/10 z-0"
                />
-               <div className="absolute w-full h-full top-0 left-0 bg-black/60 z-10"></div>
+               <div className="fixed w-screen h-screen top-0 left-0 bg-black/60 z-10"></div>
             </div>
          )}
       </>

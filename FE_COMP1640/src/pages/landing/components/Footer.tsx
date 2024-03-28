@@ -3,7 +3,7 @@ import React from "react";
 const Footer = () => {
    return (
       <div
-         className="flex w-full overflow-hidden items-center justify-center bg-white h-[330px] border-t-[12px] border-blue-700"
+         className="flex w-ful absolute top-full left-0 overflow-hidden items-center justify-center bg-white h-[330px] border-t-[12px] border-blue-700"
          id="footer"
       >
          <div className="grid grid-cols-4 container mx-auto max-w-7xl sm:px-6 text-gray-700 ">

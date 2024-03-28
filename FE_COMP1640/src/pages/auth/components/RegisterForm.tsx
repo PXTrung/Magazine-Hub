@@ -3,15 +3,11 @@ import Input from "../../../components/CustomInput";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../authValidationSchemas";
-import { ENDPOINTS } from "../../../constants/endpoint";
-import { useEffect, useState } from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { PATHS } from "../../../constants/path";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
 const RegisterForm = () => {
-   const [falcuties, setFalcuties] = useState([]);
-   const [result, setResult] = useState(false);
-   const [message, setMessage] = useState("");
+   const { list } = useSelector((state: RootState) => state.faculty);
 
    const {
       register,
@@ -21,57 +17,39 @@ const RegisterForm = () => {
       resolver: yupResolver<FieldValues>(registerSchema),
    });
 
-   const getFalcutyList = async () => {
-      try {
-         const response = await fetch(ENDPOINTS.FALCUTY);
-         if (!response.ok) {
-            throw new Error("Failed to fetch data");
-         }
-
-         const data = await response.json();
-         setFalcuties(data.items);
-
-         return data;
-      } catch (error: any) {
-         console.error("Error fetching data:", error.message);
-         throw error;
-      }
-   };
+   const defaultValue: string | undefined =
+      list.length > 0 ? list[0].id : undefined;
 
    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
       console.log(data);
 
-      await fetch(ENDPOINTS.REGISTER, {
-         method: "POST",
-         headers: {
-            "Content-Type": "application/json",
-         },
-         body: JSON.stringify(data),
-      })
-         .then((response) => {
-            if (response.status === 200) {
-               setResult(true);
-            }
-         })
-         .catch((error) => {
-            console.error("Lỗi:", error);
-         });
+      // await fetch(ENDPOINTS.REGISTER, {
+      //    method: "POST",
+      //    headers: {
+      //       "Content-Type": "application/json",
+      //    },
+      //    body: JSON.stringify(data),
+      // })
+      //    .then((response) => {
+      //       if (response.status === 200) {
+      //          setResult(true);
+      //       }
+      //    })
+      //    .catch((error) => {
+      //       console.error("Lỗi:", error);
+      //    });
    };
-
-   useEffect(() => {
-      getFalcutyList();
-   }, []);
 
    return (
       <div>
-         {result && (
+         {/* {result && (
             <Navigate
                to={{
-                  pathname: `/${PATHS.AUTH.IDENTIFY}`,
+                  pathname: `/${PATHS.AUTH.IDENTITY}`,
                }}
                replace
             />
-         )}
+         )} */}
          <h1 className="text-2xl font-semibold mb-6">Register</h1>
          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-row justify-between items-start">
@@ -106,10 +84,10 @@ const RegisterForm = () => {
                <select
                   id="facultyId"
                   className="block appearance-none w-full bg-white border border-gray-400 mt-1 p-[10px] rounded leading-tight focus:outline-none"
-                  defaultValue={falcuties?.[0]}
+                  defaultValue={defaultValue}
                   {...(register && register("facultyId", {}))}
                >
-                  {falcuties?.map((falcuty: any) => {
+                  {list?.map((falcuty: any) => {
                      return (
                         <option key={falcuty?.id} value={falcuty?.id}>
                            {falcuty?.name}

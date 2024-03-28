@@ -11,7 +11,6 @@ const RegisterForm = lazy(
    () => import("../pages/auth/components/RegisterForm"),
 );
 const Home = lazy(() => import("../layouts/Home/index"));
-const Contribution = lazy(() => import("../pages/contribution/Contribution"));
 const ContributionDetail = lazy(
    () => import("../pages/contribution/ContributionDetail"),
 );
@@ -29,7 +28,7 @@ const LazyLoadingComponent = ({ component: Component }: LoadComponentProps) => {
 };
 
 const authRoute = {
-   path: PATHS.AUTH.IDENTIFY,
+   path: PATHS.AUTH.IDENTITY,
    element: <LazyLoadingComponent component={Authentication} />,
    children: [
       {
@@ -49,11 +48,15 @@ const authRoute = {
 };
 
 const contributionRoute = {
-   path: PATHS.CONTRIBUTION.IDENTIFY,
-   element: <LazyLoadingComponent component={Contribution} />,
+   path: PATHS.CONTRIBUTION.IDENTITY,
+   element: <LazyLoadingComponent component={Home} />,
    children: [
       {
          path: PATHS.CONTRIBUTION.DETAIL,
+         element: <LazyLoadingComponent component={ContributionDetail} />,
+      },
+      {
+         path: PATHS.CONTRIBUTION.CATEGORY,
          element: <LazyLoadingComponent component={ContributionDetail} />,
       },
    ],
@@ -68,14 +71,13 @@ export default function AllRoutes() {
          element: <LazyLoadingComponent component={Home} />,
          children: [
             {
+               path: "",
+               element: <Navigate to={`${PATHS.HOME.IDENTITY}`} replace />,
+            },
+            {
                path: PATHS.HOME.IDENTITY,
                element: <LandingPage />,
             },
-            // {
-            //    path: PATHS.CONTRIBUTION.IDENTIFY,
-            //    element: <Contribution />,
-            // },
-            contributionRoute,
          ],
       },
    ]);

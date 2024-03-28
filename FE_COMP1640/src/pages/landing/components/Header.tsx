@@ -9,13 +9,12 @@ import { RootState } from "../../../redux/store";
 import UserInformation from "./UserInformation";
 
 const Header = () => {
-   const { isLogin, userInfor } = useSelector(
-      (state: RootState) => state.userLogin,
-   );
+   const { isLogin, userInfor } = useSelector((state: RootState) => state.auth);
+
    return (
-      <div className="w-full absolute top-0 left-0 bg-white shadow-2xl flex flex-row justify-center items-center z-30">
+      <div className="w-full fixed top-0 left-0 bg-white shadow-lg flex flex-row justify-center items-center z-30">
          <div
-            className={`h-16 lg:h-24 w-full md:w-full lg:w-[960px] xl:w-[1200px] flex flex-row justify-between items-center 
+            className={`h-16 lg:h-24 w-full lg:w-[960px] xl:w-[1200px] flex flex-row justify-between items-center 
                         px-4 md:px-10 lg:p-0`}
          >
             <div className="lg:hidden">

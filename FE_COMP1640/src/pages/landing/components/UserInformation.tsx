@@ -4,7 +4,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../redux/store";
-import { destroy } from "../../../redux/slices/loginSlice";
+import { destroy } from "../../../redux/slices/authSlice";
 import Loading from "../../../components/loading/Loading";
 
 interface UserInformationProps {

@@ -18,6 +18,6 @@ export const ENDPOINTS = {
       FILTER: constructEndpoint(
          `Contributions?${PARAMETER.CONTRIBUTION_FILTER}`,
       ),
-      By_ID: constructEndpoint(`Contributions/${PARAMETER.CONTRIBUTION_ID}`),
+      BY_ID: constructEndpoint(`Contributions/${PARAMETER.ID}`),
    },
 };

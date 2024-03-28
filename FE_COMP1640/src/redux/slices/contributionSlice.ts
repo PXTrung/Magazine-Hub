@@ -2,12 +2,12 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
 import {
    IContributionData,
-   IUploadContribution,
+   IContributionDetail,
 } from "../../types/contribution.type";
 
 export const contribute = createAsyncThunk(
    "contribute",
-   async (data: IUploadContribution, { rejectWithValue }) => {
+   async (data: FormData, { rejectWithValue }) => {
       try {
          const res = await api.contribution.contribute(data);
          return res.data;
@@ -22,11 +22,21 @@ export const getAllContributions = createAsyncThunk(
    async (filter: string, { rejectWithValue }) => {
       try {
          const res = await api.contribution.getContributionByStatus(filter);
-         console.log(res.data);
-
          return res.data;
       } catch (error: any) {
          return rejectWithValue(error.response.data.title);
+      }
+   },
+);
+
+export const getContributionById = createAsyncThunk(
+   "getContributionById",
+   async (id: string, { rejectWithValue }) => {
+      try {
+         const res = await api.contribution.getContributionById(id);
+         return res.data;
+      } catch (error: any) {
+         rejectWithValue(error.response.data.title);
       }
    },
 );
@@ -37,6 +47,7 @@ interface ContributionState {
    message: string;
    status: string;
    list: IContributionData[];
+   detail: IContributionDetail | null;
 }
 
 const initialState: ContributionState = {
@@ -45,6 +56,7 @@ const initialState: ContributionState = {
    message: "",
    status: "",
    list: [],
+   detail: null,
 };
 
 const contributionSlice = createSlice({
@@ -75,6 +87,20 @@ const contributionSlice = createSlice({
          state.list = action.payload?.items;
       });
       builder.addCase(getAllContributions.rejected, (state, action) => {
+         state.isLoading = false;
+         state.isError = true;
+         state.message =
+            (action.payload as string) || "An error occurred during login.";
+      });
+      builder.addCase(getContributionById.pending, (state) => {
+         state.isLoading = true;
+      });
+      builder.addCase(getContributionById.fulfilled, (state, action) => {
+         state.isLoading = false;
+         state.message = "";
+         state.detail = action.payload;
+      });
+      builder.addCase(getContributionById.rejected, (state, action) => {
          state.isLoading = false;
          state.isError = true;
          state.message =

@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../authValidationSchemas";
 import Input from "../../../components/CustomInput";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../../redux/slices/loginSlice";
+import { login } from "../../../redux/slices/authSlice";
 import { AppDispatch, RootState } from "../../../redux/store";
 import Loading from "../../../components/loading/Loading";
 import { PATHS } from "../../../constants/path";
@@ -13,8 +13,8 @@ import { Navigate, useLocation } from "react-router-dom";
 const LoginForm = () => {
    const dispatch = useDispatch<AppDispatch>();
    const location = useLocation();
-   const { isError, message, isLoading, isLogin, userInfor } = useSelector(
-      (state: RootState) => state.userLogin,
+   const { isError, message, isLoading, isLogin } = useSelector(
+      (state: RootState) => state.auth,
    );
 
    const {
@@ -34,8 +34,6 @@ const LoginForm = () => {
          console.log(error.message);
       }
    };
-
-   console.log(userInfor);
 
    return (
       <>

@@ -1,13 +1,12 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios";
-import { IUploadContribution } from "../../types/contribution.type";
 import { ENDPOINTS } from "../../constants/endpoint";
 
 export default {
-   contribute: (data: IUploadContribution) => {
-      return axios.post(ENDPOINTS.CONTRIBUTION.ALL, data.uploadData, {
+   contribute: async (data: FormData) => {
+      return await axios.post(ENDPOINTS.CONTRIBUTION.ALL, data, {
          headers: {
-            Authorization: `Bearer ${data.token}`,
+            // Authorization: `Bearer ${data.token}`,
          },
       });
    },
@@ -20,5 +19,8 @@ export default {
          },
          params: { filter: filter },
       });
+   },
+   getContributionById: async (id: string) => {
+      return await axios.get(`${ENDPOINTS.CONTRIBUTION.ALL}/${id}`);
    },
 };
