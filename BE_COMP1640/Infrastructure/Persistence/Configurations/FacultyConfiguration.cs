@@ -12,8 +12,6 @@ public class FacultyConfiguration : IEntityTypeConfiguration<Faculty>
             .IsRequired()
             .HasMaxLength(100);
 
-
-
         builder.HasMany<ApplicationUser>(f => f.Members)
             .WithOne(u => u.Faculty)
             .HasForeignKey(u => u.FacultyId)
