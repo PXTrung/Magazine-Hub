@@ -4,12 +4,14 @@ import Searchbar from "../../../components/Searchbar";
 import Button from "../../../components/CustomButton";
 import { Link } from "react-router-dom";
 import { PATHS } from "../../../constants/path";
-import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import UserInformation from "./UserInformation";
+import useRedux from "../../../hooks/useRedux";
 
 const Header = () => {
-   const { isLogin, userInfor } = useSelector((state: RootState) => state.auth);
+   const { appSelector } = useRedux();
+
+   const { isLogin, userInfor } = appSelector((state: RootState) => state.auth);
 
    return (
       <div className="w-full fixed top-0 left-0 bg-white shadow-lg flex flex-row justify-center items-center z-30">

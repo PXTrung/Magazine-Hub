@@ -1,16 +1,15 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
 import { useParams } from "react-router-dom";
 import { getContributionByFaculty } from "../../redux/slices/contributionSlice";
-import contribution from "../../services/modules/contribution";
 import ContributionList from "./components/ContributionList";
+import useRedux from "../../hooks/useRedux";
+import { RootState } from "../../redux/store";
 
 const ContributionCategory = () => {
-   const dispatch = useDispatch<AppDispatch>();
-   const { faculty } = useSelector((state: RootState) => state.faculty);
+   const { dispatch, appSelector } = useRedux();
+   const { faculty } = appSelector((state: RootState) => state.faculty);
    const { category } = useParams<{ category: string }>() || "";
-   const { isError, message, isLoading, list } = useSelector(
+   const { isError, message, isLoading, list } = appSelector(
       (state: RootState) => state.contribution,
    );
 

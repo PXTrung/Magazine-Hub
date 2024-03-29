@@ -1,11 +1,11 @@
 /* eslint-disable react/style-prop-object */
-import { AppDispatch, RootState } from "../../redux/store";
+import { RootState } from "../../redux/store";
 import Loading from "../../components/loading/Loading";
-import { useDispatch, useSelector } from "react-redux";
 import { getContributionById } from "../../redux/slices/contributionSlice";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import Button from "../../components/CustomButton";
+import useRedux from "../../hooks/useRedux";
 
 function formatDate(timestamp: string | undefined): string {
    if (!timestamp) {
@@ -30,9 +30,9 @@ function formatDate(timestamp: string | undefined): string {
 }
 
 const ContributionDetail = () => {
-   const dispatch = useDispatch<AppDispatch>();
+   const { dispatch, appSelector } = useRedux();
    const { id } = useParams<{ id: string }>();
-   const { isError, message, isLoading, detail } = useSelector(
+   const { isError, message, isLoading, detail } = appSelector(
       (state: RootState) => state.contribution,
    );
 

@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
 import HeroSection from "./components/HeroSection";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
+import { RootState } from "../../redux/store";
 import { getContributionByStatus } from "../../redux/slices/contributionSlice";
 import { getFaculty } from "../../redux/slices/facultySlice";
 import ContributionList from "../contribution/components/ContributionList";
+import useRedux from "../../hooks/useRedux";
 
 const LandingPage = () => {
-   const { list } = useSelector((state: RootState) => state.contribution);
-   const { faculty } = useSelector((state: RootState) => state.faculty);
-   const dispatch = useDispatch<AppDispatch>();
+   const { dispatch, appSelector } = useRedux();
+   const { list } = appSelector((state: RootState) => state.contribution);
+   const { faculty } = appSelector((state: RootState) => state.faculty);
 
    useEffect(() => {
       dispatch(getContributionByStatus("status=published"));

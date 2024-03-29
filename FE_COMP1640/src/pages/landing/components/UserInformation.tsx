@@ -2,17 +2,16 @@ import React, { useState } from "react";
 import { IUserInformation } from "../../../types/user.type";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../redux/store";
 import { destroy } from "../../../redux/slices/authSlice";
 import Loading from "../../../components/loading/Loading";
+import useRedux from "../../../hooks/useRedux";
 
 interface UserInformationProps {
    data: IUserInformation;
 }
 
 const UserInformation = ({ data }: UserInformationProps) => {
-   const dispatch = useDispatch<AppDispatch>();
+   const { dispatch } = useRedux();
    const [isLoading, setIsLoading] = useState(false);
 
    const handleLogout = () => {
