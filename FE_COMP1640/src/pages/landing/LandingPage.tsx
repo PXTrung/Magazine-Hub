@@ -2,13 +2,19 @@ import React, { useEffect } from "react";
 import HeroSection from "./components/HeroSection";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
-import { getContributionByStatus } from "../../redux/slices/contributionSlice";
+import {
+  getContributionByPagination,
+  getContributionByStatus,
+} from "../../redux/slices/contributionSlice";
 import { getFaculty } from "../../redux/slices/facultySlice";
 import ContributionList from "../contribution/components/ContributionList";
 
 const LandingPage = () => {
   const { list } = useSelector((state: RootState) => state.contribution);
   const { faculty } = useSelector((state: RootState) => state.faculty);
+  const { isError, message, isLoading, nextPageLink } = useSelector(
+    (state: RootState) => state.contribution
+  );
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -32,6 +38,13 @@ const LandingPage = () => {
           />
         );
       })}
+      <button
+        onClick={() => {
+          dispatch(getContributionByPagination(nextPageLink));
+        }}
+      >
+        Next Page
+      </button>
     </>
   );
 };
