@@ -28,4 +28,7 @@ export default {
          params: { filters: facultyId },
       });
    },
+   getContributionByPagination: async(endpoint: string) => {
+      return await axios.get(endpoint);
+   }
 };
