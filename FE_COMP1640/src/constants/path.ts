@@ -17,7 +17,7 @@ const PATHS = {
    CONTRIBUTION: {
       IDENTITY: "contribution",
       DETAIL: `${PARAMETER.ID}`,
-      CATEGORY: `category/:falcuty`,
+      CATEGORY: `category`,
    },
 };
 

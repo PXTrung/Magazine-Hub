@@ -1,7 +1,7 @@
 import React, { FormEventHandler, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
-import { getAllContributions } from "../../redux/slices/contributionSlice";
+import { getContributionByStatus } from "../../redux/slices/contributionSlice";
 
 const Searchbar = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -10,7 +10,9 @@ const Searchbar = () => {
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(
-      getAllContributions(`${"title" && "description"}@=*${ref.current?.value}`)
+      getContributionByStatus(
+        `${"title" && "description"}@=*${ref.current?.value}`
+      )
     );
   };
 

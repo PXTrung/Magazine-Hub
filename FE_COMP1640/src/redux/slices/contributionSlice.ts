@@ -17,7 +17,7 @@ export const contribute = createAsyncThunk(
    },
 );
 
-export const getAllContributions = createAsyncThunk(
+export const getContributionByStatus = createAsyncThunk(
    "getAllContributions",
    async (filter: string, { rejectWithValue }) => {
       try {
@@ -34,6 +34,20 @@ export const getContributionById = createAsyncThunk(
    async (id: string, { rejectWithValue }) => {
       try {
          const res = await api.contribution.getContributionById(id);
+         return res.data;
+      } catch (error: any) {
+         rejectWithValue(error.response.data.title);
+      }
+   },
+);
+
+export const getContributionByFaculty = createAsyncThunk(
+   "getContributionByFaculty",
+   async (id: string, { rejectWithValue }) => {
+      try {
+         const res = await api.contribution.getContributionByFaculty(
+            `facultyId==${id}`,
+         );
          return res.data;
       } catch (error: any) {
          rejectWithValue(error.response.data.title);
@@ -78,15 +92,15 @@ const contributionSlice = createSlice({
          state.message =
             (action.payload as string) || "An error occurred during login.";
       });
-      builder.addCase(getAllContributions.pending, (state) => {
+      builder.addCase(getContributionByStatus.pending, (state) => {
          state.isLoading = true;
       });
-      builder.addCase(getAllContributions.fulfilled, (state, action) => {
+      builder.addCase(getContributionByStatus.fulfilled, (state, action) => {
          state.isLoading = false;
          state.message = "";
          state.list = action.payload?.items;
       });
-      builder.addCase(getAllContributions.rejected, (state, action) => {
+      builder.addCase(getContributionByStatus.rejected, (state, action) => {
          state.isLoading = false;
          state.isError = true;
          state.message =
@@ -101,6 +115,20 @@ const contributionSlice = createSlice({
          state.detail = action.payload;
       });
       builder.addCase(getContributionById.rejected, (state, action) => {
+         state.isLoading = false;
+         state.isError = true;
+         state.message =
+            (action.payload as string) || "An error occurred during login.";
+      });
+      builder.addCase(getContributionByFaculty.pending, (state) => {
+         state.isLoading = true;
+      });
+      builder.addCase(getContributionByFaculty.fulfilled, (state, action) => {
+         state.isLoading = false;
+         state.message = "";
+         state.detail = action.payload?.items;
+      });
+      builder.addCase(getContributionByFaculty.rejected, (state, action) => {
          state.isLoading = false;
          state.isError = true;
          state.message =

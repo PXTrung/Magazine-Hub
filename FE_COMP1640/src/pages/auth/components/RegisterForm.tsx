@@ -3,11 +3,17 @@ import Input from "../../../components/CustomInput";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../authValidationSchemas";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../redux/store";
+import { createAccount } from "../../../redux/slices/authSlice";
+import { IRegister } from "../../../types/user.type";
+import { Navigate } from "react-router-dom";
+import { PATHS } from "../../../constants/path";
 
 const RegisterForm = () => {
-   const { list } = useSelector((state: RootState) => state.faculty);
+   const dispatch = useDispatch<AppDispatch>();
+   const { faculty } = useSelector((state: RootState) => state.faculty);
+   const { registerResult } = useSelector((state: RootState) => state.auth);
 
    const {
       register,
@@ -18,38 +24,28 @@ const RegisterForm = () => {
    });
 
    const defaultValue: string | undefined =
-      list.length > 0 ? list[0].id : undefined;
+      faculty.length > 0 ? faculty[0].id : undefined;
 
    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-      console.log(data);
+      const userInformation = { ...data };
 
-      // await fetch(ENDPOINTS.REGISTER, {
-      //    method: "POST",
-      //    headers: {
-      //       "Content-Type": "application/json",
-      //    },
-      //    body: JSON.stringify(data),
-      // })
-      //    .then((response) => {
-      //       if (response.status === 200) {
-      //          setResult(true);
-      //       }
-      //    })
-      //    .catch((error) => {
-      //       console.error("Lỗi:", error);
-      //    });
+      try {
+         await dispatch(createAccount(userInformation as IRegister));
+      } catch (error: any) {
+         console.log(error.message);
+      }
    };
 
    return (
       <div>
-         {/* {result && (
+         {registerResult && (
             <Navigate
                to={{
                   pathname: `/${PATHS.AUTH.IDENTITY}`,
                }}
                replace
             />
-         )} */}
+         )}
          <h1 className="text-2xl font-semibold mb-6">Register</h1>
          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-row justify-between items-start">
@@ -87,7 +83,7 @@ const RegisterForm = () => {
                   defaultValue={defaultValue}
                   {...(register && register("facultyId", {}))}
                >
-                  {list?.map((falcuty: any) => {
+                  {faculty?.map((falcuty: any) => {
                      return (
                         <option key={falcuty?.id} value={falcuty?.id}>
                            {falcuty?.name}
