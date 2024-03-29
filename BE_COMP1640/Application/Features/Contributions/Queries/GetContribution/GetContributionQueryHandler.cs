@@ -25,6 +25,7 @@ public class GetContributionQueryHandler : IRequestHandler<GetContributionQuery,
         var contributionEntity = await _context.Contributions
             .Include(c => c.Document)
             .Include(c => c.Image)
+            .Include(c => c.CreatedBy)
             .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
         //Check if null
         if (contributionEntity == null) return Error.NotFound(description: "Contribution not found");

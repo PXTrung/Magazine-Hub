@@ -20,6 +20,10 @@ public class GetContributionDto
 
     public string DocumentUrl { get; set; }
 
+    public string FacultyId { get; set; }
+
+    public string FacultyName { get; set; }
+
     public DateTimeOffset CreatedAt { get; set; }
 
     public DateTimeOffset LastModifiedAt { get; set; }
