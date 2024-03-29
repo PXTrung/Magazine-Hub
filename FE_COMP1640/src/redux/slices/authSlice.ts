@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
-import { jwtDecode } from "jwt-decode";
-import { ILogin, IUserInformation } from "../../types/user.type";
+import { ILogin, IRegister, IUserInformation } from "../../types/user.type";
 import authUtils from "../../utils/auth";
 
 export const login = createAsyncThunk(
@@ -16,11 +15,11 @@ export const login = createAsyncThunk(
    },
 );
 
-export const register = createAsyncThunk(
-   "register",
-   async (data: ILogin, { rejectWithValue }) => {
+export const createAccount = createAsyncThunk(
+   "createAccount",
+   async (data: IRegister, { rejectWithValue }) => {
       try {
-         const res = await api.user.loginToGetToken(data);
+         const res = await api.user.register(data);
          return res.data;
       } catch (error: any) {
          return rejectWithValue(error.response.data.title);
@@ -34,6 +33,7 @@ interface UserLoginState {
    isError: boolean;
    message: string;
    isLogin: boolean;
+   registerResult: boolean;
 }
 
 const initialState: UserLoginState = {
@@ -42,6 +42,7 @@ const initialState: UserLoginState = {
    isError: false,
    message: "",
    isLogin: authUtils.getSessionToken() ? true : false,
+   registerResult: false
 };
 
 const authSlice = createSlice({
@@ -77,6 +78,20 @@ const authSlice = createSlice({
       builder.addCase(login.rejected, (state, action) => {
          state.isLoading = false;
          state.isLogin = false;
+         state.isError = true;
+         state.message =
+            (action.payload as string) || "An error occurred during login.";
+      });
+      builder.addCase(createAccount.pending, (state) => {
+         state.isLoading = true;
+      });
+      builder.addCase(createAccount.fulfilled, (state, action) => {
+         state.isLoading = false;
+         state.message = "";
+         state.registerResult = true;
+      });
+      builder.addCase(createAccount.rejected, (state, action) => {
+         state.isLoading = false;
          state.isError = true;
          state.message =
             (action.payload as string) || "An error occurred during login.";

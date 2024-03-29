@@ -23,4 +23,9 @@ export default {
    getContributionById: async (id: string) => {
       return await axios.get(`${ENDPOINTS.CONTRIBUTION.ALL}/${id}`);
    },
+   getContributionByFaculty: async (facultyId: string) => {
+      return await axios.get(ENDPOINTS.CONTRIBUTION.ALL, {
+         params: { filters: facultyId },
+      });
+   },
 };
