@@ -22,6 +22,7 @@ namespace Application.Features.Contributions.Queries.DownloadContribution
                 .Where(c => c.DocumentId != null)
                 .Include(c => c.Document)
                 .Select(c => c.Document)
+                .Where(d => d.FileName != null)
                 .ToList();
 
             return await _fileService.ZipFilesAsync(documentList, "Documents");

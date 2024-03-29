@@ -21,9 +21,6 @@ namespace Application.Common.Mapping;
 
 public class MappingProfile : Profile
 {
-
-
-
     public MappingProfile()
     {
         //Mapping of contributions 
@@ -38,9 +35,13 @@ public class MappingProfile : Profile
 
         CreateMap<Contribution, GetContributionDto>()
             .ForMember(dest => dest.CreatedByEmail, opt => opt.MapFrom(src => src.CreatedBy.Email))
-            .ForMember(dest => dest.CreatedByFullName, opt => opt.MapFrom(src => src.CreatedBy.FirstName + " " + src.CreatedBy.LastName))
+            .ForMember(dest => dest.CreatedByFullName,
+                opt => opt.MapFrom(src => src.CreatedBy.FirstName + " " + src.CreatedBy.LastName))
             .ForMember(dest => dest.CoverImageUrl, opt => opt.MapFrom(src => src.Image.UrlFilePath))
-            .ForMember(dest => dest.DocumentUrl, opt => opt.MapFrom(src => src.Document.UrlFilePath));
+            .ForMember(dest => dest.DocumentUrl, opt => opt.MapFrom(src => src.Document.UrlFilePath))
+            .ForMember(dest => dest.FacultyName,
+                opt => opt.MapFrom(src => src.CreatedBy.Faculty != null ? src.CreatedBy.Faculty.Name : null))
+            .ForMember(dest => dest.FacultyId, opt => opt.MapFrom(src => src.CreatedBy.FacultyId));
 
         CreateMap<UpdateContributionCommand, Contribution>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
