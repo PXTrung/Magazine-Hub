@@ -8,20 +8,20 @@ import { getFaculty } from "../../redux/slices/facultySlice";
 import ContributionList from "../contribution/components/ContributionList";
 
 const LandingPage = () => {
-   const { list } = useSelector((state: RootState) => state.contribution);
-   const dispatch = useDispatch<AppDispatch>();
+  const { list } = useSelector((state: RootState) => state.contribution);
+  const dispatch = useDispatch<AppDispatch>();
 
-   useEffect(() => {
-      dispatch(getAllContributions("status=published"));
-      dispatch(getFaculty());
-   }, [dispatch]);
+  useEffect(() => {
+    dispatch(getAllContributions("status==published"));
+    dispatch(getFaculty());
+  }, [dispatch]);
 
-   return (
-      <>
-         <HeroSection />
-         <ContributionList category="Business" data={list} />
-      </>
-   );
+  return (
+    <>
+      <HeroSection />
+      <ContributionList category="Business" data={list} />
+    </>
+  );
 };
 
 export default LandingPage;

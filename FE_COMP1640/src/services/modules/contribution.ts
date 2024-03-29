@@ -17,7 +17,7 @@ export default {
                "currentUserToken",
             )}`,
          },
-         params: { filter: filter },
+         params: { filters: filter },
       });
    },
    getContributionById: async (id: string) => {
