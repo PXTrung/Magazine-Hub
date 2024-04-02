@@ -1,4 +1,5 @@
 ﻿using Application.Common.Behaviours;
+using Application.Features.Dashboards;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -20,6 +21,8 @@ public static class ApplicationDependencyInjection
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
+
+        services.AddScoped<IDashboadService, DashboardService>();
 
         return services;
     }

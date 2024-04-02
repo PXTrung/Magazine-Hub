@@ -111,7 +111,7 @@ public static class SeedData
 
             }
 
-            //Create for contributors for each faculty
+            //Create 4 contributors for each faculty
             var contributorsToSeed = new List<(string facultyName, string emailPrefix, string firstName)>
                 {
                     ("Graphic Design", "contributorGD", "Alice"),

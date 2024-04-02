@@ -55,6 +55,18 @@ export const getContributionByFaculty = createAsyncThunk(
    },
 );
 
+export const getContributionByPagination = createAsyncThunk(
+   "getContributionsByPagination",
+   async (endpoint: string, { rejectWithValue }) => {
+      try {
+         const res = await api.contribution.getContributionByPagination(endpoint);
+         return res.data;
+      } catch (error: any) {
+         return rejectWithValue(error.response.data.title);
+      }
+   },
+);
+
 interface ContributionState {
    isLoading: boolean;
    isError: boolean;
@@ -62,7 +74,9 @@ interface ContributionState {
    status: string;
    list: IContributionData[];
    detail: IContributionDetail | null;
-   netxPagelink: string;
+   nextPageLink: string;
+   prevPageLink: string;
+
 }
 
 const initialState: ContributionState = {
@@ -72,7 +86,8 @@ const initialState: ContributionState = {
    status: "",
    list: [],
    detail: null,
-   netxPagelink: "",
+   nextPageLink: "",
+   prevPageLink: "",
 };
 
 const contributionSlice = createSlice({
@@ -101,13 +116,13 @@ const contributionSlice = createSlice({
          state.isLoading = false;
          state.message = "";
          state.list = action.payload?.items;
-         state.netxPagelink = action.payload?.nextPage;
+         state.nextPageLink = action.payload?.nextPage;
       });
       builder.addCase(getContributionByStatus.rejected, (state, action) => {
          state.isLoading = false;
          state.isError = true;
          state.message =
-            (action.payload as string) || "An error occurred during login.";
+         (action.payload as string) || "An error occurred during login.";
       });
       builder.addCase(getContributionById.pending, (state) => {
          state.isLoading = true;
@@ -137,6 +152,15 @@ const contributionSlice = createSlice({
          state.message =
             (action.payload as string) || "An error occurred during login.";
       });
+      builder.addCase(getContributionByPagination.pending, (state) => {
+         state.isLoading = true;
+      });
+      builder.addCase(getContributionByPagination.fulfilled, (state, action) => {
+         state.isLoading = false;
+         state.detail = action.payload?.items;
+         state.nextPageLink = action.payload?.nextPage;
+
+      })
    },
 });
 
