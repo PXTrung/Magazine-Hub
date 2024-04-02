@@ -67,6 +67,7 @@ const contributionRoute = {
    ],
 };
 
+
 export default function AllRoutes() {
    return useRoutes([
       authRoute,
@@ -86,8 +87,20 @@ export default function AllRoutes() {
          ],
       },
       {
-         path: PATHS.ADMIN.IDENTITY,
-         element: <ProtectedRoute component={RoleLayout} role="admin" />,
+         path: "contributor",
+         element: <ProtectedRoute component={RoleLayout} role="contributor" />,
+         children: [
+            {
+               path: PATHS.CONTRIBUTION.IDENTITY,
+               element: <LazyLoadingComponent component={ContributionDetail} />,
+            },
+            {
+               path: `${PATHS.CONTRIBUTION.DETAIL}`,
+               element: (
+                  <LazyLoadingComponent component={ContributionDetail} />
+               ),
+            },
+         ],
       },
    ]);
 }
