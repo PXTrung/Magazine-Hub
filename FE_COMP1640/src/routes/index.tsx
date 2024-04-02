@@ -3,6 +3,7 @@ import { Navigate, useRoutes } from "react-router-dom";
 import { PARAMETER, PATHS } from "../constants/path";
 import Loading from "../components/loading/Loading";
 import LandingPage from "../pages/landing/LandingPage";
+import ProtectedRoute from "./ProtectedRoute";
 
 // Authentication
 const Authentication = lazy(() => import("../pages/auth/Authentication"));
@@ -17,6 +18,7 @@ const ContributionDetail = lazy(
 const ContributionCategory = lazy(
    () => import("../pages/contribution/ContributionCategory"),
 );
+const RoleLayout = lazy(() => import("../layouts/RolePage/index"));
 
 type LoadComponentProps = {
    component: React.LazyExoticComponent<() => JSX.Element>;
@@ -65,6 +67,7 @@ const contributionRoute = {
    ],
 };
 
+
 export default function AllRoutes() {
    return useRoutes([
       authRoute,
@@ -80,6 +83,22 @@ export default function AllRoutes() {
             {
                path: PATHS.HOME.IDENTITY,
                element: <LandingPage />,
+            },
+         ],
+      },
+      {
+         path: "contributor",
+         element: <ProtectedRoute component={RoleLayout} role="contributor" />,
+         children: [
+            {
+               path: PATHS.CONTRIBUTION.IDENTITY,
+               element: <LazyLoadingComponent component={ContributionDetail} />,
+            },
+            {
+               path: `${PATHS.CONTRIBUTION.DETAIL}`,
+               element: (
+                  <LazyLoadingComponent component={ContributionDetail} />
+               ),
             },
          ],
       },

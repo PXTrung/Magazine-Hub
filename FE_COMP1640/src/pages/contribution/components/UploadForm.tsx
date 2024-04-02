@@ -3,9 +3,8 @@ import Input from "../../../components/CustomInput";
 import * as yup from "yup";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../redux/store";
 import { contribute } from "../../../redux/slices/contributionSlice";
+import useRedux from "../../../hooks/useRedux";
 
 const schema = yup.object().shape({
    Title: yup.string().required("Title is required"),
@@ -33,7 +32,7 @@ const schema = yup.object().shape({
 });
 
 const UploadForm = () => {
-   const dispatch = useDispatch<AppDispatch>();
+   const { dispatch } = useRedux();
    const {
       register,
       handleSubmit,

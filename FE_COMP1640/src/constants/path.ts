@@ -19,6 +19,13 @@ const PATHS = {
       DETAIL: `${PARAMETER.ID}`,
       CATEGORY: `category`,
    },
+   CONTRIBUTOR: {
+      IDENTITY: "contributor",
+      CREATE: "create",
+   },
+   ADMIN: {
+      IDENTITY: "admin",
+   },
 };
 
 export { PATHS, PARAMETER };
