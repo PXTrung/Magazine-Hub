@@ -13,6 +13,8 @@ const Header = () => {
 
    const { isLogin, userInfor } = appSelector((state: RootState) => state.auth);
 
+   console.log(userInfor?.role);
+
    return (
       <div className="w-full fixed top-0 left-0 bg-white shadow-lg flex flex-row justify-center items-center z-30">
          <div

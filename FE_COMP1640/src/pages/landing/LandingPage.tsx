@@ -8,32 +8,36 @@ import useRedux from "../../hooks/useRedux";
 
 const LandingPage = () => {
    const { dispatch, appSelector } = useRedux();
-   const { list } = appSelector((state: RootState) => state.contribution);
+   const { list, netxPagelink } = appSelector(
+      (state: RootState) => state.contribution,
+   );
    const { faculty } = appSelector((state: RootState) => state.faculty);
 
-  useEffect(() => {
-    dispatch(getContributionByStatus("status==published"));
-    dispatch(getFaculty());
-  }, [dispatch]);
+   useEffect(() => {
+      dispatch(getContributionByStatus("status==published"));
+      dispatch(getFaculty());
+   }, [dispatch]);
 
-  return (
-    <>
-      <HeroSection />
-      {faculty.map((faculty) => {
-        const contributions = list.filter(
-          (contribution) => contribution.facultyName === faculty.name
-        );
-        return (
-          <ContributionList
-            key={faculty.id}
-            type="category"
-            categoryName={faculty.name}
-            data={contributions.slice(0, 4)}
-          />
-        );
-      })}
-    </>
-  );
+   console.log(netxPagelink);
+
+   return (
+      <>
+         <HeroSection />
+         {faculty.map((faculty) => {
+            const contributions = list.filter(
+               (contribution) => contribution.facultyName === faculty.name,
+            );
+            return (
+               <ContributionList
+                  key={faculty.id}
+                  type="category"
+                  categoryName={faculty.name}
+                  data={contributions.slice(0, 4)}
+               />
+            );
+         })}
+      </>
+   );
 };
 
 export default LandingPage;

@@ -19,6 +19,9 @@ const PATHS = {
       DETAIL: `${PARAMETER.ID}`,
       CATEGORY: `category`,
    },
+   ADMIN: {
+      IDENTITY: "admin",
+   },
 };
 
 export { PATHS, PARAMETER };

@@ -62,6 +62,7 @@ interface ContributionState {
    status: string;
    list: IContributionData[];
    detail: IContributionDetail | null;
+   netxPagelink: string;
 }
 
 const initialState: ContributionState = {
@@ -71,6 +72,7 @@ const initialState: ContributionState = {
    status: "",
    list: [],
    detail: null,
+   netxPagelink: "",
 };
 
 const contributionSlice = createSlice({
@@ -99,6 +101,7 @@ const contributionSlice = createSlice({
          state.isLoading = false;
          state.message = "";
          state.list = action.payload?.items;
+         state.netxPagelink = action.payload?.nextPage;
       });
       builder.addCase(getContributionByStatus.rejected, (state, action) => {
          state.isLoading = false;

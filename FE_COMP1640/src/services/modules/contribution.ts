@@ -28,4 +28,5 @@ export default {
          params: { filters: facultyId },
       });
    },
+   
 };

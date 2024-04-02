@@ -3,6 +3,7 @@ import { Navigate, useRoutes } from "react-router-dom";
 import { PARAMETER, PATHS } from "../constants/path";
 import Loading from "../components/loading/Loading";
 import LandingPage from "../pages/landing/LandingPage";
+import ProtectedRoute from "./ProtectedRoute";
 
 // Authentication
 const Authentication = lazy(() => import("../pages/auth/Authentication"));
@@ -17,6 +18,7 @@ const ContributionDetail = lazy(
 const ContributionCategory = lazy(
    () => import("../pages/contribution/ContributionCategory"),
 );
+const RoleLayout = lazy(() => import("../layouts/RolePage/index"));
 
 type LoadComponentProps = {
    component: React.LazyExoticComponent<() => JSX.Element>;
@@ -83,9 +85,9 @@ export default function AllRoutes() {
             },
          ],
       },
-      // {
-      //    path: "/",
-      //    element:
-      // }
+      {
+         path: PATHS.ADMIN.IDENTITY,
+         element: <ProtectedRoute component={RoleLayout} role="admin" />,
+      },
    ]);
 }

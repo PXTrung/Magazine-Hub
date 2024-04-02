@@ -2,14 +2,12 @@ import React from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { PATHS } from "../constants/path";
-import authUtils from "../utils/auth";
 import Loading from "../components/loading/Loading";
 import useRedux from "../hooks/useRedux";
 
 type ProtectedRouteTypes = {
    component?: React.ComponentType;
    role?: string;
-   backgroundImage?: string;
 };
 
 function ProtectedRoute({
@@ -30,9 +28,7 @@ function ProtectedRoute({
          });
    }, [navigate, location.pathname, isLogin]);
 
-   if (!userInfor?.role) {
-      return <Loading />;
-   }
+   console.log(userInfor);
 
    if (role && userInfor?.role) {
       const regex = new RegExp(`^${role}$`);
