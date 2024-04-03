@@ -68,13 +68,20 @@ const Contribution = (data: IContributionProps) => {
                      odio eos minima mollitia voluptate modi debitis! Qui
                      deserunt quis impedit?`}
                </span>
-               <span
-                  className={clsx(
-                     "w-full text-left text-sm font-medium text-blue-600 hover:cursor-pointer",
+               <div className="w-full flex justify-center items-center">
+                  <span
+                     className={clsx(
+                        "w-full text-left text-sm font-medium text-blue-600 hover:cursor-pointer",
+                     )}
+                  >
+                     Read more
+                  </span>
+                  {data.for === "user" && (
+                     <span className="w-full text-left text-sm font-medium text-emerald-700 hover:cursor-pointer">
+                        {data.contribution.status}
+                     </span>
                   )}
-               >
-                  Read more
-               </span>
+               </div>
             </div>
          </div>
       </Link>

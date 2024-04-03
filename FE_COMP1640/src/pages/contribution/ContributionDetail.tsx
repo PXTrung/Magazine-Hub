@@ -77,14 +77,17 @@ const ContributionDetail = () => {
                      alt="cover-poster"
                      className="w-full object-cover"
                   />
-                  <div className="w-full mt-5 py-5 flex justify-between items-center md:justify-start text-gray-700 border-t">
+                  <a
+                     href={detail?.documentUrl}
+                     className="w-full mt-5 py-5 flex justify-between items-center md:justify-start text-gray-700 border-t"
+                  >
                      <span className="md:mr-8">Document:</span>
                      <Button
                         label="Download"
                         type="primary"
                         style="text-sm h-7"
                      />
-                  </div>
+                  </a>
                </div>
                <div className="md:col-span-1 bg-gray-300"></div>
             </div>
