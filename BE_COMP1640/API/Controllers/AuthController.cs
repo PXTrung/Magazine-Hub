@@ -82,7 +82,7 @@ public class AuthController : ApiController
     /// </summary>
     [HttpGet]
     [Route("ConfirmEmail")]
-    public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailCommand command)
+    public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailCommand command)
     {
 
         var result = await _sender.Send(command);

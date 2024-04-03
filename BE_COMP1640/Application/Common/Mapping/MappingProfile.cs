@@ -31,7 +31,12 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.CoverImageUrl, opt => opt.MapFrom(src => src.Image.UrlFilePath))
             .ForMember(dest => dest.FacultyName,
                 opt => opt.MapFrom(src => src.CreatedBy.Faculty != null ? src.CreatedBy.Faculty.Name : null))
-            .ForMember(dest => dest.FacultyId, opt => opt.MapFrom(src => src.CreatedBy.FacultyId));
+            .ForMember(dest => dest.FacultyId, opt => opt.MapFrom(src => src.CreatedBy.FacultyId))
+            .ForMember(dest => dest.AcademicYear, opt => opt.MapFrom(src => src.Period.AcademicYear))
+            .ForMember(dest => dest.FirstSubmissionDeadline,
+                opt => opt.MapFrom(src => src.Period.FirstSubmissionDeadline))
+            .ForMember(dest => dest.SecondSubmissionDeadline,
+                opt => opt.MapFrom(src => src.Period.SecondSubmissionDeadline));
 
         CreateMap<Contribution, GetContributionDto>()
             .ForMember(dest => dest.CreatedByEmail, opt => opt.MapFrom(src => src.CreatedBy.Email))
@@ -107,11 +112,7 @@ public class MappingProfile : Profile
 
         CreateMap<Feedback, ListFeedbackDto>()
             .ForMember(dest => dest.CreatedByEmail, opt => opt.MapFrom(src => src.CreatedBy.Email))
-            .ForMember(dest => dest.CreatedByFullName,
-                opt => opt.MapFrom(src => src.CreatedBy.FirstName + " " + src.CreatedBy.LastName));
-
-
-        CreateMap<Feedback, ListFeedbackDto>();
+            .ForMember(dest => dest.CreatedByFullName, opt => opt.MapFrom(src => src.CreatedBy.FirstName + " " + src.CreatedBy.LastName));
 
 
     }

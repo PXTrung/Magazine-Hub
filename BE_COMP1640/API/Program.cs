@@ -33,7 +33,6 @@ using (var scope = app.Services.CreateScope())
     await SeedData.Initialize(services);
 }
 
-app.UseCors();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -71,6 +70,9 @@ app.UseStaticFiles(new StaticFileOptions
 
 app.UseStaticFiles();
 app.UseCors();
+
+//app.UseMiddleware<VsTunnelMiddleware>();
+
 app.MapControllers();
 
 app.Run();
