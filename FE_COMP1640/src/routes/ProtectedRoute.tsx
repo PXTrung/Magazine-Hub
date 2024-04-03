@@ -2,8 +2,9 @@ import React from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { PATHS } from "../constants/path";
-import Loading from "../components/loading/Loading";
+// import Loading from "../components/loading/Loading";
 import useRedux from "../hooks/useRedux";
+import { getCurrentUser } from "../redux/slices/authSlice";
 
 type ProtectedRouteTypes = {
    component?: React.ComponentType;
@@ -14,10 +15,12 @@ function ProtectedRoute({
    component: RouteComponent,
    role,
 }: ProtectedRouteTypes) {
-   const { appSelector } = useRedux();
+   const { dispatch, appSelector } = useRedux();
    const location = useLocation();
    const navigate = useNavigate();
    const { userInfor, isLogin } = appSelector((state) => state.auth);
+
+   if (!userInfor) dispatch(getCurrentUser());
 
    useEffect(() => {
       if (!isLogin)
@@ -28,19 +31,17 @@ function ProtectedRoute({
          });
    }, [navigate, location.pathname, isLogin]);
 
-   console.log(userInfor);
-
    if (role && userInfor?.role) {
       const regex = new RegExp(`^${role}$`);
 
-      if (!regex.test(userInfor?.role)) {
+      if (!regex.test(userInfor.role)) {
          return (
             <Navigate to={{ pathname: `/${PATHS.HOME.IDENTITY}` }} replace />
          );
       }
    }
 
-   //@ts-ignore
+   // @ts-ignore
    return <RouteComponent />;
 }
 

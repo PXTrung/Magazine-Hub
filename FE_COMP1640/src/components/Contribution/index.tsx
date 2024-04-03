@@ -1,19 +1,17 @@
 import { Link } from "react-router-dom";
-import { PATHS } from "../../constants/path";
 import { IContributionData } from "../../types/contribution.type";
 import clsx from "clsx";
 
 interface IContributionProps {
    type: "vertical" | "horizontal";
    contribution: IContributionData;
+   for: "guest" | "user";
+   path: string;
 }
 
 const Contribution = (data: IContributionProps) => {
    return (
-      <Link
-         to={`/${PATHS.CONTRIBUTION.IDENTITY}/${data.contribution.id}`}
-         className="w-full"
-      >
+      <Link to={data.path} className="w-full">
          <div
             className={clsx(
                data.type === "horizontal" &&
@@ -49,7 +47,7 @@ const Contribution = (data: IContributionProps) => {
                         "text-lg text-gray-900 font-semibold mb-2 line-clamp-1",
 
                      data.type === "vertical" &&
-                        "text-lg text-gray-900 font-semibold mb-2 truncate",
+                        "text-lg md:text-base text-gray-900 font-semibold mb-2 truncate",
                   )}
                >
                   {data.contribution.title}
@@ -60,7 +58,7 @@ const Contribution = (data: IContributionProps) => {
                         "w-full flex-1 text-sm text-gray-700 line-clamp-2",
 
                      data.type === "vertical" &&
-                        "w-full flex-1 text-sm text-gray-700 line-clamp-3",
+                        "w-full flex-1 text-sm text-gray-600 line-clamp-3",
                   )}
                >
                   {data.contribution.description ||
