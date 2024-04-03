@@ -50,7 +50,7 @@ const ContributionList = (data: IListProps) => {
                         type="horizontal"
                         contribution={item}
                         key={item.id}
-                        for="guest"
+                        for={data.for}
                         path={
                            data.for === "guest"
                               ? `/${PATHS.CONTRIBUTION.IDENTITY}/${item.id}`
@@ -71,7 +71,7 @@ const ContributionList = (data: IListProps) => {
                         type="vertical"
                         contribution={item}
                         key={item.id}
-                        for="guest"
+                        for={data.for}
                         path={
                            data.for === "guest"
                               ? `/${PATHS.CONTRIBUTION.IDENTITY}/${item.id}`
