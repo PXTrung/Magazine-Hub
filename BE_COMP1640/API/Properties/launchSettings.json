@@ -19,6 +19,7 @@
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7009;http://localhost:5001"
+      //"applicationUrl": "https://4psgvndb-7009.asse.devtunnels.ms/"
     },
     "IIS Express": {
       "commandName": "IISExpress",
