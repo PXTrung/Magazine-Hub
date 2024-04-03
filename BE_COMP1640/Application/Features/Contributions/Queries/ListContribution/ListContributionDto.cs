@@ -22,6 +22,11 @@ public class ListContributionDto
 
     public Guid? PeriodId { get; set; }
 
+    public int AcademicYear { get; set; }
+
+    public DateTime FirstSubmissionDeadline { get; set; }
+    public DateTime SecondSubmissionDeadline { get; set; }
+
     public string CoverImageUrl { get; set; }
 
     public DateTimeOffset? CreatedAt { get; set; }
