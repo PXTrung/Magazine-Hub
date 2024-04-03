@@ -49,7 +49,7 @@ const Contribution = (data: IContributionProps) => {
                         "text-lg text-gray-900 font-semibold mb-2 line-clamp-1",
 
                      data.type === "vertical" &&
-                        "text-lg text-gray-900 font-semibold mb-2 truncate",
+                        "text-lg md:text-base text-gray-900 font-semibold mb-2 truncate",
                   )}
                >
                   {data.contribution.title}
@@ -60,7 +60,7 @@ const Contribution = (data: IContributionProps) => {
                         "w-full flex-1 text-sm text-gray-700 line-clamp-2",
 
                      data.type === "vertical" &&
-                        "w-full flex-1 text-sm text-gray-700 line-clamp-3",
+                        "w-full flex-1 text-sm text-gray-600 line-clamp-3",
                   )}
                >
                   {data.contribution.description ||

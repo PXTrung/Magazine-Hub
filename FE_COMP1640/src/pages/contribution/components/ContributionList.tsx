@@ -2,6 +2,7 @@ import Contribution from "../../../components/Contribution";
 import { IContributionData } from "../../../types/contribution.type";
 import { Link } from "react-router-dom";
 import { PATHS } from "../../../constants/path";
+import clsx from "clsx";
 
 interface IListProps {
    data: IContributionData[];
@@ -11,9 +12,9 @@ interface IListProps {
 
 const ContributionList = (data: IListProps) => {
    return (
-      <>
+      <div className=" w-full md:w-full lg:w-[960px] xl:w-[1200px] py-3 md:py-5 px-4">
          {data.data.length > 0 && (
-            <div className="min-h-[500px] w-full md:w-full lg:w-[960px] xl:w-[1200px] py-3 md:py-5 px-4">
+            <>
                <div className="w-full my-8 flex flex-row justify-between items-center">
                   <h3 className="pl-2 pb-1 leading-4 tracking-wide text-lg text-blue-700 font-semibold border-l-4 border-blue-700">
                      {data.categoryName}
@@ -51,7 +52,13 @@ const ContributionList = (data: IListProps) => {
                      />
                   ))}
                </div>
-               <div className="w-full hidden md:grid md:gap-4 lg:gap-5 md:grid-cols-3 xl:grid-cols-4 justify-between items-center">
+               <div
+                  className={clsx(
+                     "w-full hidden md:grid md:gap-2 lg:gap-5 md:grid-cols-3 xl:grid-cols-4 justify-between",
+                     data.type === "category" &&
+                        "grid-rows-1 auto-rows-[0] overflow-y-hidden",
+                  )}
+               >
                   {data.data.map((item) => (
                      <Contribution
                         type="vertical"
@@ -60,9 +67,9 @@ const ContributionList = (data: IListProps) => {
                      />
                   ))}
                </div>
-            </div>
+            </>
          )}
-      </>
+      </div>
    );
 };
 

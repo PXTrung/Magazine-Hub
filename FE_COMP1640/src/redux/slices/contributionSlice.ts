@@ -4,6 +4,20 @@ import {
    IContributionData,
    IContributionDetail,
 } from "../../types/contribution.type";
+import { generateParams } from "../../services/modules/contribution";
+
+export type IFilter = {
+   facultyId?: string;
+   period?: string;
+   status?: string;
+   search?: string;
+};
+export interface IParams {
+   filters?: IFilter;
+   sorts?: string;
+   page?: number;
+   pageSize?: number;
+}
 
 export const contribute = createAsyncThunk(
    "contribute",
@@ -41,12 +55,43 @@ export const getContributionById = createAsyncThunk(
    },
 );
 
-export const getContributionByFaculty = createAsyncThunk(
-   "getContributionByFaculty",
-   async (id: string, { rejectWithValue }) => {
+// export const getContributionByFaculty = createAsyncThunk(
+//    "getContributionByFaculty",
+//    async (id: string, { rejectWithValue }) => {
+//       try {
+//          const res = await api.contribution.getContributionByFaculty(
+//             `facultyId==${id}`,
+//          );
+//          return res.data;
+//       } catch (error: any) {
+//          rejectWithValue(error.response.data.title);
+//       }
+//    },
+// );
+
+export const getContributionList = createAsyncThunk(
+   "getContributionList",
+   async (params: IParams, { rejectWithValue }) => {
+      const filter =
+         params.filters?.facultyId &&
+         `facultyId==${params?.filters?.facultyId}` + params.filters.status &&
+         `status==${params?.filters?.status}` + params?.filters?.period &&
+         `periodId==${params?.filters?.period}`;
+
+      console.log("====================================");
+      console.log(filter);
+      console.log("====================================");
+      //  `facultyId==${params?.filters?.facultyId || ""},status==${
+      //    params?.filters?.status || ""
+      // },periodId==${params?.filters?.period || ""}`;
       try {
-         const res = await api.contribution.getContributionByFaculty(
-            `facultyId==${id}`,
+         const res = await api.contribution.getContributionList(
+            generateParams(
+               filter,
+               params?.sorts,
+               params?.page,
+               params?.pageSize,
+            ),
          );
          return res.data;
       } catch (error: any) {
@@ -59,7 +104,9 @@ export const getContributionByPagination = createAsyncThunk(
    "getContributionsByPagination",
    async (endpoint: string, { rejectWithValue }) => {
       try {
-         const res = await api.contribution.getContributionByPagination(endpoint);
+         const res = await api.contribution.getContributionByPagination(
+            endpoint,
+         );
          return res.data;
       } catch (error: any) {
          return rejectWithValue(error.response.data.title);
@@ -76,7 +123,6 @@ interface ContributionState {
    detail: IContributionDetail | null;
    nextPageLink: string;
    prevPageLink: string;
-
 }
 
 const initialState: ContributionState = {
@@ -95,72 +141,94 @@ const contributionSlice = createSlice({
    initialState,
    reducers: {},
    extraReducers: (builder) => {
-      builder.addCase(contribute.pending, (state) => {
-         state.isLoading = true;
-      });
-      builder.addCase(contribute.fulfilled, (state, action) => {
-         state.isLoading = false;
-         state.message = "";
-         console.log(action.payload);
-      });
-      builder.addCase(contribute.rejected, (state, action) => {
-         state.isLoading = false;
-         state.isError = true;
-         state.message =
-            (action.payload as string) || "An error occurred during login.";
-      });
-      builder.addCase(getContributionByStatus.pending, (state) => {
-         state.isLoading = true;
-      });
-      builder.addCase(getContributionByStatus.fulfilled, (state, action) => {
-         state.isLoading = false;
-         state.message = "";
-         state.list = action.payload?.items;
-         state.nextPageLink = action.payload?.nextPage;
-      });
-      builder.addCase(getContributionByStatus.rejected, (state, action) => {
-         state.isLoading = false;
-         state.isError = true;
-         state.message =
-         (action.payload as string) || "An error occurred during login.";
-      });
-      builder.addCase(getContributionById.pending, (state) => {
-         state.isLoading = true;
-      });
-      builder.addCase(getContributionById.fulfilled, (state, action) => {
-         state.isLoading = false;
-         state.message = "";
-         state.detail = action.payload;
-      });
-      builder.addCase(getContributionById.rejected, (state, action) => {
-         state.isLoading = false;
-         state.isError = true;
-         state.message =
-            (action.payload as string) || "An error occurred during login.";
-      });
-      builder.addCase(getContributionByFaculty.pending, (state) => {
-         state.isLoading = true;
-      });
-      builder.addCase(getContributionByFaculty.fulfilled, (state, action) => {
-         state.isLoading = false;
-         state.message = "";
-         state.detail = action.payload?.items;
-      });
-      builder.addCase(getContributionByFaculty.rejected, (state, action) => {
-         state.isLoading = false;
-         state.isError = true;
-         state.message =
-            (action.payload as string) || "An error occurred during login.";
-      });
-      builder.addCase(getContributionByPagination.pending, (state) => {
-         state.isLoading = true;
-      });
-      builder.addCase(getContributionByPagination.fulfilled, (state, action) => {
-         state.isLoading = false;
-         state.detail = action.payload?.items;
-         state.nextPageLink = action.payload?.nextPage;
-
-      })
+      builder
+         .addCase(contribute.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(contribute.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.message = "";
+            console.log(action.payload);
+         })
+         .addCase(contribute.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message =
+               (action.payload as string) || "An error occurred during login.";
+         });
+      builder
+         .addCase(getContributionByStatus.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(getContributionByStatus.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.message = "";
+            state.list = action.payload?.items;
+            state.nextPageLink = action.payload?.nextPage;
+         })
+         .addCase(getContributionByStatus.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message =
+               (action.payload as string) || "An error occurred during login.";
+         });
+      builder
+         .addCase(getContributionById.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(getContributionById.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.message = "";
+            state.detail = action.payload;
+         })
+         .addCase(getContributionById.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message =
+               (action.payload as string) || "An error occurred during login.";
+         });
+      // builder
+      //    .addCase(getContributionByFaculty.pending, (state) => {
+      //       state.isLoading = true;
+      //    })
+      //    .addCase(getContributionByFaculty.fulfilled, (state, action) => {
+      //       state.isLoading = false;
+      //       state.message = "";
+      //       state.detail = action.payload?.items;
+      //    })
+      //    .addCase(getContributionByFaculty.rejected, (state, action) => {
+      //       state.isLoading = false;
+      //       state.isError = true;
+      //       state.message =
+      //          (action.payload as string) || "An error occurred during login.";
+      //    });
+      builder
+         .addCase(getContributionByPagination.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(getContributionByPagination.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.detail = action.payload?.items;
+            state.nextPageLink = action.payload?.nextPage;
+         });
+      builder
+         .addCase(getContributionList.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(getContributionList.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.message = "";
+            state.list = action.payload?.items;
+            console.log("====================================");
+            console.log(action.payload);
+            console.log("====================================");
+         })
+         .addCase(getContributionList.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message =
+               (action.payload as string) || "An error occurred during login.";
+         });
    },
 });
 

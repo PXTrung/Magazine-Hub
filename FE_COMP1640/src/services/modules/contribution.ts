@@ -2,20 +2,41 @@
 import axios from "axios";
 import { ENDPOINTS } from "../../constants/endpoint";
 
+const userToken = sessionStorage.getItem("user-token");
+
+export interface IParams {
+   filters?: string;
+   sorts?: string;
+   page?: number;
+   pageSize?: number;
+}
+
+export const generateParams = (
+   filters?: string,
+   sorts?: string,
+   page?: number,
+   pageSize?: number,
+) => {
+   return {
+      filters: filters || "",
+      sorts: sorts || "",
+      page: page || 1,
+      pageSize: pageSize || 10,
+   };
+};
+
 export default {
    contribute: async (data: FormData) => {
       return await axios.post(ENDPOINTS.CONTRIBUTION.ALL, data, {
          headers: {
-            // Authorization: `Bearer ${data.token}`,
+            Authorization: `Bearer ${userToken}`,
          },
       });
    },
    getContributionByStatus: (filter: string) => {
       return axios.get(ENDPOINTS.CONTRIBUTION.FILTER, {
          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem(
-               "currentUserToken",
-            )}`,
+            Authorization: `Bearer ${userToken}`,
          },
          params: { filters: filter },
       });
@@ -23,12 +44,20 @@ export default {
    getContributionById: async (id: string) => {
       return await axios.get(`${ENDPOINTS.CONTRIBUTION.ALL}/${id}`);
    },
-   getContributionByFaculty: async (facultyId: string) => {
+   // getContributionByFaculty: async (facultyId: string) => {
+   //    return await axios.get(ENDPOINTS.CONTRIBUTION.ALL, {
+   //       params: { filters: facultyId },
+   //    });
+   // },
+   getContributionByPagination: async (endpoint: string) => {
+      return await axios.get(endpoint);
+   },
+   getContributionList: async (params: IParams) => {
       return await axios.get(ENDPOINTS.CONTRIBUTION.ALL, {
-         params: { filters: facultyId },
+         headers: {
+            Authorization: `Bearer ${userToken}`,
+         },
+         params,
       });
    },
-   getContributionByPagination: async(endpoint: string) => {
-      return await axios.get(endpoint);
-   }
 };

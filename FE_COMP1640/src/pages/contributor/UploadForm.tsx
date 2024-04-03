@@ -1,10 +1,10 @@
 import React from "react";
-import Input from "../../../components/CustomInput";
+import Input from "../../components/CustomInput";
 import * as yup from "yup";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { contribute } from "../../../redux/slices/contributionSlice";
-import useRedux from "../../../hooks/useRedux";
+import { contribute } from "../../redux/slices/contributionSlice";
+import useRedux from "../../hooks/useRedux";
 
 const schema = yup.object().shape({
    Title: yup.string().required("Title is required"),
@@ -48,12 +48,13 @@ const UploadForm = () => {
       formData.append("title", data?.Title);
       formData.append("description", data?.Title);
       formData.append("documentFile", data?.DocumentFile[0]);
+      formData.append("periodId", "30b17de9-26ac-495d-a278-47c7c71d2364");
 
       dispatch(contribute(formData));
    };
 
    return (
-      <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+      <div className="w-2/3 h-fit mx-auto bg-white px-8 py-10 rounded-lg shadow-md mt-5">
          <h2 className="text-2xl font-semibold mb-4">Contribution Upload</h2>
          <form onSubmit={handleSubmit(onSubmit)}>
             <Input
@@ -90,13 +91,14 @@ const UploadForm = () => {
                type="file"
                accept=".docx, .doc, .pdf"
             ></Input>
-
-            <button
-               type="submit"
-               className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-            >
-               Submit
-            </button>
+            <div className="w-full flex justify-center mt-5">
+               <button
+                  type="submit"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-[280px]"
+               >
+                  Submit
+               </button>
+            </div>
          </form>
       </div>
    );

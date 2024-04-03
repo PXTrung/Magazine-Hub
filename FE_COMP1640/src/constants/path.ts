@@ -18,10 +18,16 @@ const PATHS = {
       IDENTITY: "contribution",
       DETAIL: `${PARAMETER.ID}`,
       CATEGORY: `category`,
+      CREATE: "create",
    },
    CONTRIBUTOR: {
       IDENTITY: "contributor",
-      CREATE: "create",
+   },
+   COORDINATOR: {
+      IDENTITY: "coordinator",
+   },
+   MANAGER: {
+      IDENTITY: "manager",
    },
    ADMIN: {
       IDENTITY: "admin",

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import {
    getContributionByPagination,
-   getContributionByStatus,
+   getContributionList,
 } from "../../redux/slices/contributionSlice";
 import { getFaculty } from "../../redux/slices/facultySlice";
 import ContributionList from "../contribution/components/ContributionList";
@@ -18,18 +18,20 @@ const LandingPage = () => {
    const { faculty } = appSelector((state: RootState) => state.faculty);
 
    useEffect(() => {
-      dispatch(getContributionByStatus("status==published"));
-      dispatch(getFaculty());
+      dispatch(
+         getContributionList({
+            filters: { status: "published" },
+            pageSize: 100,
+         }),
+      );
    }, [dispatch]);
-
-   console.log(nextPageLink);
 
    return (
       <>
          <HeroSection />
          {faculty.map((faculty) => {
             const contributions = list.filter(
-               (contribution) => contribution.facultyName === faculty.name,
+               (contribution) => contribution.facultyId === faculty.id,
             );
             return (
                <ContributionList

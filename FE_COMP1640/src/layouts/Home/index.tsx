@@ -5,13 +5,15 @@ import { Outlet } from "react-router-dom";
 import { getCurrentUser } from "../../redux/slices/authSlice";
 import useRedux from "../../hooks/useRedux";
 import Loading from "../../components/loading/Loading";
+import { getFaculty } from "../../redux/slices/facultySlice";
 
 const Home = () => {
    const { dispatch } = useRedux();
 
    useEffect(() => {
       dispatch(getCurrentUser());
-   });
+      dispatch(getFaculty());
+   }, []);
 
    return (
       <div className="relative w-screen pr-[5px] min-h-screen bg-white md:bg-gray-100 flex flex-col justify-start items-center">
