@@ -22,8 +22,8 @@ const Home = () => {
             <Suspense fallback={<Loading />}>
                <Outlet />
             </Suspense>
-            <Footer />
          </div>
+         <Footer />
       </div>
    );
 };

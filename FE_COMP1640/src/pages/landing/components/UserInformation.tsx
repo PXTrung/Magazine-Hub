@@ -5,21 +5,33 @@ import { Fragment } from "react";
 import { destroy } from "../../../redux/slices/authSlice";
 import Loading from "../../../components/loading/Loading";
 import useRedux from "../../../hooks/useRedux";
+import { Link, Navigate, useLocation } from "react-router-dom";
+import { PATHS } from "../../../constants/path";
 
 interface UserInformationProps {
    data: IUserInformation;
 }
 
+const protectedMenuItems = [
+   {
+      lable: "Contribution Page",
+      path: `${PATHS.CONTRIBUTOR.IDENTITY}`,
+   },
+   { lable: "Coordinator Page", path: `${PATHS.COORDINATOR.IDENTITY}` },
+   { lable: "Manager Page", path: `${PATHS.MANAGER.IDENTITY}` },
+   { lable: "Admin Page", path: `${PATHS.ADMIN.IDENTITY}` },
+];
+
 const UserInformation = ({ data }: UserInformationProps) => {
    const { dispatch } = useRedux();
    const [isLoading, setIsLoading] = useState(false);
+   const matchingMenuItem = protectedMenuItems.find(
+      (item) => item.path === `${data?.role.toLowerCase()}`,
+   );
+   const location = useLocation();
 
    const handleLogout = () => {
-      setIsLoading(true);
-      setTimeout(() => {
-         setIsLoading(false);
-         dispatch(destroy());
-      }, 2000);
+      dispatch(destroy());
    };
 
    return (
@@ -58,13 +70,27 @@ const UserInformation = ({ data }: UserInformationProps) => {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                >
-                  <Menu.Items className="absolute z-50 right-0 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+                  <Menu.Items className="absolute z-50 right-0 mt-2 w-48 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
                      <div className="py-3 px-2 flex flex-col items-start">
                         <Menu.Item>
                            <button className="w-full pl-4 py-1 rounded text-left text-gray-700 hover:text-gray-900 hover:bg-slate-100 transition-all duration-150">
                               My account
                            </button>
                         </Menu.Item>
+                        {/* {matchingMenuItem && (
+                           <Menu.Item>
+                              <Link
+                                 to={
+                                    location.state?.from ||
+                                    `/${matchingMenuItem.path}`
+                                 }
+                              >
+                                 <button className="w-full pl-4 py-1 rounded text-left text-gray-700 hover:text-gray-900 hover:bg-slate-100 transition-all duration-150">
+                                    {matchingMenuItem.lable}
+                                 </button>
+                              </Link>
+                           </Menu.Item>
+                        )} */}
                         <Menu.Item>
                            <button
                               className="w-full pl-4 py-1 rounded text-left text-gray-700 hover:text-gray-900 hover:bg-slate-100 transition-all duration-150"

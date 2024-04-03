@@ -13,7 +13,7 @@ const HeroSection = () => {
             alt=""
             className="absolute w-full h-[480px] md:h-[600px] top-0 left-0 object-cover bg-black/10 z-0"
          />
-         <div className="w-full h-[480px] md:h-[600px] lg:h-[460px] flex flex-col justify-center items-center">
+         <div className="w-full h-[416px] md:h-[536px] lg:h-[460px] flex flex-col justify-center items-center">
             <div className="h-full w-full flex flex-col justify-center items-center z-20 text-white text-center">
                <h1 className=" font-bold text-3xl lg:text-5xl mb-6">
                   This is heading

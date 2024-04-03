@@ -32,6 +32,10 @@ const ContributorPage = lazy(
    () => import("../pages/contributor/ContributorPage"),
 );
 
+const ContributorDetailPage = lazy(
+   () => import("../pages/contributor/ContributorDetailPage"),
+);
+
 // Coordinator
 const CoordinatorPage = lazy(() => import("../pages/coordinator/Coordinator"));
 
@@ -103,8 +107,8 @@ const contributorRoute = {
          element: <LazyLoadingComponent component={ContributorPage} />,
       },
       {
-         path: `${PATHS.CONTRIBUTION.DETAIL}`,
-         element: <LazyLoadingComponent component={ContributionDetail} />,
+         path: `${PATHS.CONTRIBUTION.IDENTITY}/${PATHS.CONTRIBUTION.DETAIL}`,
+         element: <LazyLoadingComponent component={ContributorDetailPage} />,
       },
       {
          path: `${PATHS.CONTRIBUTION.CREATE}`,

@@ -20,7 +20,11 @@ const ContributionCategory = () => {
 
    useEffect(() => {
       if (facultyId) {
-         dispatch(getContributionList({ filters: { facultyId: facultyId } }));
+         dispatch(
+            getContributionList({
+               filters: { facultyId: facultyId },
+            }),
+         );
       }
    }, [dispatch, facultyId]);
 
@@ -30,6 +34,7 @@ const ContributionCategory = () => {
             categoryName={category || ""}
             data={list}
             type="full"
+            for="guest"
          />
          <button
             onClick={() => dispatch(getContributionByPagination(nextPageLink))}

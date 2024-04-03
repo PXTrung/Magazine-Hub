@@ -8,6 +8,7 @@ interface IListProps {
    data: IContributionData[];
    categoryName: string;
    type: "full" | "category";
+   for: "guest" | "user";
 }
 
 const ContributionList = (data: IListProps) => {
@@ -49,6 +50,12 @@ const ContributionList = (data: IListProps) => {
                         type="horizontal"
                         contribution={item}
                         key={item.id}
+                        for="guest"
+                        path={
+                           data.for === "guest"
+                              ? `/${PATHS.CONTRIBUTION.IDENTITY}/${item.id}`
+                              : item.id
+                        }
                      />
                   ))}
                </div>
@@ -56,7 +63,7 @@ const ContributionList = (data: IListProps) => {
                   className={clsx(
                      "w-full hidden md:grid md:gap-2 lg:gap-5 md:grid-cols-3 xl:grid-cols-4 justify-between",
                      data.type === "category" &&
-                        "grid-rows-1 auto-rows-[0] overflow-y-hidden",
+                        "grid-rows-1 auto-rows-[0] md:overflow-y-hidden xl:overflow-y-visible",
                   )}
                >
                   {data.data.map((item) => (
@@ -64,6 +71,12 @@ const ContributionList = (data: IListProps) => {
                         type="vertical"
                         contribution={item}
                         key={item.id}
+                        for="guest"
+                        path={
+                           data.for === "guest"
+                              ? `/${PATHS.CONTRIBUTION.IDENTITY}/${item.id}`
+                              : item.id
+                        }
                      />
                   ))}
                </div>

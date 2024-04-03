@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import useRedux from "../../hooks/useRedux";
-import { getContributionByStatus } from "../../redux/slices/contributionSlice";
+import { getContributionListWithToken } from "../../redux/slices/contributionSlice";
 import ContributionList from "../contribution/components/ContributionList";
 
 const ContributorPage = () => {
@@ -9,16 +10,21 @@ const ContributorPage = () => {
    const { list } = appSelector((state) => state.contribution);
 
    useEffect(() => {
-      dispatch(getContributionByStatus(userInfor?.email as string));
-   }, []);
+      dispatch(
+         getContributionListWithToken({ filters: { email: userInfor?.email } }),
+      );
+   }, [dispatch, userInfor]);
 
-   console.log("====================================");
-   console.log(list);
-   console.log("====================================");
-
-   return <div>
-      <ContributionList categoryName="My contribution" data={list} type="full"/>
-   </div>;
+   return (
+      <div>
+         <ContributionList
+            categoryName="My contribution"
+            data={list}
+            type="full"
+            for="user"
+         />
+      </div>
+   );
 };
 
 export default ContributorPage;

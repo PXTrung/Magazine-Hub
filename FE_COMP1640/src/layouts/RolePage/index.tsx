@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Suspense, useEffect } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Suspense, startTransition, useEffect } from "react";
+import { Link, Navigate, Outlet } from "react-router-dom";
 import Loading from "../../components/loading/Loading";
 import useRedux from "../../hooks/useRedux";
 import { getCurrentUser } from "../../redux/slices/authSlice";
@@ -28,9 +28,9 @@ const RolePage = () => {
    useEffect(() => {
       dispatch(getCurrentUser());
       dispatch(getFaculty());
-   }, []);
+   }, [dispatch]);
 
-   return (
+   return userInfor ? (
       <div className="flex flex-row justify-center items-center bg-slate-100">
          {/* Side bar */}
          <div className="w-56 min-h-screen fixed top-0 left-0 bg-white border-r border-slate-100 flex flex-col items-center justify-start pt-5">
@@ -73,6 +73,8 @@ const RolePage = () => {
             </div>
          </div>
       </div>
+   ) : (
+      <Navigate to={`/${PATHS.HOME.IDENTITY}`} />
    );
 };
 

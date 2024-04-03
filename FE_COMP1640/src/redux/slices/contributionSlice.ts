@@ -10,6 +10,7 @@ export type IFilter = {
    facultyId?: string;
    period?: string;
    status?: string;
+   email?: string;
    search?: string;
 };
 export interface IParams {
@@ -55,37 +56,70 @@ export const getContributionById = createAsyncThunk(
    },
 );
 
-// export const getContributionByFaculty = createAsyncThunk(
-//    "getContributionByFaculty",
-//    async (id: string, { rejectWithValue }) => {
-//       try {
-//          const res = await api.contribution.getContributionByFaculty(
-//             `facultyId==${id}`,
-//          );
-//          return res.data;
-//       } catch (error: any) {
-//          rejectWithValue(error.response.data.title);
-//       }
-//    },
-// );
-
 export const getContributionList = createAsyncThunk(
    "getContributionList",
    async (params: IParams, { rejectWithValue }) => {
-      const filter =
-         params.filters?.facultyId &&
-         `facultyId==${params?.filters?.facultyId}` + params.filters.status &&
-         `status==${params?.filters?.status}` + params?.filters?.period &&
-         `periodId==${params?.filters?.period}`;
+      let filter = "";
 
-      console.log("====================================");
-      console.log(filter);
-      console.log("====================================");
-      //  `facultyId==${params?.filters?.facultyId || ""},status==${
-      //    params?.filters?.status || ""
-      // },periodId==${params?.filters?.period || ""}`;
+      // Thêm điều kiện nếu có facultyId
+      if (params.filters?.facultyId) {
+         filter += `facultyId==${params.filters.facultyId}`;
+      }
+
+      // Thêm điều kiện nếu có status
+      if (params.filters?.status) {
+         filter += (filter ? "&&" : "") + `status==${params.filters.status}`;
+      }
+
+      // Thêm điều kiện nếu có period
+      if (params.filters?.period) {
+         filter += (filter ? "&&" : "") + `periodId==${params.filters.period}`;
+      }
+
       try {
          const res = await api.contribution.getContributionList(
+            generateParams(
+               filter,
+               params?.sorts,
+               params?.page,
+               params?.pageSize,
+            ),
+         );
+         return res.data;
+      } catch (error: any) {
+         rejectWithValue(error.response.data.title);
+      }
+   },
+);
+
+export const getContributionListWithToken = createAsyncThunk(
+   "getContributionListWithToken",
+   async (params: IParams, { rejectWithValue }) => {
+      let filter = "";
+
+      // Thêm điều kiện nếu có facultyId
+      if (params.filters?.facultyId) {
+         filter += `facultyId==${params.filters.facultyId}`;
+      }
+
+      // Thêm điều kiện nếu có status
+      if (params.filters?.status) {
+         filter += (filter ? "&&" : "") + `status==${params.filters.status}`;
+      }
+
+      // Thêm điều kiện nếu có period
+      if (params.filters?.period) {
+         filter += (filter ? "&&" : "") + `periodId==${params.filters.period}`;
+      }
+
+      // Thêm điều kiện nếu có email
+      if (params.filters?.email) {
+         filter +=
+            (filter ? "&&" : "") + `createdByEmail==${params.filters.email}`;
+      }
+
+      try {
+         const res = await api.contribution.getContributionListWithToken(
             generateParams(
                filter,
                params?.sorts,
@@ -187,21 +221,6 @@ const contributionSlice = createSlice({
             state.message =
                (action.payload as string) || "An error occurred during login.";
          });
-      // builder
-      //    .addCase(getContributionByFaculty.pending, (state) => {
-      //       state.isLoading = true;
-      //    })
-      //    .addCase(getContributionByFaculty.fulfilled, (state, action) => {
-      //       state.isLoading = false;
-      //       state.message = "";
-      //       state.detail = action.payload?.items;
-      //    })
-      //    .addCase(getContributionByFaculty.rejected, (state, action) => {
-      //       state.isLoading = false;
-      //       state.isError = true;
-      //       state.message =
-      //          (action.payload as string) || "An error occurred during login.";
-      //    });
       builder
          .addCase(getContributionByPagination.pending, (state) => {
             state.isLoading = true;
@@ -219,11 +238,23 @@ const contributionSlice = createSlice({
             state.isLoading = false;
             state.message = "";
             state.list = action.payload?.items;
-            console.log("====================================");
-            console.log(action.payload);
-            console.log("====================================");
          })
          .addCase(getContributionList.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message =
+               (action.payload as string) || "An error occurred during login.";
+         });
+      builder
+         .addCase(getContributionListWithToken.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(getContributionListWithToken.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.message = "";
+            state.list = action.payload?.items;
+         })
+         .addCase(getContributionListWithToken.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.message =

@@ -9,6 +9,7 @@ export interface IParams {
    sorts?: string;
    page?: number;
    pageSize?: number;
+   createByEmail?: string
 }
 
 export const generateParams = (
@@ -44,15 +45,15 @@ export default {
    getContributionById: async (id: string) => {
       return await axios.get(`${ENDPOINTS.CONTRIBUTION.ALL}/${id}`);
    },
-   // getContributionByFaculty: async (facultyId: string) => {
-   //    return await axios.get(ENDPOINTS.CONTRIBUTION.ALL, {
-   //       params: { filters: facultyId },
-   //    });
-   // },
    getContributionByPagination: async (endpoint: string) => {
       return await axios.get(endpoint);
    },
    getContributionList: async (params: IParams) => {
+      return await axios.get(ENDPOINTS.CONTRIBUTION.ALL, {
+         params,
+      });
+   },
+   getContributionListWithToken: async (params: IParams) => {
       return await axios.get(ENDPOINTS.CONTRIBUTION.ALL, {
          headers: {
             Authorization: `Bearer ${userToken}`,

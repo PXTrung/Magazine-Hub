@@ -1,19 +1,17 @@
 import { Link } from "react-router-dom";
-import { PATHS } from "../../constants/path";
 import { IContributionData } from "../../types/contribution.type";
 import clsx from "clsx";
 
 interface IContributionProps {
    type: "vertical" | "horizontal";
    contribution: IContributionData;
+   for: "guest" | "user";
+   path: string;
 }
 
 const Contribution = (data: IContributionProps) => {
    return (
-      <Link
-         to={`/${PATHS.CONTRIBUTION.IDENTITY}/${data.contribution.id}`}
-         className="w-full"
-      >
+      <Link to={data.path} className="w-full">
          <div
             className={clsx(
                data.type === "horizontal" &&

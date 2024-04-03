@@ -29,19 +29,22 @@ const LandingPage = () => {
    return (
       <>
          <HeroSection />
-         {faculty.map((faculty) => {
-            const contributions = list.filter(
-               (contribution) => contribution.facultyId === faculty.id,
-            );
-            return (
-               <ContributionList
-                  key={faculty.id}
-                  type="category"
-                  categoryName={faculty.name}
-                  data={contributions.slice(0, 4)}
-               />
-            );
-         })}
+         <div className="mt-0 lg:mt-16">
+            {faculty.map((faculty) => {
+               const contributions = list.filter(
+                  (contribution) => contribution.facultyId === faculty.id,
+               );
+               return (
+                  <ContributionList
+                     key={faculty.id}
+                     type="category"
+                     categoryName={faculty.name}
+                     data={contributions.slice(0, 4)}
+                     for="guest"
+                  />
+               );
+            })}
+         </div>
       </>
    );
 };
