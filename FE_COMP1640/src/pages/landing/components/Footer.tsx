@@ -3,16 +3,14 @@ import React from "react";
 const Footer = () => {
    return (
       <div
-         className="flex w-ful absolute top-full left-0 overflow-hidden items-center justify-center bg-white h-[330px] border-t-[12px] border-blue-700"
+         className="flex w-full absolute top-full left-0 overflow-hidden items-center justify-center bg-white h-[330px] border-t-[12px] border-blue-700"
          id="footer"
       >
          <div className="grid grid-cols-4 container mx-auto max-w-7xl sm:px-6 text-gray-700 ">
             <div className="">
-               <img
-                  src="./assets/images/footer_logo.png"
-                  alt="log"
-                  className="h-12 mb-6"
-               />
+               <div className="w-1/4 flex justify-center">
+                  <span className="text-3xl font-bold">LOGO</span>
+               </div>
                <ul className="text-gray-700 flex flex-col ">
                   <li className="text-sm my-2 inline-block">
                      Team of designers and developers in SGU

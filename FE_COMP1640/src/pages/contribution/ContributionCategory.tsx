@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
-   getContributionByFaculty,
    getContributionByPagination,
+   getContributionList,
 } from "../../redux/slices/contributionSlice";
 import ContributionList from "./components/ContributionList";
 import useRedux from "../../hooks/useRedux";
@@ -20,7 +20,11 @@ const ContributionCategory = () => {
 
    useEffect(() => {
       if (facultyId) {
-         dispatch(getContributionByFaculty(facultyId));
+         dispatch(
+            getContributionList({
+               filters: { facultyId: facultyId },
+            }),
+         );
       }
    }, [dispatch, facultyId]);
 
@@ -30,8 +34,8 @@ const ContributionCategory = () => {
             categoryName={category || ""}
             data={list}
             type="full"
+            for="guest"
          />
-         ;
          <button
             onClick={() => dispatch(getContributionByPagination(nextPageLink))}
          >

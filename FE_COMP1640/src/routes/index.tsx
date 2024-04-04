@@ -4,6 +4,7 @@ import { PARAMETER, PATHS } from "../constants/path";
 import Loading from "../components/loading/Loading";
 import LandingPage from "../pages/landing/LandingPage";
 import ProtectedRoute from "./ProtectedRoute";
+import UploadForm from "../pages/contributor/UploadForm";
 
 // Authentication
 const Authentication = lazy(() => import("../pages/auth/Authentication"));
@@ -11,13 +12,40 @@ const LoginForm = lazy(() => import("../pages/auth/components/LoginForm"));
 const RegisterForm = lazy(
    () => import("../pages/auth/components/RegisterForm"),
 );
+
+// Home layout
 const Home = lazy(() => import("../layouts/Home/index"));
+
+// Contribution
 const ContributionDetail = lazy(
    () => import("../pages/contribution/ContributionDetail"),
 );
 const ContributionCategory = lazy(
    () => import("../pages/contribution/ContributionCategory"),
 );
+const ContributionCreate = lazy(
+   () => import("../pages/contributor/UploadForm"),
+);
+
+// Contributor
+const ContributorPage = lazy(
+   () => import("../pages/contributor/ContributorPage"),
+);
+
+const ContributorDetailPage = lazy(
+   () => import("../pages/contributor/ContributorDetailPage"),
+);
+
+// Coordinator
+const CoordinatorPage = lazy(() => import("../pages/coordinator/Coordinator"));
+
+// Manager
+const ManagerPage = lazy(() => import("../pages/manager/Manager"));
+
+// Admin
+const AdminPage = lazy(() => import("../pages/admin/Admin"));
+
+// Layout
 const RoleLayout = lazy(() => import("../layouts/RolePage/index"));
 
 type LoadComponentProps = {
@@ -67,6 +95,57 @@ const contributionRoute = {
    ],
 };
 
+const contributorRoute = {
+   path: "contributor",
+   children: [
+      {
+         path: "",
+         element: <Navigate to={`${PATHS.CONTRIBUTION.IDENTITY}`} />,
+      },
+      {
+         path: PATHS.CONTRIBUTION.IDENTITY,
+         element: <LazyLoadingComponent component={ContributorPage} />,
+      },
+      {
+         path: `${PATHS.CONTRIBUTION.IDENTITY}/${PATHS.CONTRIBUTION.DETAIL}`,
+         element: <LazyLoadingComponent component={ContributorDetailPage} />,
+      },
+      {
+         path: `${PATHS.CONTRIBUTION.CREATE}`,
+         element: <LazyLoadingComponent component={ContributionCreate} />,
+      },
+   ],
+};
+
+const coordinatorRoute = {
+   path: "coordinator",
+   children: [
+      {
+         path: PATHS.COORDINATOR.IDENTITY,
+         element: <LazyLoadingComponent component={CoordinatorPage} />,
+      },
+   ],
+};
+
+const managerRoute = {
+   path: "manager",
+   children: [
+      {
+         path: PATHS.COORDINATOR.IDENTITY,
+         element: <LazyLoadingComponent component={ManagerPage} />,
+      },
+   ],
+};
+
+const adminRoute = {
+   path: "admin",
+   children: [
+      {
+         path: PATHS.COORDINATOR.IDENTITY,
+         element: <LazyLoadingComponent component={AdminPage} />,
+      },
+   ],
+};
 
 export default function AllRoutes() {
    return useRoutes([
@@ -87,20 +166,24 @@ export default function AllRoutes() {
          ],
       },
       {
-         path: "contributor",
-         element: <ProtectedRoute component={RoleLayout} role="contributor" />,
-         children: [
-            {
-               path: PATHS.CONTRIBUTION.IDENTITY,
-               element: <LazyLoadingComponent component={ContributionDetail} />,
-            },
-            {
-               path: `${PATHS.CONTRIBUTION.DETAIL}`,
-               element: (
-                  <LazyLoadingComponent component={ContributionDetail} />
-               ),
-            },
-         ],
+         path: "/",
+         element: <ProtectedRoute component={RoleLayout} role="Contributor" />,
+         children: [contributorRoute],
+      },
+      {
+         path: "/",
+         element: <ProtectedRoute component={RoleLayout} role="Coordinator" />,
+         children: [coordinatorRoute],
+      },
+      {
+         path: "/",
+         element: <ProtectedRoute component={RoleLayout} role="Manager" />,
+         children: [managerRoute],
+      },
+      {
+         path: "/",
+         element: <ProtectedRoute component={RoleLayout} role="Admin" />,
+         children: [adminRoute],
       },
    ]);
 }

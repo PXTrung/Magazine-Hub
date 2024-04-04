@@ -42,7 +42,7 @@ const initialState: UserLoginState = {
    isError: false,
    message: "",
    isLogin: authUtils.getSessionToken() ? true : false,
-   registerResult: false
+   registerResult: false,
 };
 
 const authSlice = createSlice({
@@ -56,6 +56,8 @@ const authSlice = createSlice({
       getCurrentUser: (state) => {
          let token = authUtils.getSessionToken() || "";
          let user = authUtils.decodeToken(token);
+
+         console.log(user);
 
          if (user) {
             state.userInfor = user;
