@@ -112,7 +112,7 @@ export const getContributionListWithToken = createAsyncThunk(
          filter += (filter ? "," : "") + `periodId==${params.filters.period}`;
       }
 
-      // Thêm điều kiện nếu có email
+      // Thêm điều kiện nếu có email 
       if (params.filters?.email) {
          filter +=
             (filter ? "," : "") + `createdByEmail==${params.filters.email}`;
@@ -124,7 +124,7 @@ export const getContributionListWithToken = createAsyncThunk(
                filter,
                params?.sorts,
                params?.page,
-               params?.pageSize,
+               params.pageSize??100,
             ),
          );
          return res.data;
@@ -181,7 +181,7 @@ const contributionSlice = createSlice({
          })
          .addCase(contribute.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.message = "";
+            state.message = action.payload.title;
             console.log(action.payload);
          })
          .addCase(contribute.rejected, (state, action) => {

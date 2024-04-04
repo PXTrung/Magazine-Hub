@@ -28,6 +28,7 @@ public class ListContributionQueryHandler : IRequestHandler<ListContributionQuer
             .Include(c => c.CreatedBy).ThenInclude(u => u.Faculty)
             .Include(c => c.Image)
             .Include(c => c.Document)
+            .Include(c => c.Period)
             .AsNoTracking();
 
         var user = _currentUserProvider.GetCurrentUser();

@@ -5,9 +5,9 @@ import { getContributionListWithToken } from "../../redux/slices/contributionSli
 import ContributionList from "../../components/ContributionList/ContributionList";
 
 const ContributorPage = () => {
-   const { appSelector, dispatch } = useRedux();
-   const { userInfor } = appSelector((state) => state.auth);
-   const { list } = appSelector((state) => state.contribution);
+  const { appSelector, dispatch } = useRedux();
+  const { userInfor } = appSelector((state) => state.auth);
+  const { list } = appSelector((state) => state.contribution);
 
    useEffect(() => {
       dispatch(
@@ -15,16 +15,16 @@ const ContributorPage = () => {
       );
    }, [dispatch]);
 
-   return (
-      <div>
-         <ContributionList
-            categoryName="My contribution"
-            data={list}
-            type="full"
-            for="user"
-         />
-      </div>
-   );
+  return (
+    <div>
+      <ContributionList
+        categoryName="My contribution"
+        data={list}
+        type="full"
+        for="user"
+      />
+    </div>
+  );
 };
 
 export default ContributorPage;

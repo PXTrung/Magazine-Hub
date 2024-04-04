@@ -194,6 +194,27 @@ public static class SeedData
                                 Document = document
                             };
                             newContributions.Add(contribution);
+
+                            //Seed feedbacks for non-processing contribution
+                            if (status != ContributionStatus.Processing)
+                            {
+                                var newFeedbacks = new List<Feedback>();
+                                var coordinatorsToFeedback = await userManager.GetUsersInRoleAsync("Coordinator");
+                                var coordinator = coordinatorsToFeedback.FirstOrDefault(c => c.FacultyId == contributor.FacultyId);
+
+                                for (int j = 0; j < 3; j++)
+                                {
+                                    var feedbackContent = $"Feedback {j + 1} for {contribution.Title}";
+                                    var feedback = new Feedback
+                                    {
+                                        Content = feedbackContent,
+                                        ContributionId = contribution.Id,
+                                        CreatedById = coordinator?.Id
+                                    };
+                                    newFeedbacks.Add(feedback);
+                                }
+                                contribution.Feedbacks = newFeedbacks;
+                            }
                         }
                     }
                 }
