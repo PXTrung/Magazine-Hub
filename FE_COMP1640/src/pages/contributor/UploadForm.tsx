@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { contribute } from "../../redux/slices/contributionSlice";
 import useRedux from "../../hooks/useRedux";
 import { RootState } from "../../redux/store";
+import { useParams } from "react-router-dom";
 
 const schema = yup.object().shape({
   Title: yup.string().required("Title is required"),
@@ -34,6 +35,7 @@ const schema = yup.object().shape({
 
 const UploadForm = () => {
   const { dispatch, appSelector } = useRedux();
+  const { id } = useParams<{ id: string }>();
   const {
     register,
     handleSubmit,
@@ -52,7 +54,8 @@ const UploadForm = () => {
     formData.append("title", data?.Title);
     formData.append("description", data?.Title);
     formData.append("documentFile", data?.DocumentFile[0]);
-    formData.append("periodId", "754ae63b-a864-4968-8498-a7e204ee11fe");
+
+    if (id) formData.append("periodId", id);
 
     dispatch(contribute(formData));
   };
