@@ -1,7 +1,7 @@
-import Contribution from "../../../components/Contribution";
-import { IContributionData } from "../../../types/contribution.type";
+import Contribution from "../Contribution";
+import { IContributionData } from "../../types/contribution.type";
 import { Link } from "react-router-dom";
-import { PATHS } from "../../../constants/path";
+import { PATHS } from "../../constants/path";
 import clsx from "clsx";
 
 interface IListProps {
@@ -12,6 +12,9 @@ interface IListProps {
 }
 
 const ContributionList = (data: IListProps) => {
+   console.log("====================================");
+   console.log(data);
+   console.log("====================================");
    return (
       <div className=" w-full md:w-full lg:w-[960px] xl:w-[1200px] py-3 md:py-5 px-4">
          {data.data.length > 0 && (

@@ -68,12 +68,12 @@ export const getContributionList = createAsyncThunk(
 
       // Thêm điều kiện nếu có status
       if (params.filters?.status) {
-         filter += (filter ? "&&" : "") + `status==${params.filters.status}`;
+         filter += (filter ? "," : "") + `status==${params.filters.status}`;
       }
 
       // Thêm điều kiện nếu có period
       if (params.filters?.period) {
-         filter += (filter ? "&&" : "") + `periodId==${params.filters.period}`;
+         filter += (filter ? "," : "") + `periodId==${params.filters.period}`;
       }
 
       try {
@@ -104,18 +104,18 @@ export const getContributionListWithToken = createAsyncThunk(
 
       // Thêm điều kiện nếu có status
       if (params.filters?.status) {
-         filter += (filter ? "&&" : "") + `status==${params.filters.status}`;
+         filter += (filter ? "," : "") + `status==${params.filters.status}`;
       }
 
       // Thêm điều kiện nếu có period
       if (params.filters?.period) {
-         filter += (filter ? "&&" : "") + `periodId==${params.filters.period}`;
+         filter += (filter ? "," : "") + `periodId==${params.filters.period}`;
       }
 
       // Thêm điều kiện nếu có email
       if (params.filters?.email) {
          filter +=
-            (filter ? "&&" : "") + `createdByEmail==${params.filters.email}`;
+            (filter ? "," : "") + `createdByEmail==${params.filters.email}`;
       }
 
       try {

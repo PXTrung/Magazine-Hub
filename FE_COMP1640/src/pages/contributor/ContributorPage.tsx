@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import useRedux from "../../hooks/useRedux";
 import { getContributionListWithToken } from "../../redux/slices/contributionSlice";
-import ContributionList from "../contribution/components/ContributionList";
+import ContributionList from "../../components/ContributionList/ContributionList";
 
 const ContributorPage = () => {
    const { appSelector, dispatch } = useRedux();
@@ -13,7 +13,7 @@ const ContributorPage = () => {
       dispatch(
          getContributionListWithToken({ filters: { email: userInfor?.email } }),
       );
-   }, [dispatch, userInfor]);
+   }, [dispatch]);
 
    return (
       <div>

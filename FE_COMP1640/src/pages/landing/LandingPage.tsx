@@ -1,21 +1,13 @@
 import React, { useEffect } from "react";
 import HeroSection from "./components/HeroSection";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
-import {
-   getContributionByPagination,
-   getContributionList,
-} from "../../redux/slices/contributionSlice";
-import { getFaculty } from "../../redux/slices/facultySlice";
-import ContributionList from "../contribution/components/ContributionList";
+import { getContributionList } from "../../redux/slices/contributionSlice";
+import ContributionList from "../../components/ContributionList/ContributionList";
 import useRedux from "../../hooks/useRedux";
 
 const LandingPage = () => {
    const { dispatch, appSelector } = useRedux();
-   const { list, nextPageLink } = appSelector(
-      (state: RootState) => state.contribution,
-   );
-   const { faculty } = appSelector((state: RootState) => state.faculty);
+   const { list, nextPageLink } = appSelector((state) => state.contribution);
+   const { faculty } = appSelector((state) => state.faculty);
 
    useEffect(() => {
       dispatch(
