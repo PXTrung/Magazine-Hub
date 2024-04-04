@@ -42,6 +42,7 @@ const RolePage = () => {
                   menu.Contributor.map((item) => {
                      return (
                         <Link
+                           key={item.lable}
                            to={`/${item.path}`}
                            className="py-2 px-5 mb-2 bg-slate-100 w-full"
                         >
