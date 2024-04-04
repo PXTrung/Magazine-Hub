@@ -1,4 +1,4 @@
-import Contribution from "../Contribution";
+import Contribution from "../Contribution/ContributionCard";
 import { IContributionData } from "../../types/contribution.type";
 import { Link } from "react-router-dom";
 import { PATHS } from "../../constants/path";
@@ -13,7 +13,7 @@ interface IListProps {
 
 const ContributionList = (data: IListProps) => {
    return (
-      <div className=" w-full md:w-full lg:w-[960px] xl:w-[1200px] py-3 md:py-5 px-4">
+      <div className="w-full md:w-full lg:w-[960px] xl:w-[1200px] py-3 md:py-5 px-4">
          {data.data.length > 0 && (
             <>
                <div className="w-full my-8 flex flex-row justify-between items-center">

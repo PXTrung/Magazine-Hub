@@ -15,7 +15,7 @@ const Contribution = (data: IContributionProps) => {
          <div
             className={clsx(
                data.type === "horizontal" &&
-                  "w-full h-40 md:h-48 lg:h-40 bg-white shadow border rounded grid grid-cols-3 overflow-hidden hover:cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all duration-300",
+                  "w-full h-40 md:h-48 lg:h-40 bg-white drop-shadow border rounded grid grid-cols-3 overflow-hidden hover:cursor-pointer hover:drop-shadow-md hover:scale-[1.01] transition-all duration-300",
                data.type === "vertical" &&
                   "md:w-full flex flex-col justify-center items-center rounded-lg overflow-hidden bg-white shadow-md hover:cursor-pointer hover:shadow-lg transition-all duration-200",
             )}
