@@ -115,9 +115,12 @@ public static class SeedData
             var contributorsToSeed = new List<(string facultyName, string emailPrefix, string firstName)>
                 {
                     ("Graphic Design", "contributorGD", "Alice"),
-                    ("IT", "contributorIT", "Bob"),
-                    ("Business", "contributorBUSI", "Carol"),
-                    ("Medical", "contributorMEDIC", "David")
+                    ("IT", "contributorIT1", "Bob"),
+                    ("IT", "contributorIT2", "Trung"),
+                    ("Business", "contributorBUSI1", "Carol"),
+                    ("Business", "contributorBUSI2", "PhuongAnh"),
+                    ("Medical", "contributorMEDIC1", "David"),
+                    ("Medical", "contributorMEDIC2", "David")
                 };
 
             foreach (var (facultyName, emailPrefix, firstName) in contributorsToSeed)

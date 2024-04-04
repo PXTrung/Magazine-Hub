@@ -1,7 +1,8 @@
-import axios from "axios"
+import axios from "axios";
+import { ENDPOINTS } from "../../constants/endpoint";
 
 export default {
     getPeriod: async() => {
-        return axios.get("https://localhost:7009/api/Periods");
+        return axios.get(ENDPOINTS.PERIOD.ALL);
     }
 }
