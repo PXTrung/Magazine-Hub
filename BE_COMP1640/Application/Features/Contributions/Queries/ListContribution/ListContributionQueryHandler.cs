@@ -45,7 +45,7 @@ public class ListContributionQueryHandler : IRequestHandler<ListContributionQuer
 
             if (roles.Contains("Contributor"))
             {
-                contributions = contributions.Where(c => c.CreatedById == user.Id);
+                contributions = contributions.Where(c => c.CreatedById == user.Id || (c.CreatedBy.FacultyId == user.FacultyId && c.Status == ContributionStatus.Approved));
             }
             else if (roles.Contains("Coordinator"))
             {
