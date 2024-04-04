@@ -22,5 +22,8 @@ export const ENDPOINTS = {
    },
    FEEDBACK: {
       ALL: constructEndpoint(`Feedbacks`),
+   },
+   PERIOD: {
+      ALL: constructEndpoint(`Periods`),
    } 
 };

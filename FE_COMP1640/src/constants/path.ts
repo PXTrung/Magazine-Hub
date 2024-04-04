@@ -19,6 +19,7 @@ const PATHS = {
       DETAIL: `${PARAMETER.ID}`,
       CATEGORY: `category`,
       CREATE: "create",
+      PERIOD_SELECT: "select_period",
    },
    CONTRIBUTOR: {
       IDENTITY: "contributor",
