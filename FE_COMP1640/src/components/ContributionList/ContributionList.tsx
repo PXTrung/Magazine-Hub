@@ -1,7 +1,7 @@
-import Contribution from "../../../components/Contribution";
-import { IContributionData } from "../../../types/contribution.type";
+import Contribution from "../Contribution";
+import { IContributionData } from "../../types/contribution.type";
 import { Link } from "react-router-dom";
-import { PATHS } from "../../../constants/path";
+import { PATHS } from "../../constants/path";
 import clsx from "clsx";
 
 interface IListProps {

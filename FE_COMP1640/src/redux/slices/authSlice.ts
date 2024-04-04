@@ -56,9 +56,6 @@ const authSlice = createSlice({
       getCurrentUser: (state) => {
          let token = authUtils.getSessionToken() || "";
          let user = authUtils.decodeToken(token);
-
-         console.log(user);
-
          if (user) {
             state.userInfor = user;
          } else return state;

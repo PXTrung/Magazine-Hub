@@ -4,7 +4,7 @@ import {
    getContributionByPagination,
    getContributionList,
 } from "../../redux/slices/contributionSlice";
-import ContributionList from "./components/ContributionList";
+import ContributionList from "../../components/ContributionList/ContributionList";
 import useRedux from "../../hooks/useRedux";
 import { RootState } from "../../redux/store";
 
@@ -12,7 +12,7 @@ const ContributionCategory = () => {
    const { dispatch, appSelector } = useRedux();
    const { faculty } = appSelector((state: RootState) => state.faculty);
    const { category } = useParams<{ category: string }>() || "";
-   const { isError, message, isLoading, list, nextPageLink } = appSelector(
+   const { list, nextPageLink } = appSelector(
       (state: RootState) => state.contribution,
    );
 

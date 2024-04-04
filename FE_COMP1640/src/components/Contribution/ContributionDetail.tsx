@@ -1,10 +1,10 @@
 /* eslint-disable react/style-prop-object */
 import { RootState } from "../../redux/store";
-import Loading from "../../components/loading/Loading";
+import Loading from "../loading/Loading";
 import { getContributionById } from "../../redux/slices/contributionSlice";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import Button from "../../components/CustomButton";
+import Button from "../CustomButton";
 import useRedux from "../../hooks/useRedux";
 import { getFeedbackByContributionId } from "../../redux/slices/feedbackSlide";
 

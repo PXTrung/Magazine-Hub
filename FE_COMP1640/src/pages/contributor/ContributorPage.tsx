@@ -2,19 +2,18 @@
 import React, { useEffect } from "react";
 import useRedux from "../../hooks/useRedux";
 import { getContributionListWithToken } from "../../redux/slices/contributionSlice";
-import ContributionList from "../contribution/components/ContributionList";
+import ContributionList from "../../components/ContributionList/ContributionList";
 
 const ContributorPage = () => {
   const { appSelector, dispatch } = useRedux();
   const { userInfor } = appSelector((state) => state.auth);
   const { list } = appSelector((state) => state.contribution);
 
-  //=> Không cần filter theo email của contributor vì BE tự trả về các record liên quan
-  useEffect(() => {
-    dispatch(
-      getContributionListWithToken({ filters: { email: userInfor?.email } })
-    );
-  }, [dispatch, userInfor]);
+   useEffect(() => {
+      dispatch(
+         getContributionListWithToken({ filters: { email: userInfor?.email } }),
+      );
+   }, [dispatch]);
 
   return (
     <div>

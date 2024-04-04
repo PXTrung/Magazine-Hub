@@ -1,10 +1,11 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { PATHS } from "../constants/path";
 // import Loading from "../components/loading/Loading";
 import useRedux from "../hooks/useRedux";
 import { getCurrentUser } from "../redux/slices/authSlice";
+import Loading from "../components/loading/Loading";
 
 type ProtectedRouteTypes = {
    component?: React.ComponentType;
@@ -40,9 +41,15 @@ function ProtectedRoute({
          );
       }
    }
-
    // @ts-ignore
-   return <RouteComponent />;
+   // return (
+   //          <RouteComponent />
+   // );
+   return RouteComponent ? (
+      <Suspense fallback={<Loading />}>
+         <RouteComponent />
+      </Suspense>
+   ) : null;
 }
 
 export default ProtectedRoute;

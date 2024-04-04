@@ -18,7 +18,7 @@ const Home = lazy(() => import("../layouts/Home/index"));
 
 // Contribution
 const ContributionDetail = lazy(
-   () => import("../pages/contribution/ContributionDetail"),
+   () => import("../components/Contribution/ContributionDetail"),
 );
 const ContributionCategory = lazy(
    () => import("../pages/contribution/ContributionCategory"),
@@ -54,9 +54,11 @@ type LoadComponentProps = {
 
 const LazyLoadingComponent = ({ component: Component }: LoadComponentProps) => {
    return (
-      <Suspense fallback={<Loading />}>
-         <Component />
-      </Suspense>
+      <div>
+         <Suspense fallback={<Loading />}>
+            <Component />
+         </Suspense>
+      </div>
    );
 };
 
@@ -97,12 +99,14 @@ const contributionRoute = {
 
 const contributorRoute = {
    path: "contributor",
+   // element: <></>,
    children: [
       {
          path: "",
          element: <Navigate to={`${PATHS.CONTRIBUTION.IDENTITY}`} />,
       },
       {
+         index: true,
          path: PATHS.CONTRIBUTION.IDENTITY,
          element: <LazyLoadingComponent component={ContributorPage} />,
       },
@@ -152,11 +156,11 @@ export default function AllRoutes() {
       authRoute,
       contributionRoute,
       {
-         path: "",
+         path: "/",
          element: <LazyLoadingComponent component={Home} />,
          children: [
             {
-               path: "",
+               path: "/",
                element: <Navigate to={`${PATHS.HOME.IDENTITY}`} replace />,
             },
             {
@@ -168,7 +172,40 @@ export default function AllRoutes() {
       {
          path: "/",
          element: <ProtectedRoute component={RoleLayout} role="Contributor" />,
-         children: [contributorRoute],
+         children: [
+            {
+               path: PATHS.CONTRIBUTOR.IDENTITY,
+               children: [
+                  {
+                     path: "",
+                     element: (
+                        <Navigate to={`${PATHS.CONTRIBUTION.IDENTITY}`} />
+                     ),
+                  },
+                  {
+                     index: true,
+                     path: PATHS.CONTRIBUTION.IDENTITY,
+                     element: (
+                        <LazyLoadingComponent component={ContributorPage} />
+                     ),
+                  },
+                  {
+                     path: `${PATHS.CONTRIBUTION.IDENTITY}/${PATHS.CONTRIBUTION.DETAIL}`,
+                     element: (
+                        <LazyLoadingComponent
+                           component={ContributorDetailPage}
+                        />
+                     ),
+                  },
+                  {
+                     path: `${PATHS.CONTRIBUTION.CREATE}`,
+                     element: (
+                        <LazyLoadingComponent component={ContributionCreate} />
+                     ),
+                  },
+               ],
+            },
+         ],
       },
       {
          path: "/",
@@ -177,6 +214,7 @@ export default function AllRoutes() {
       },
       {
          path: "/",
+
          element: <ProtectedRoute component={RoleLayout} role="Manager" />,
          children: [managerRoute],
       },

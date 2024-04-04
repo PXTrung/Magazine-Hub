@@ -77,20 +77,19 @@ const UserInformation = ({ data }: UserInformationProps) => {
                               My account
                            </button>
                         </Menu.Item>
-                        {/* {matchingMenuItem && (
+                        {matchingMenuItem && (
                            <Menu.Item>
                               <Link
                                  to={
                                     location.state?.from ||
                                     `/${matchingMenuItem.path}`
                                  }
+                                 className="w-full pl-4 py-1 rounded text-left text-gray-700 hover:text-gray-900 hover:bg-slate-100 transition-all duration-150"
                               >
-                                 <button className="w-full pl-4 py-1 rounded text-left text-gray-700 hover:text-gray-900 hover:bg-slate-100 transition-all duration-150">
-                                    {matchingMenuItem.lable}
-                                 </button>
+                                 {matchingMenuItem.lable}
                               </Link>
                            </Menu.Item>
-                        )} */}
+                        )}
                         <Menu.Item>
                            <button
                               className="w-full pl-4 py-1 rounded text-left text-gray-700 hover:text-gray-900 hover:bg-slate-100 transition-all duration-150"
