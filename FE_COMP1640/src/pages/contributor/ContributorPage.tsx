@@ -5,26 +5,27 @@ import { getContributionListWithToken } from "../../redux/slices/contributionSli
 import ContributionList from "../contribution/components/ContributionList";
 
 const ContributorPage = () => {
-   const { appSelector, dispatch } = useRedux();
-   const { userInfor } = appSelector((state) => state.auth);
-   const { list } = appSelector((state) => state.contribution);
+  const { appSelector, dispatch } = useRedux();
+  const { userInfor } = appSelector((state) => state.auth);
+  const { list } = appSelector((state) => state.contribution);
 
-   useEffect(() => {
-      dispatch(
-         getContributionListWithToken({ filters: { email: userInfor?.email } }),
-      );
-   }, [dispatch, userInfor]);
+  //=> Không cần filter theo email của contributor vì BE tự trả về các record liên quan
+  useEffect(() => {
+    dispatch(
+      getContributionListWithToken({ filters: { email: userInfor?.email } })
+    );
+  }, [dispatch, userInfor]);
 
-   return (
-      <div>
-         <ContributionList
-            categoryName="My contribution"
-            data={list}
-            type="full"
-            for="user"
-         />
-      </div>
-   );
+  return (
+    <div>
+      <ContributionList
+        categoryName="My contribution"
+        data={list}
+        type="full"
+        for="user"
+      />
+    </div>
+  );
 };
 
 export default ContributorPage;
