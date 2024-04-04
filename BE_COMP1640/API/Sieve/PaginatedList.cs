@@ -13,7 +13,7 @@ public class PaginatedList<T>
     public string? NextPage { get; }
     public string? PreviousPage { get; }
 
-    public PaginatedList(IReadOnlyCollection<T> items, int count, int currentPage = 1, int pageSize = 20, string? nextPage = null, string? previousPage = null)
+    public PaginatedList(IReadOnlyCollection<T> items, int count, int currentPage = 1, int pageSize = 100, string? nextPage = null, string? previousPage = null)
     {
         CurrentPage = currentPage;
         TotalPages = (int)Math.Ceiling(count / (double)pageSize);
@@ -35,7 +35,7 @@ public class PaginatedList<T>
         items = sieveProcessor.Apply(sieveModel, items, applyFiltering: false, applySorting: false);
 
         var currentPage = sieveModel.Page ?? 1;
-        var pageSize = sieveModel.PageSize ?? 10;
+        var pageSize = sieveModel.PageSize ?? 100;
         var baseUrl = $"{request.Scheme}://{request.Host}{request.Path}";
 
         var queryString = GetQueryString(request.Query);
