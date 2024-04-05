@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from "react";
 import useRedux from "../../hooks/useRedux";
 import { getContributionListWithToken } from "../../redux/slices/contributionSlice";
-import Table from "../../components/ContributionTable/Table";
 import { getPeriod } from "../../redux/slices/periodSlide";
 import { RootState } from "../../redux/store";
+import { useLocation } from "react-router-dom";
+import Table from "./ContributionTable/Table";
 
 const status = [
   "All",
@@ -24,8 +25,9 @@ const ContributorPage = () => {
   const { appSelector, dispatch } = useRedux();
   const { userInfor } = appSelector((state) => state.auth);
   const { list } = appSelector((state) => state.contribution);
-  const { period } = appSelector((state: RootState) => state.period);
+  const { period } = appSelector((state) => state.period);
   const [filter, setFilter] = useState<IFilters>({ period: "", status: "" });
+  const location = useLocation();
 
   useEffect(() => {
     dispatch(
@@ -35,12 +37,14 @@ const ContributorPage = () => {
         pageSize: 10,
       })
     );
-  }, [dispatch]);
+  }, [dispatch, userInfor, location.pathname]);
 
   useEffect(() => {
     dispatch(
       getContributionListWithToken({
         filters: { status: filter.status, period: filter.period },
+        page: 1,
+        pageSize: 10,
       })
     );
   }, [filter]);

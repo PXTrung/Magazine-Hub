@@ -10,9 +10,8 @@ export default function formatDate(dateTimeString: string): string {
    const year = date.getFullYear();
    const hours = String(date.getHours()).padStart(2, "0");
    const minutes = String(date.getMinutes()).padStart(2, "0");
-   const seconds = String(date.getSeconds()).padStart(2, "0");
 
-   return `${day}/${month}/${year} - ${hours}:${minutes}:${seconds}`;
+   return `${day}/${month}/${year} | ${hours}:${minutes}`;
 }
 
 const dateTimeString = "2024-04-03T11:48:51.8182+00:00";

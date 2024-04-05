@@ -52,6 +52,8 @@ const ManagerPage = lazy(() => import("../pages/manager/Manager"));
 
 // Admin
 const AdminPage = lazy(() => import("../pages/admin/Admin"));
+const UserManage = lazy(() => import("../pages/admin/UserManage"));
+const PeriodPage = lazy(() => import("../pages/admin/Period"));
 
 // Layout
 const RoleLayout = lazy(() => import("../layouts/RolePage/index"));
@@ -153,8 +155,12 @@ const adminRoute = {
   path: "admin",
   children: [
     {
-      path: PATHS.COORDINATOR.IDENTITY,
-      element: <LazyLoadingComponent component={AdminPage} />,
+      path: PATHS.ADMIN.MANAGE_USER,
+      element: <LazyLoadingComponent component={UserManage} />,
+    },
+    {
+      path: PATHS.ADMIN.PERIOD,
+      element: <LazyLoadingComponent component={PeriodPage} />,
     },
   ],
 };
@@ -206,12 +212,6 @@ export default function AllRoutes() {
             {
               path: PATHS.CONTRIBUTION.CREATE,
               element: <LazyLoadingComponent component={PeriodSelector} />,
-            },
-            {
-              path: PATHS.CONTRIBUTION.FACULTY,
-              element: (
-                <LazyLoadingComponent component={ContributionsByFaculty} />
-              ),
             },
           ],
         },

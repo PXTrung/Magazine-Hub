@@ -1,6 +1,5 @@
-import React from "react";
-import { IContributionDetail } from "../../types/contribution.type";
 import Row from "./Row";
+import { IContributionDetail } from "../../../types/contribution.type";
 
 interface ITableProps {
    name: string;

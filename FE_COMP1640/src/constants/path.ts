@@ -32,6 +32,8 @@ const PATHS = {
    },
    ADMIN: {
       IDENTITY: "admin",
+      MANAGE_USER: "user",
+      PERIOD: "period",
    },
 };
 

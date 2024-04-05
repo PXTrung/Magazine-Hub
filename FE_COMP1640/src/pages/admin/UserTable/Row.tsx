@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React from "react";
-import { IContributionDetail } from "../../types/contribution.type";
+
 import clsx from "clsx";
-import Status from "../Contribution/Status";
-import formatDate from "../../utils/functions";
+import { IContributionDetail } from "../../../types/contribution.type";
+import formatDate from "../../../utils/functions";
+import Status from "../../../components/Contribution/Status";
 
 interface IRowProps {
    contribution?: IContributionDetail;

@@ -22,18 +22,11 @@ const variants = {
 };
 
 const Authentication = () => {
-   const dispatch = useDispatch<AppDispatch>();
+   // const dispatch = useDispatch<AppDispatch>();
    const [isLoading, setIsLoading] = useState(false);
    const { userInfor } = useSelector((state: RootState) => state.auth);
 
    const location = useLocation();
-
-   useEffect(() => {
-      setIsLoading(true);
-      setTimeout(() => {
-         setIsLoading(false);
-      }, 2000);
-   }, [location.pathname, dispatch]);
 
    const variant = useMemo(() => location.pathname, [location.pathname]);
 
