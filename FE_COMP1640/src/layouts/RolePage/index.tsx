@@ -18,7 +18,7 @@ const menu = {
     },
     {
       lable: "Contribute",
-      path: `contributor/${PATHS.CONTRIBUTION.PERIOD_SELECT}`,
+      path: `contributor/${PATHS.CONTRIBUTION.CREATE}`,
     },
   ],
   Admin: [{ lable: "Period", path: PATHS.CONTRIBUTION.IDENTITY }],

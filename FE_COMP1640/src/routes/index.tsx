@@ -196,11 +196,11 @@ export default function AllRoutes() {
               ),
             },
             {
-              path: `${PATHS.CONTRIBUTION.PERIOD_SELECT}/${PATHS.CONTRIBUTION.CREATE}/${PATHS.CONTRIBUTION.DETAIL}`,
+              path: `${PATHS.CONTRIBUTION.CREATE}/${PATHS.CONTRIBUTION.DETAIL}`,
               element: <LazyLoadingComponent component={ContributionCreate} />,
             },
             {
-              path: PATHS.CONTRIBUTION.PERIOD_SELECT,
+              path: PATHS.CONTRIBUTION.CREATE,
               element: <LazyLoadingComponent component={PeriodSelector} />,
             },
           ],
