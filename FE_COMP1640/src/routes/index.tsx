@@ -213,6 +213,12 @@ export default function AllRoutes() {
               path: PATHS.CONTRIBUTION.CREATE,
               element: <LazyLoadingComponent component={PeriodSelector} />,
             },
+            {
+              path: PATHS.CONTRIBUTION.FACULTY,
+              element: (
+                <LazyLoadingComponent component={ContributionsByFaculty} />
+              ),
+            },
           ],
         },
       ],

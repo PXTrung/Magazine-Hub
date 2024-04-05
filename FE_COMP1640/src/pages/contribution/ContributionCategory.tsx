@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {
-   getContributionByPagination,
-   getContributionList,
-} from "../../redux/slices/contributionSlice";
+import { getContributionList } from "../../redux/slices/contributionSlice";
 import ContributionList from "../../components/ContributionList/ContributionList";
 import useRedux from "../../hooks/useRedux";
 import { RootState } from "../../redux/store";
@@ -12,9 +9,7 @@ const ContributionCategory = () => {
    const { dispatch, appSelector } = useRedux();
    const { faculty } = appSelector((state: RootState) => state.faculty);
    const { category } = useParams<{ category: string }>() || "";
-   const { list, nextPageLink } = appSelector(
-      (state: RootState) => state.contribution,
-   );
+   const { list } = appSelector((state: RootState) => state.contribution);
 
    const facultyId = faculty.find((item) => item.name === category)?.id;
 
@@ -36,11 +31,6 @@ const ContributionCategory = () => {
             type="full"
             for="guest"
          />
-         <button
-            onClick={() => dispatch(getContributionByPagination(nextPageLink))}
-         >
-            Next Page
-         </button>
       </div>
    );
 };
