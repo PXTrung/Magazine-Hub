@@ -35,6 +35,9 @@ export default {
             email: userData[
                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
             ],
+            facultyId: userData[
+               "facultyId"
+            ],
          };
       } else return null;
    },

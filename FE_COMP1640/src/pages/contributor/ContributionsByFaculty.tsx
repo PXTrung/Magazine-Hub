@@ -85,7 +85,7 @@ const ContributionsByFaculty = () => {
             </select>
           </div>
         </div>
-        <Table data={list} name="My contribution" />
+        <Table data={list} name="Contribution" />
         <Pagination total={totalPage} current={current} setPage={changePage} />
       </div>
     </>
