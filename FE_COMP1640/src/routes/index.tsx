@@ -135,6 +135,10 @@ const coordinatorRoute = {
   path: "coordinator",
   children: [
     {
+      path: "",
+      element: <Navigate to={`${PATHS.COORDINATOR.IDENTITY}`} />,
+    },
+    {
       path: PATHS.COORDINATOR.IDENTITY,
       element: <LazyLoadingComponent component={CoordinatorPage} />,
     },
@@ -145,7 +149,11 @@ const managerRoute = {
   path: "manager",
   children: [
     {
-      path: PATHS.COORDINATOR.IDENTITY,
+      path: "",
+      element: <Navigate to={`${PATHS.MANAGER.IDENTITY}`} />,
+    },
+    {
+      path: PATHS.MANAGER.IDENTITY,
       element: <LazyLoadingComponent component={ManagerPage} />,
     },
   ],

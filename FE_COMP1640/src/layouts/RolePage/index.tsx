@@ -34,6 +34,18 @@ const menu: Menu = {
       path: `${PATHS.CONTRIBUTOR.IDENTITY}/${PATHS.CONTRIBUTION.FACULTY}`,
     },
   ],
+  Coordinator: [
+    {
+      label: "All Contributions",
+      path: `${PATHS.COORDINATOR.IDENTITY}/${PATHS.COORDINATOR.IDENTITY}`,
+    },
+  ],
+  Manager: [
+    {
+      label: "All Contributions",
+      path: `${PATHS.MANAGER.IDENTITY}/${PATHS.MANAGER.IDENTITY}`,
+    },
+  ],
   Admin: [
     {
       label: "User",

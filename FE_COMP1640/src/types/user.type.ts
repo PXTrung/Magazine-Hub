@@ -8,6 +8,7 @@ export interface IUserInformation {
    lastName: string;
    role: string;
    email: string;
+   facultyId: string;
 }
 
 export interface IRegister {
