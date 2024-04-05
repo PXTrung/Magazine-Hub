@@ -17,7 +17,7 @@ const PeriodSelector = () => {
     <div className="flex flex-row mt-8 p-4 w-full">
       <div>
         {periods.period.map((p) => (
-          <Link to={`${PATHS.CONTRIBUTION.CREATE}/${p.id}`}>
+          <Link to={`${p.id}`}>
             <button
               type="button"
               className="py-2 px-8 text-slate-200 rounded-lg bg-cyan-500 text-center ml-8"
