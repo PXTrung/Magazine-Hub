@@ -1,6 +1,7 @@
 ﻿using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.UpdateProfile;
+using Application.Features.Auth.Queries.GetSelfProfile;
 using Application.Features.Auth.Queries.ListRole;
 using Application.Features.Auth.Queries.ListUser;
 using Application.Features.Contributions.Commands.CreateContribution;
@@ -82,6 +83,15 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.Avatar.UrlFilePath));
 
         CreateMap<ApplicationRole, ListRoleDto>();
+
+        CreateMap<ApplicationUser, GetSelfProfileDto>()
+            .ForMember(dest => dest.FacultyName,
+                opt => opt.MapFrom(src => src.Faculty != null ? src.Faculty.Name : null))
+            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName))
+            .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Roles.FirstOrDefault().Name))
+            .ForMember(dest => dest.NumberOfContributions, opt => opt.MapFrom(src => src.Contributions.Count))
+            //.ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Roles.Select(r => r.Name).Aggregate((current, next) => current + ", " + next)))
+            .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.Avatar.UrlFilePath));
 
 
 
