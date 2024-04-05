@@ -6,6 +6,7 @@ using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.ResetPassword;
 using Application.Features.Auth.Commands.UpdateProfile;
 using Application.Features.Auth.Queries.GetResetPasswordOTP;
+using Application.Features.Auth.Queries.GetSelfProfile;
 using Application.Features.Auth.Queries.ListRole;
 using Application.Features.Auth.Queries.ListUser;
 using MediatR;
@@ -57,6 +58,18 @@ public class AuthController : ApiController
         var authResult = await _sender.Send(request);
 
         return authResult.Match(
+            value => base.Ok(value),
+            Problem);
+    }
+
+    [HttpGet]
+    [Route("SelfProfile")]
+    [Authorize]
+    public async Task<IActionResult> SelfProfile()
+    {
+        var result = await _sender.Send(new GetSelfProfileQuery());
+
+        return result.Match(
             value => base.Ok(value),
             Problem);
     }
