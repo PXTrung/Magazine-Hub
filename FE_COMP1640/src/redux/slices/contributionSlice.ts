@@ -76,6 +76,11 @@ export const getContributionList = createAsyncThunk(
          filter += (filter ? "," : "") + `periodId==${params.filters.period}`;
       }
 
+      // Thêm điều kiện nếu có period
+      if (params.filters?.search) {
+         filter += (filter ? "," : "") + `(title|description)@=*${params.filters.search}`;
+      }
+
       try {
          const res = await api.contribution.getContributionList(
             generateParams(
@@ -112,7 +117,7 @@ export const getContributionListWithToken = createAsyncThunk(
          filter += (filter ? "," : "") + `periodId==${params.filters.period}`;
       }
 
-      // Thêm điều kiện nếu có email 
+      // Thêm điều kiện nếu có email
       if (params.filters?.email) {
          filter +=
             (filter ? "," : "") + `createdByEmail==${params.filters.email}`;
@@ -124,26 +129,12 @@ export const getContributionListWithToken = createAsyncThunk(
                filter,
                params?.sorts,
                params?.page,
-               params.pageSize??100,
+               params.pageSize ?? 100,
             ),
          );
          return res.data;
       } catch (error: any) {
          rejectWithValue(error.response.data.title);
-      }
-   },
-);
-
-export const getContributionByPagination = createAsyncThunk(
-   "getContributionsByPagination",
-   async (endpoint: string, { rejectWithValue }) => {
-      try {
-         const res = await api.contribution.getContributionByPagination(
-            endpoint,
-         );
-         return res.data;
-      } catch (error: any) {
-         return rejectWithValue(error.response.data.title);
       }
    },
 );
@@ -155,8 +146,8 @@ interface ContributionState {
    status: string;
    list: IContributionData[];
    detail: IContributionDetail | null;
-   nextPageLink: string;
-   prevPageLink: string;
+   totalPage: number;
+   currentPage: number;
 }
 
 const initialState: ContributionState = {
@@ -166,8 +157,8 @@ const initialState: ContributionState = {
    status: "",
    list: [],
    detail: null,
-   nextPageLink: "",
-   prevPageLink: "",
+   totalPage: 1,
+   currentPage: 1,
 };
 
 const contributionSlice = createSlice({
@@ -198,7 +189,8 @@ const contributionSlice = createSlice({
             state.isLoading = false;
             state.message = "";
             state.list = action.payload?.items;
-            state.nextPageLink = action.payload?.nextPage;
+            state.totalPage = action.payload?.totalPages;
+            state.currentPage = action.payload?.currentPage;
          })
          .addCase(getContributionByStatus.rejected, (state, action) => {
             state.isLoading = false;
@@ -222,15 +214,6 @@ const contributionSlice = createSlice({
                (action.payload as string) || "An error occurred during login.";
          });
       builder
-         .addCase(getContributionByPagination.pending, (state) => {
-            state.isLoading = true;
-         })
-         .addCase(getContributionByPagination.fulfilled, (state, action) => {
-            state.isLoading = false;
-            state.detail = action.payload?.items;
-            state.nextPageLink = action.payload?.nextPage;
-         });
-      builder
          .addCase(getContributionList.pending, (state) => {
             state.isLoading = true;
          })
@@ -238,6 +221,8 @@ const contributionSlice = createSlice({
             state.isLoading = false;
             state.message = "";
             state.list = action.payload?.items;
+            state.totalPage = action.payload?.totalPages;
+            state.currentPage = action.payload?.currentPage;
          })
          .addCase(getContributionList.rejected, (state, action) => {
             state.isLoading = false;
@@ -253,6 +238,8 @@ const contributionSlice = createSlice({
             state.isLoading = false;
             state.message = "";
             state.list = action.payload?.items;
+            state.totalPage = action.payload?.totalPages;
+            state.currentPage = action.payload?.currentPage;
          })
          .addCase(getContributionListWithToken.rejected, (state, action) => {
             state.isLoading = false;
