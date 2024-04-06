@@ -18,3 +18,13 @@ export interface IRegister {
    firstName: string;
    lastName: string;
 }
+
+export interface IUserData {
+   id: string;
+   fullName: string;
+   email: string;
+   role: string;
+   facultyName: string;
+   facultyId: string;
+   avatarUrl: string;
+}

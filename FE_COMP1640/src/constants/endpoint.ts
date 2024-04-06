@@ -13,6 +13,7 @@ export const ENDPOINTS = {
    LOGIN: constructEndpoint("Auth/Login"),
    REGISTER: constructEndpoint("Auth/Register"),
    FALCUTY: constructEndpoint("Falcuties"),
+   ROLE: constructEndpoint("Auth/Roles"),
    CONTRIBUTION: {
       ALL: constructEndpoint(`Contributions`),
       FILTER: constructEndpoint(
@@ -25,5 +26,8 @@ export const ENDPOINTS = {
    },
    PERIOD: {
       ALL: constructEndpoint(`Periods`),
-   } 
+   },
+   USER: {
+      ALL: constructEndpoint(`Auth/Users`),
+   },
 };

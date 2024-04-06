@@ -2,8 +2,10 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../slices/authSlice";
 import contributionReducer from "../slices/contributionSlice";
 import facultyReducer from "../slices/facultySlice";
-import feedbackReducer from "../slices/feedbackSlide"
+import feedbackReducer from "../slices/feedbackSlide";
 import periodReducer from "../slices/periodSlide";
+import userReducer from "../slices/userSlice";
+import roleReducer from "../slices/roleSlice";
 
 const store = configureStore({
    reducer: {
@@ -12,6 +14,8 @@ const store = configureStore({
       faculty: facultyReducer,
       feedback: feedbackReducer,
       period: periodReducer,
+      user: userReducer,
+      role: roleReducer,
    },
 });
 

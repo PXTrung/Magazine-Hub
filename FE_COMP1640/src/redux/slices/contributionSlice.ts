@@ -4,21 +4,7 @@ import {
    IContributionData,
    IContributionDetail,
 } from "../../types/contribution.type";
-import { generateParams } from "../../services/modules/contribution";
-
-export type IFilter = {
-   facultyId?: string;
-   period?: string;
-   status?: string;
-   email?: string;
-   search?: string;
-};
-export interface IParams {
-   filters?: IFilter;
-   sorts?: string;
-   page?: number;
-   pageSize?: number;
-}
+import { IParamsSlice, generateParams } from "../../types/filter.type";
 
 export const contribute = createAsyncThunk(
    "contribute",
@@ -58,7 +44,7 @@ export const getContributionById = createAsyncThunk(
 
 export const getContributionList = createAsyncThunk(
    "getContributionList",
-   async (params: IParams, { rejectWithValue }) => {
+   async (params: IParamsSlice, { rejectWithValue }) => {
       let filter = "";
 
       // Thêm điều kiện nếu có facultyId
@@ -76,9 +62,11 @@ export const getContributionList = createAsyncThunk(
          filter += (filter ? "," : "") + `periodId==${params.filters.period}`;
       }
 
-      // Thêm điều kiện nếu có period
+      // Thêm điều kiện nếu có search
       if (params.filters?.search) {
-         filter += (filter ? "," : "") + `(title|description)@=*${params.filters.search}`;
+         filter +=
+            (filter ? "," : "") +
+            `(title|description)@=*${params.filters.search}`;
       }
 
       try {
@@ -99,7 +87,7 @@ export const getContributionList = createAsyncThunk(
 
 export const getContributionListWithToken = createAsyncThunk(
    "getContributionListWithToken",
-   async (params: IParams, { rejectWithValue }) => {
+   async (params: IParamsSlice, { rejectWithValue }) => {
       let filter = "";
 
       // Thêm điều kiện nếu có facultyId

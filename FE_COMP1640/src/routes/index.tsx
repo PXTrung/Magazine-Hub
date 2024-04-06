@@ -47,7 +47,6 @@ const CoordinatorPage = lazy(() => import("../pages/coordinator/Coordinator"));
 const ManagerPage = lazy(() => import("../pages/manager/Manager"));
 
 // Admin
-const AdminPage = lazy(() => import("../pages/admin/Admin"));
 const UserManage = lazy(() => import("../pages/admin/UserManage"));
 const PeriodPage = lazy(() => import("../pages/admin/Period"));
 
@@ -148,8 +147,12 @@ const managerRoute = {
 };
 
 const adminRoute = {
-   path: "admin",
+   path: PATHS.ADMIN.IDENTITY,
    children: [
+      {
+         path: "",
+         element: <Navigate to={`${PATHS.ADMIN.MANAGE_USER}`} />,
+      },
       {
          path: PATHS.ADMIN.MANAGE_USER,
          element: <LazyLoadingComponent component={UserManage} />,
