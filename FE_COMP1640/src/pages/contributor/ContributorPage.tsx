@@ -33,6 +33,7 @@ const ContributorPage = () => {
   const [filter, setFilter] = useState<IFilters>({ period: "", status: "" });
   const [current, setCurrent] = useState(1);
   const { period } = appSelector((state) => state.period);
+  const [sort, setSort] = useState("");
 
   console.log(currentPage);
 
@@ -48,11 +49,12 @@ const ContributorPage = () => {
           status: filter.status,
           period: filter.period,
         },
+        sorts: sort,
         page: current,
         pageSize: 10,
       })
     );
-  }, [dispatch, userInfor, location.pathname, filter, current]);
+  }, [dispatch, userInfor, location.pathname, filter, current, sort]);
 
   useEffect(() => {
     dispatch(getPeriod());
@@ -105,6 +107,34 @@ const ContributorPage = () => {
                   </option>
                 );
               })}
+            </select>
+          </div>
+
+          <div className="ml-3">
+            <label htmlFor="sort" className="text-sm text-gray-600">
+              Sort
+            </label>
+            <select
+              id="sort"
+              className="block appearance-none w-60 mt-[2px] h-9 bg-white border border-gray-400 px-2 rounded leading-tight focus:outline-none"
+              defaultValue={"All"}
+              onChange={(event) => {
+                setSort(event.target.value);
+                changePage(1);
+              }}
+            >
+              <option key={1} value="title">
+                title (ASCEND)
+              </option>
+              <option key={2} value="-title">
+                title (DESCEND)
+              </option>
+              <option key={3} value="createdAt">
+                Create Day (ASCEND)
+              </option>
+              <option key={4} value="-createdAt">
+                Create Day (DESCEND)
+              </option>
             </select>
           </div>
         </div>
