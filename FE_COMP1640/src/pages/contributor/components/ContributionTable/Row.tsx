@@ -2,18 +2,22 @@
 import React from "react";
 
 import clsx from "clsx";
-import { IContributionDetail } from "../../../types/contribution.type";
-import formatDate from "../../../utils/functions";
-import Status from "../../../components/Contribution/Status";
+import { IContributionDetail } from "../../../../types/contribution.type";
+import formatDate from "../../../../utils/functions";
+import Status from "../../../../components/Contribution/Status";
+import { Link } from "react-router-dom";
 
 interface IRowProps {
-   contribution?: IContributionDetail;
+   contribution: IContributionDetail;
    label?: string[];
 }
 
 const Row = ({ contribution, label }: IRowProps) => {
    return (
-      <div className="grid grid-cols-12 items-center gap-3 py-4 bg-white border-t border-t-slate-200">
+      <Link
+         to={contribution?.id}
+         className="grid grid-cols-12 items-center gap-3 py-4 bg-white border-t border-t-slate-200"
+      >
          <span className="col-span-3 truncate">{contribution?.title}</span>
          <span className="col-span-4 truncate">
             {contribution?.description}
@@ -30,7 +34,7 @@ const Row = ({ contribution, label }: IRowProps) => {
          <div className="h-full col-span-1 text-center truncate">
             <Status status={contribution?.status} />
          </div>
-      </div>
+      </Link>
    );
 };
 

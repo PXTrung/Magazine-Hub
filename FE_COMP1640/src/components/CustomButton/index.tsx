@@ -5,7 +5,7 @@ interface IButtonProps {
    label: string;
    type: "primary" | "secondary" | "border";
    style?: string;
-   onClick?: () => {};
+   onClick?: () => void;
 }
 
 const Button = ({ label, onClick, style, type }: IButtonProps) => {

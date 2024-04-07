@@ -62,7 +62,7 @@ const Authentication = () => {
                      <span>Back to home</span>
                   </div>
                </Link>
-               <div className="relative bg-white/80 my-16 p-8 rounded shadow-2xl w-[420px] z-20">
+               <div className="relative bg-white/70 my-16 p-8 rounded shadow-2xl w-[420px] z-20">
                   <Suspense fallback={loading()}>
                      <Outlet />
                   </Suspense>
@@ -80,7 +80,7 @@ const Authentication = () => {
                   </div>
                </div>
                <img
-                  src="https://fschool.fpt.edu.vn/wp-content/uploads/2024/03/FS-Thanh-Hoa-2048x1280.jpg"
+                  src="https://images.pexels.com/photos/2982449/pexels-photo-2982449.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                   alt=""
                   className="fixed w-screen h-screen top-0 left-0 object-cover bg-black/10 z-0"
                />

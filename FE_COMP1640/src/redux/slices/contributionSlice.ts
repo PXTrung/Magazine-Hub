@@ -3,6 +3,7 @@ import api from "../../services/api";
 import {
    IContributionData,
    IContributionDetail,
+   IUpdateContributionParams,
 } from "../../types/contribution.type";
 import { IParamsSlice, generateParams } from "../../types/filter.type";
 
@@ -11,6 +12,21 @@ export const contribute = createAsyncThunk(
    async (data: FormData, { rejectWithValue }) => {
       try {
          const res = await api.contribution.contribute(data);
+         return res.data;
+      } catch (error: any) {
+         return rejectWithValue(error.response.data.title);
+      }
+   },
+);
+
+export const updateContribution = createAsyncThunk(
+   "updateContribution",
+   async (payload: IUpdateContributionParams, { rejectWithValue }) => {
+      try {
+         const res = await api.contribution.updateContribution(
+            payload.data,
+            payload.id,
+         );
          return res.data;
       } catch (error: any) {
          return rejectWithValue(error.response.data.title);
@@ -161,9 +177,22 @@ const contributionSlice = createSlice({
          .addCase(contribute.fulfilled, (state, action) => {
             state.isLoading = false;
             state.message = action.payload.title;
-            console.log(action.payload);
          })
          .addCase(contribute.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message =
+               (action.payload as string) || "An error occurred during login.";
+         });
+      builder
+         .addCase(updateContribution.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(updateContribution.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.message = action.payload.title;
+         })
+         .addCase(updateContribution.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.message =

@@ -12,6 +12,7 @@ interface InputProps {
    disabled?: boolean;
    placeholder?: string;
    value?: string;
+   link?: string;
    style?: string;
    accept?: string;
 }
@@ -27,6 +28,7 @@ const Input = ({
    value,
    style,
    accept,
+   link,
 }: InputProps) => {
    const [inputValue, setInputValue] = useState(value);
    useEffect(() => {
@@ -42,7 +44,16 @@ const Input = ({
             >
                {label}
             </label>
-
+            {link && (
+               <a
+                  href={link}
+                  target="_blank"
+                  className="text-blue-600 text-base"
+                  rel="noreferrer"
+               >
+                  (Current image)
+               </a>
+            )}
             <input
                id={id}
                type={type}

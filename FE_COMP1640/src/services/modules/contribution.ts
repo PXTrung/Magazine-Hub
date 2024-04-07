@@ -40,4 +40,11 @@ export default {
          params,
       });
    },
+   updateContribution: async (data: FormData, id: string) => {
+      return await axios.put(`${ENDPOINTS.CONTRIBUTION.ALL}/${id}`, data, {
+         headers: {
+            Authorization: `Bearer ${userToken}`,
+         },
+      });
+   },
 };
