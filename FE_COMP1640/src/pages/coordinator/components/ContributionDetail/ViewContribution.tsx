@@ -6,7 +6,10 @@ import useRedux from "../../../../hooks/useRedux";
 import formatDate from "../../../../utils/functions";
 import Loading from "../../../../components/loading/Loading";
 import Button from "../../../../components/CustomButton";
-import { getContributionById } from "../../../../redux/slices/contributionSlice";
+import {
+   approve,
+   getContributionById,
+} from "../../../../redux/slices/contributionSlice";
 import FeedbackList from "./FeedbackList";
 import Status from "../../../../components/Contribution/Status";
 
@@ -18,6 +21,13 @@ const ViewContribution = () => {
    );
 
    let publishedDate = formatDate(detail?.lastModifiedAt as string);
+
+   const handleApproveContribution = (bool: boolean) => {
+      if (id) {
+         dispatch(getContributionById(id));
+         dispatch(approve({ id: id, approved: bool }));
+      }
+   };
 
    useEffect(() => {
       if (id) {
@@ -74,7 +84,24 @@ const ViewContribution = () => {
                      </a>
                   </div>
                </div>
-               <FeedbackList />
+               <div>
+                  <FeedbackList />
+                  {(detail?.status === "Processed" ||
+                     detail?.status === "Processing") && (
+                     <div className="w-full flex items-center">
+                        <Button
+                           label="Approve"
+                           type="primary"
+                           onClick={() => handleApproveContribution(true)}
+                        />
+                        <Button
+                           label="Reject"
+                           type="primary"
+                           onClick={() => handleApproveContribution(false)}
+                        />
+                     </div>
+                  )}
+               </div>
             </div>
          )}
 

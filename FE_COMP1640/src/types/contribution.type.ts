@@ -32,3 +32,8 @@ export interface IUpdateContributionParams {
    data: FormData;
    id: string;
 }
+
+export interface IApproval {
+   id: string;
+   approved: boolean;
+}

@@ -20,6 +20,7 @@ export const ENDPOINTS = {
          `Contributions?${PARAMETER.CONTRIBUTION_FILTER}`,
       ),
       BY_ID: constructEndpoint(`Contributions/${PARAMETER.ID}`),
+      APPROVED: constructEndpoint(`Contributions/Approval`),
    },
    FEEDBACK: {
       ALL: constructEndpoint(`Feedbacks`),

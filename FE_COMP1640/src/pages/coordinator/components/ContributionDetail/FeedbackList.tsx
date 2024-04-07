@@ -43,7 +43,7 @@ const FeedbackList = () => {
                />
                <Button label="Submit" type="primary" onClick={submitFeedback} />
             </div>
-            <div className="max-h-[500px] overflow-x-hidden overflow-y-scroll w-full flex flex-col gap-2 mb-4">
+            <div className="max-h-[480px] overflow-x-hidden overflow-y-scroll w-full flex flex-col gap-2 mb-4">
                {feedback?.map((feedback) => {
                   return <Feedback feedback={feedback} key={feedback.id} />;
                })}

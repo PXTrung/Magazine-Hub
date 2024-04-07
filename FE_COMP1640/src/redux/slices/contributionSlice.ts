@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
 import {
+   IApproval,
    IContributionData,
    IContributionDetail,
    IUpdateContributionParams,
@@ -9,12 +10,12 @@ import { IParamsSlice, generateParams } from "../../types/filter.type";
 
 export const contribute = createAsyncThunk(
    "contribute",
-   async (data: FormData, { rejectWithValue }) => {
+   async (payload: FormData, { rejectWithValue }) => {
       try {
-         const res = await api.contribution.contribute(data);
+         const res = await api.contribution.contribute(payload);
          return res.data;
       } catch (error: any) {
-         return rejectWithValue(error.response.data.title);
+         return rejectWithValue(error.response.payload.title);
       }
    },
 );
@@ -27,6 +28,18 @@ export const updateContribution = createAsyncThunk(
             payload.data,
             payload.id,
          );
+         return res.data;
+      } catch (error: any) {
+         return rejectWithValue(error.response.data.title);
+      }
+   },
+);
+
+export const approve = createAsyncThunk(
+   "approve",
+   async (payload: IApproval, { rejectWithValue }) => {
+      try {
+         const res = await api.contribution.approve(payload);
          return res.data;
       } catch (error: any) {
          return rejectWithValue(error.response.data.title);
@@ -193,6 +206,20 @@ const contributionSlice = createSlice({
             state.message = action.payload.title;
          })
          .addCase(updateContribution.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message =
+               (action.payload as string) || "An error occurred during login.";
+         });
+      builder
+         .addCase(approve.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(approve.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.message = action.payload.title;
+         })
+         .addCase(approve.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.message =
