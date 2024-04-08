@@ -124,7 +124,7 @@ public class ContributionsController : ApiController
     /// </summary>
     [HttpPut]
     [Route("Publishment")]
-    [Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Manager, Coordinator")]
     public async Task<IActionResult> PublishContribution([FromBody] PublishContributionCommand request)
     {
         var result = await _sender.Send(request);
