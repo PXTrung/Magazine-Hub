@@ -2,7 +2,7 @@
 import axios from "axios";
 import { ENDPOINTS } from "../../constants/endpoint";
 import { IParamsAxios } from "../../types/filter.type";
-import { IApproval } from "../../types/contribution.type";
+import { IApproval, IPublished } from "../../types/contribution.type";
 
 const userToken = sessionStorage.getItem("user-token");
 
@@ -50,6 +50,13 @@ export default {
    },
    approve: async (data: IApproval) => {
       return await axios.put(`${ENDPOINTS.CONTRIBUTION.APPROVED}`, data, {
+         headers: {
+            Authorization: `Bearer ${userToken}`,
+         },
+      });
+   },
+   publish: async (data: IPublished) => {
+      return await axios.put(`${ENDPOINTS.CONTRIBUTION.PUBLISHED}`, data, {
          headers: {
             Authorization: `Bearer ${userToken}`,
          },

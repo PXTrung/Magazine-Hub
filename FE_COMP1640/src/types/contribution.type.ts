@@ -37,3 +37,8 @@ export interface IApproval {
    id: string;
    approved: boolean;
 }
+
+export interface IPublished {
+   id: string;
+   published: boolean;
+}

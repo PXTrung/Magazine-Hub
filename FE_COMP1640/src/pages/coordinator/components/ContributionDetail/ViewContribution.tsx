@@ -9,6 +9,7 @@ import Button from "../../../../components/CustomButton";
 import {
    approve,
    getContributionById,
+   publish,
 } from "../../../../redux/slices/contributionSlice";
 import FeedbackList from "./FeedbackList";
 import Status from "../../../../components/Contribution/Status";
@@ -22,10 +23,17 @@ const ViewContribution = () => {
 
    let publishedDate = formatDate(detail?.lastModifiedAt as string);
 
-   const handleApproveContribution = (bool: boolean) => {
+   const handleApproveContribution = async (bool: boolean) => {
       if (id) {
-         dispatch(getContributionById(id));
-         dispatch(approve({ id: id, approved: bool }));
+         await dispatch(approve({ id: id, approved: bool }));
+         await dispatch(getContributionById(id));
+      }
+   };
+
+   const handlePublishContribution = async (bool: boolean) => {
+      if (id) {
+         await dispatch(publish({ id: id, published: bool }));
+         await dispatch(getContributionById(id));
       }
    };
 
@@ -84,7 +92,7 @@ const ViewContribution = () => {
                      </a>
                   </div>
                </div>
-               <div>
+               <div className="w-full">
                   <FeedbackList />
                   {(detail?.status === "Processed" ||
                      detail?.status === "Processing") && (
@@ -98,6 +106,20 @@ const ViewContribution = () => {
                            label="Reject"
                            type="primary"
                            onClick={() => handleApproveContribution(false)}
+                        />
+                     </div>
+                  )}
+                  {detail?.status === "Approved" && (
+                     <div className="w-full flex justify-evenly items-center">
+                        <Button
+                           label="Publish"
+                           type="primary"
+                           onClick={() => handlePublishContribution(true)}
+                        />
+                        <Button
+                           label="Reject"
+                           type="primary"
+                           onClick={() => handlePublishContribution(false)}
                         />
                      </div>
                   )}

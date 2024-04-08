@@ -4,6 +4,7 @@ import {
    IApproval,
    IContributionData,
    IContributionDetail,
+   IPublished,
    IUpdateContributionParams,
 } from "../../types/contribution.type";
 import { IParamsSlice, generateParams } from "../../types/filter.type";
@@ -40,6 +41,18 @@ export const approve = createAsyncThunk(
    async (payload: IApproval, { rejectWithValue }) => {
       try {
          const res = await api.contribution.approve(payload);
+         return res.data;
+      } catch (error: any) {
+         return rejectWithValue(error.response.data.title);
+      }
+   },
+);
+
+export const publish = createAsyncThunk(
+   "publish",
+   async (payload: IPublished, { rejectWithValue }) => {
+      try {
+         const res = await api.contribution.publish(payload);
          return res.data;
       } catch (error: any) {
          return rejectWithValue(error.response.data.title);
@@ -206,6 +219,20 @@ const contributionSlice = createSlice({
             state.message = action.payload.title;
          })
          .addCase(updateContribution.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message =
+               (action.payload as string) || "An error occurred during login.";
+         });
+      builder
+         .addCase(publish.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(publish.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.message = action.payload.title;
+         })
+         .addCase(publish.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.message =

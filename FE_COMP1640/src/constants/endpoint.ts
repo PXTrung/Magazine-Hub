@@ -21,6 +21,7 @@ export const ENDPOINTS = {
       ),
       BY_ID: constructEndpoint(`Contributions/${PARAMETER.ID}`),
       APPROVED: constructEndpoint(`Contributions/Approval`),
+      PUBLISHED: constructEndpoint(`Contributions/Publishment`),
    },
    FEEDBACK: {
       ALL: constructEndpoint(`Feedbacks`),

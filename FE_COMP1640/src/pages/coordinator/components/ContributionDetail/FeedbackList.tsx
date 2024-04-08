@@ -18,10 +18,10 @@ const FeedbackList = () => {
       setContent(e.target.value);
    };
 
-   const submitFeedback = () => {
+   const submitFeedback = async () => {
       if (id) {
-         dispatch(getFeedbackByContributionId(id));
-         dispatch(postFeedback({ content, contributionId: id }));
+         await dispatch(postFeedback({ content, contributionId: id }));
+         await dispatch(getFeedbackByContributionId(id));
       }
    };
 
@@ -37,13 +37,14 @@ const FeedbackList = () => {
             <div className="w-full flex flex-col gap-2 mb-1 border-b-2 border-gray-200 pb-4">
                <input
                   type="text"
+                  id="feedback"
                   placeholder="Your feedback"
-                  className="w-full h-10 px-4"
+                  className="w-full h-10 px-4 ring-0 outline-0"
                   onChange={(e) => handleOnchange(e)}
                />
                <Button label="Submit" type="primary" onClick={submitFeedback} />
             </div>
-            <div className="max-h-[480px] overflow-x-hidden overflow-y-scroll w-full flex flex-col gap-2 mb-4">
+            <div className="max-h-[400px] overflow-x-hidden overflow-y-scroll w-full flex flex-col gap-2 mb-4">
                {feedback?.map((feedback) => {
                   return <Feedback feedback={feedback} key={feedback.id} />;
                })}
