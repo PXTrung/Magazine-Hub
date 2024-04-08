@@ -1,4 +1,5 @@
 using API;
+using API.Middlewares;
 using Application;
 using Infrastructure;
 using Infrastructure.Persistence;
@@ -72,6 +73,7 @@ app.UseStaticFiles();
 app.UseCors();
 
 //app.UseMiddleware<VsTunnelMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
