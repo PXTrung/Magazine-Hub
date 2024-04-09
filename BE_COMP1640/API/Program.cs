@@ -14,11 +14,11 @@ builder.Services.AddPresentation(builder.Configuration);
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
-                      {
-                          policy.AllowAnyOrigin()
-                              .AllowAnyMethod()
-                              .AllowAnyHeader();
-                      });
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
 });
 
 // Add services to the container.
@@ -26,6 +26,8 @@ builder.Services.AddCors(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 using (var scope = app.Services.CreateScope())
 {
@@ -46,10 +48,10 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
+
 
 app.UseStaticFiles(new StaticFileOptions
 {
@@ -70,10 +72,15 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseStaticFiles();
+
+app.UseRouting();
+
 app.UseCors();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 //app.UseMiddleware<VsTunnelMiddleware>();
-app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 

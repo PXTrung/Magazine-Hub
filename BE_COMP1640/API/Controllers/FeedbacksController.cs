@@ -40,10 +40,10 @@ public class FeedbacksController : ApiController
     }
 
     /// <summary>
-    ///  [Coordinator, Contributor] Get a list of feedbacks
+    ///  [Coordinator, Contributor, Manager] Get a list of feedbacks
     /// </summary>
     [HttpGet]
-    [Authorize(Roles = "Contributor, Coordinator")]
+    [Authorize(Roles = "Contributor, Coordinator, Manager")]
     public async Task<IActionResult> ListFeedback([FromQuery] SieveModel sieveModel)
     {
         var result = await _sender.Send(new ListFeedbackQuery());
