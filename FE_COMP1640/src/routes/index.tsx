@@ -61,6 +61,10 @@ const CoordinatorDetailPage = lazy(
 
 // Manager
 const ManagerPage = lazy(() => import("../pages/manager/Manager"));
+const ManagerDetailPage = lazy(
+   () =>
+      import("../pages/manager/components/ContributionDetail/ViewContribution"),
+);
 
 // Admin
 const UserManage = lazy(() => import("../pages/admin/UserManage"));
@@ -119,8 +123,7 @@ const contributionRoute = {
 };
 
 const contributorRoute = {
-   path: "contributor",
-   // element: <></>,
+   path: PATHS.CONTRIBUTOR.IDENTITY,
    children: [
       {
          path: "",
@@ -136,40 +139,56 @@ const contributorRoute = {
          element: <LazyLoadingComponent component={ContributorDetailPage} />,
       },
       {
-         path: `${PATHS.CONTRIBUTION.CREATE}`,
+         path: `${PATHS.CONTRIBUTION.CREATE}/${PATHS.CONTRIBUTION.DETAIL}`,
          element: <LazyLoadingComponent component={ContributionCreate} />,
+      },
+      {
+         path: PATHS.CONTRIBUTION.CREATE,
+         element: <LazyLoadingComponent component={PeriodSelector} />,
+      },
+      {
+         path: PATHS.CONTRIBUTION.FACULTY,
+         element: <LazyLoadingComponent component={ContributionsByFaculty} />,
+      },
+      {
+         path: `${PATHS.CONTRIBUTION.FACULTY}/${PATHS.CONTRIBUTION.DETAIL}`,
+         element: <LazyLoadingComponent component={ContributionDetail} />,
       },
    ],
 };
 
 const coordinatorRoute = {
-   path: "coordinator",
+   path: PATHS.COORDINATOR.IDENTITY,
    children: [
       {
          path: "",
-         element: <Navigate to={`${PATHS.COORDINATOR.IDENTITY}`} />,
+         element: <Navigate to={`${PATHS.CONTRIBUTION.IDENTITY}`} />,
       },
       {
-         path: PATHS.COORDINATOR.IDENTITY,
+         path: PATHS.CONTRIBUTION.IDENTITY,
          element: <LazyLoadingComponent component={CoordinatorPage} />,
       },
       {
-         path: `${PATHS.COORDINATOR.IDENTITY}/${PATHS.CONTRIBUTION.DETAIL}`,
+         path: `${PATHS.CONTRIBUTION.IDENTITY}/${PATHS.CONTRIBUTION.DETAIL}`,
          element: <LazyLoadingComponent component={CoordinatorDetailPage} />,
       },
    ],
 };
 
 const managerRoute = {
-   path: "manager",
+   path: PATHS.MANAGER.IDENTITY,
    children: [
       {
          path: "",
-         element: <Navigate to={`${PATHS.MANAGER.IDENTITY}`} />,
+         element: <Navigate to={`${PATHS.CONTRIBUTION.IDENTITY}`} />,
       },
       {
-         path: PATHS.MANAGER.IDENTITY,
+         path: PATHS.CONTRIBUTION.IDENTITY,
          element: <LazyLoadingComponent component={ManagerPage} />,
+      },
+      {
+         path: `${PATHS.CONTRIBUTION.IDENTITY}/${PATHS.CONTRIBUTION.DETAIL}`,
+         element: <LazyLoadingComponent component={ManagerDetailPage} />,
       },
    ],
 };
@@ -213,60 +232,7 @@ export default function AllRoutes() {
       {
          path: "/",
          element: <ProtectedRoute component={RoleLayout} role="Contributor" />,
-         children: [
-            {
-               path: PATHS.CONTRIBUTOR.IDENTITY,
-               children: [
-                  {
-                     path: "",
-                     element: (
-                        <Navigate to={`${PATHS.CONTRIBUTION.IDENTITY}`} />
-                     ),
-                  },
-                  {
-                     index: true,
-                     path: PATHS.CONTRIBUTION.IDENTITY,
-                     element: (
-                        <LazyLoadingComponent component={ContributorPage} />
-                     ),
-                  },
-                  {
-                     path: `${PATHS.CONTRIBUTION.IDENTITY}/${PATHS.CONTRIBUTION.DETAIL}`,
-                     element: (
-                        <LazyLoadingComponent
-                           component={ContributorDetailPage}
-                        />
-                     ),
-                  },
-                  {
-                     path: `${PATHS.CONTRIBUTION.CREATE}/${PATHS.CONTRIBUTION.DETAIL}`,
-                     element: (
-                        <LazyLoadingComponent component={ContributionCreate} />
-                     ),
-                  },
-                  {
-                     path: PATHS.CONTRIBUTION.CREATE,
-                     element: (
-                        <LazyLoadingComponent component={PeriodSelector} />
-                     ),
-                  },
-                  {
-                     path: PATHS.CONTRIBUTION.FACULTY,
-                     element: (
-                        <LazyLoadingComponent
-                           component={ContributionsByFaculty}
-                        />
-                     ),
-                  },
-                  {
-                     path: `${PATHS.CONTRIBUTION.FACULTY}/${PATHS.CONTRIBUTION.DETAIL}`,
-                     element: (
-                        <LazyLoadingComponent component={ContributionDetail} />
-                     ),
-                  },
-               ],
-            },
-         ],
+         children: [contributorRoute],
       },
       {
          path: "/",

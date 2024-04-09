@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import Feedback from "../../../../components/Feedback";
-import useRedux from "../../../../hooks/useRedux";
+import Feedback from ".";
+import useRedux from "../../hooks/useRedux";
 import { useParams } from "react-router-dom";
-import { getFeedbackByContributionId } from "../../../../redux/slices/feedbackSlide";
+import { getFeedbackByContributionId } from "../../redux/slices/feedbackSlide";
 
 const FeedbackList = () => {
    const { dispatch, appSelector } = useRedux();

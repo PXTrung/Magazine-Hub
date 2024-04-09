@@ -3,7 +3,7 @@ import React from "react";
 
 interface IButtonProps {
    label: string;
-   type: "primary" | "secondary" | "border";
+   type: "primary" | "secondary" | "border" | "warning";
    style?: string;
    onClick?: () => void;
 }
@@ -17,6 +17,8 @@ const Button = ({ label, onClick, style, type }: IButtonProps) => {
             type === "secondary" && "bg-blue-100 text-blue-600",
             type === "border" &&
                "bg-transparent text-blue-700 border-2 border-blue-600 hover:bg-blue-600 hover:text-white ",
+            type === "warning" &&
+               "bg-transparent text-rose-700 border-2 border-rose-600 hover:bg-rose-600 hover:text-white ",
             style,
          )}
          onClick={onClick}

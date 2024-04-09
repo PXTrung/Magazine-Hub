@@ -11,8 +11,8 @@ import {
    getContributionById,
    publish,
 } from "../../../../redux/slices/contributionSlice";
-import FeedbackList from "./FeedbackList";
 import Status from "../../../../components/Contribution/Status";
+import FeedbackList from "../../../../components/Feedback/FeedbackList";
 
 const ViewContribution = () => {
    const { dispatch, appSelector } = useRedux();
@@ -92,50 +92,7 @@ const ViewContribution = () => {
                      </a>
                   </div>
                </div>
-               <div className="w-full">
-                  <FeedbackList
-                     period={detail?.periodId as string}
-                     status={detail?.status as string}
-                  />
-                  {(detail?.status === "Processed" ||
-                     detail?.status === "Processing") && (
-                     <div className="w-full flex items-center">
-                        <Button
-                           label="Approve"
-                           type="primary"
-                           onClick={() => handleApproveContribution(true)}
-                        />
-                        <Button
-                           label="Reject"
-                           type="warning"
-                           onClick={() => handleApproveContribution(false)}
-                        />
-                     </div>
-                  )}
-                  {detail?.status === "Approved" && (
-                     <div className="w-full flex justify-evenly items-center">
-                        <Button
-                           label="Publish"
-                           type="primary"
-                           onClick={() => handlePublishContribution(true)}
-                        />
-                        <Button
-                           label="Reject"
-                           type="warning"
-                           onClick={() => handleApproveContribution(false)}
-                        />
-                     </div>
-                  )}
-                  {detail?.status === "Published" && (
-                     <div className="w-full flex justify-evenly items-center">
-                        <Button
-                           label="Unpublish"
-                           type="warning"
-                           onClick={() => handlePublishContribution(false)}
-                        />
-                     </div>
-                  )}
-               </div>
+               <FeedbackList />
             </div>
          )}
 

@@ -8,7 +8,7 @@ import {
    updateContribution,
 } from "../../../../redux/slices/contributionSlice";
 import { getFeedbackByContributionId } from "../../../../redux/slices/feedbackSlide";
-import FeedbackList from "./FeedbackList";
+import FeedbackList from "../../../../components/Feedback/FeedbackList";
 import Status from "../../../../components/Contribution/Status";
 import { getPeriod } from "../../../../redux/slices/periodSlide";
 import clsx from "clsx";
@@ -46,7 +46,6 @@ const UpdateContribution = () => {
 
    const allowedStatuses = ["Approved", "Rejected", "Published"];
    const thisPeriod = period.find((p) => p.id === detail?.periodId);
-   const [formData, setFormData] = useState<FormData>(new FormData());
 
    const {
       register,

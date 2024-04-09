@@ -1,5 +1,5 @@
 import Row from "./Row";
-import { IContributionDetail } from "../../../types/contribution.type";
+import { IContributionDetail } from "../../../../types/contribution.type";
 
 interface ITableProps {
    name: string;

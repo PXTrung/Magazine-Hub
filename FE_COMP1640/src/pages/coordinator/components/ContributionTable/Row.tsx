@@ -14,7 +14,7 @@ const Row = ({ contribution, label }: IRowProps) => {
    return (
       <Link
          to={contribution?.id}
-         className="grid grid-cols-12 items-center gap-3 py-4 bg-white border-t border-t-slate-200"
+         className="grid grid-cols-12 items-center gap-3 py-4 bg-white border-t border-t-slate-200 hover:bg-slate-50 transition-all duration-150"
       >
          <span className="col-span-3 truncate">{contribution?.title}</span>
          <span className="col-span-4 truncate">
