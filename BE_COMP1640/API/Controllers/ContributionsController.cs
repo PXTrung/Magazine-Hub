@@ -140,6 +140,7 @@ public class ContributionsController : ApiController
     /// </summary>
     [HttpGet]
     [Route("ZipAllContributions")]
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> ZipAllContributions()
     {
         var result = await _sender.Send(new DownloadContributionQuery());
