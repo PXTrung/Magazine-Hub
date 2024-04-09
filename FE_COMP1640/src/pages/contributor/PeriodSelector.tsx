@@ -4,31 +4,41 @@ import { RootState } from "../../redux/store";
 import { getPeriod } from "../../redux/slices/periodSlide";
 import { Link } from "react-router-dom";
 import { PATHS } from "../../constants/path";
+import formatDate from "../../utils/functions";
 
 const PeriodSelector = () => {
-  const { dispatch, appSelector } = useRedux();
-  const periods = appSelector((state: RootState) => state.period);
+   const { dispatch, appSelector } = useRedux();
+   const periods = appSelector((state: RootState) => state.period);
 
-  useEffect(() => {
-    dispatch(getPeriod());
-  }, [dispatch]);
+   useEffect(() => {
+      dispatch(getPeriod());
+   }, [dispatch]);
 
-  return (
-    <div className="flex flex-row mt-8 p-4 w-full">
-      <div>
-        {periods.period.map((p) => (
-          <Link to={`${p.id}`}>
-            <button
-              type="button"
-              className="py-2 px-8 text-slate-200 rounded-lg bg-cyan-500 text-center ml-8"
-            >
-              {p.academicYear}
-            </button>
-          </Link>
-        ))}
+   return (
+      <div className="grid grid-cols-3 gap-3 mt-8 p-4 w-full">
+         {periods.period.map((p) => (
+            <Link to={`${p.id}`}>
+               <button
+                  type="button"
+                  className="py-4 px-8 text-gray-600 rounded-md bg-white text-center flex flex-col shadow hover:shadow-md transition-all duration-200"
+               >
+                  <div>
+                     <span className="font-medium mr-2">Academy year:</span>
+                     <span>{p.academicYear}</span>
+                  </div>
+                  <div>
+                     <span className="font-medium mr-2">First deadline:</span>
+                     <span>{formatDate(p.firstSubmissionDeadline)}</span>
+                  </div>
+                  <div>
+                     <span className="font-medium mr-2">Second deadline:</span>
+                     <span>{formatDate(p.secondSubmissionDeadline)}</span>
+                  </div>
+               </button>
+            </Link>
+         ))}
       </div>
-    </div>
-  );
+   );
 };
 
 export default PeriodSelector;

@@ -1,30 +1,10 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios";
 import { ENDPOINTS } from "../../constants/endpoint";
+import { IParamsAxios } from "../../types/filter.type";
+import { IApproval, IPublished } from "../../types/contribution.type";
 
 const userToken = sessionStorage.getItem("user-token");
-
-export interface IParams {
-   filters?: string;
-   sorts?: string;
-   page?: number;
-   pageSize?: number;
-   createByEmail?: string
-}
-
-export const generateParams = (
-   filters?: string,
-   sorts?: string,
-   page?: number,
-   pageSize?: number,
-) => {
-   return {
-      filters: filters || "",
-      sorts: sorts || "",
-      page: page || 1,
-      pageSize: pageSize || 10,
-   };
-};
 
 export default {
    contribute: async (data: FormData) => {
@@ -48,17 +28,46 @@ export default {
    getContributionByPagination: async (endpoint: string) => {
       return await axios.get(endpoint);
    },
-   getContributionList: async (params: IParams) => {
+   getContributionList: async (params: IParamsAxios) => {
       return await axios.get(ENDPOINTS.CONTRIBUTION.ALL, {
          params,
       });
    },
-   getContributionListWithToken: async (params: IParams) => {
+   getContributionListWithToken: async (params: IParamsAxios) => {
       return await axios.get(ENDPOINTS.CONTRIBUTION.ALL, {
          headers: {
             Authorization: `Bearer ${userToken}`,
          },
          params,
+      });
+   },
+   getZipAllContributions: async () => {
+      return await axios.get(ENDPOINTS.CONTRIBUTION.ZIP_ALL, {
+         headers: {
+            Authorization: `Bearer ${userToken}`,
+         },
+         responseType: "blob",
+      });
+   },
+   updateContribution: async (data: FormData, id: string) => {
+      return await axios.put(`${ENDPOINTS.CONTRIBUTION.ALL}/${id}`, data, {
+         headers: {
+            Authorization: `Bearer ${userToken}`,
+         },
+      });
+   },
+   approve: async (data: IApproval) => {
+      return await axios.put(`${ENDPOINTS.CONTRIBUTION.APPROVED}`, data, {
+         headers: {
+            Authorization: `Bearer ${userToken}`,
+         },
+      });
+   },
+   publish: async (data: IPublished) => {
+      return await axios.put(`${ENDPOINTS.CONTRIBUTION.PUBLISHED}`, data, {
+         headers: {
+            Authorization: `Bearer ${userToken}`,
+         },
       });
    },
 };

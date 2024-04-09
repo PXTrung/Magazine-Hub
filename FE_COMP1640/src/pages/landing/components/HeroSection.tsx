@@ -9,7 +9,7 @@ const HeroSection = () => {
       <>
          <div className="absolute w-full h-[480px] md:h-[600px] top-0 left-0 bg-black/60 z-10"></div>
          <img
-            src="https://fschool.fpt.edu.vn/wp-content/uploads/2024/03/FS-Thanh-Hoa-2048x1280.jpg"
+            src="https://images.pexels.com/photos/2982449/pexels-photo-2982449.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             alt=""
             className="absolute w-full h-[480px] md:h-[600px] top-0 left-0 object-cover bg-black/10 z-0"
          />

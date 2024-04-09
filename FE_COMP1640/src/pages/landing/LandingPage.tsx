@@ -3,7 +3,6 @@ import HeroSection from "./components/HeroSection";
 import { getContributionList } from "../../redux/slices/contributionSlice";
 import ContributionList from "../../components/ContributionList/ContributionList";
 import useRedux from "../../hooks/useRedux";
-import { getPeriod } from "../../redux/slices/periodSlide";
 
 const LandingPage = () => {
    const { dispatch, appSelector } = useRedux();

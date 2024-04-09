@@ -1,30 +1,58 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
 import {
+   IApproval,
    IContributionData,
    IContributionDetail,
+   IPublished,
+   IUpdateContributionParams,
 } from "../../types/contribution.type";
-import { generateParams } from "../../services/modules/contribution";
-
-export type IFilter = {
-   facultyId?: string;
-   period?: string;
-   status?: string;
-   email?: string;
-   search?: string;
-};
-export interface IParams {
-   filters?: IFilter;
-   sorts?: string;
-   page?: number;
-   pageSize?: number;
-}
+import { IParamsSlice, generateParams } from "../../types/filter.type";
 
 export const contribute = createAsyncThunk(
    "contribute",
-   async (data: FormData, { rejectWithValue }) => {
+   async (payload: FormData, { rejectWithValue }) => {
       try {
-         const res = await api.contribution.contribute(data);
+         const res = await api.contribution.contribute(payload);
+         return res.data;
+      } catch (error: any) {
+         return rejectWithValue(error.response.payload.title);
+      }
+   },
+);
+
+export const updateContribution = createAsyncThunk(
+   "updateContribution",
+   async (payload: IUpdateContributionParams, { rejectWithValue }) => {
+      try {
+         const res = await api.contribution.updateContribution(
+            payload.data,
+            payload.id,
+         );
+         return res.data;
+      } catch (error: any) {
+         return rejectWithValue(error.response.data.title);
+      }
+   },
+);
+
+export const approve = createAsyncThunk(
+   "approve",
+   async (payload: IApproval, { rejectWithValue }) => {
+      try {
+         const res = await api.contribution.approve(payload);
+         return res.data;
+      } catch (error: any) {
+         return rejectWithValue(error.response.data.title);
+      }
+   },
+);
+
+export const publish = createAsyncThunk(
+   "publish",
+   async (payload: IPublished, { rejectWithValue }) => {
+      try {
+         const res = await api.contribution.publish(payload);
          return res.data;
       } catch (error: any) {
          return rejectWithValue(error.response.data.title);
@@ -58,7 +86,7 @@ export const getContributionById = createAsyncThunk(
 
 export const getContributionList = createAsyncThunk(
    "getContributionList",
-   async (params: IParams, { rejectWithValue }) => {
+   async (params: IParamsSlice, { rejectWithValue }) => {
       let filter = "";
 
       // Thêm điều kiện nếu có facultyId
@@ -76,9 +104,11 @@ export const getContributionList = createAsyncThunk(
          filter += (filter ? "," : "") + `periodId==${params.filters.period}`;
       }
 
-      // Thêm điều kiện nếu có period
+      // Thêm điều kiện nếu có search
       if (params.filters?.search) {
-         filter += (filter ? "," : "") + `(title|description)@=*${params.filters.search}`;
+         filter +=
+            (filter ? "," : "") +
+            `(title|description)@=*${params.filters.search}`;
       }
 
       try {
@@ -99,7 +129,7 @@ export const getContributionList = createAsyncThunk(
 
 export const getContributionListWithToken = createAsyncThunk(
    "getContributionListWithToken",
-   async (params: IParams, { rejectWithValue }) => {
+   async (params: IParamsSlice, { rejectWithValue }) => {
       let filter = "";
 
       // Thêm điều kiện nếu có facultyId
@@ -139,6 +169,16 @@ export const getContributionListWithToken = createAsyncThunk(
    },
 );
 
+export const getZipAll = createAsyncThunk("getZipAll", async () => {
+   try {
+      const res = await api.contribution.getZipAllContributions();
+      const url = URL.createObjectURL(res.data);
+
+      return url;
+   } catch (error: any) {
+      return error.response.data.title;
+   }
+});
 interface ContributionState {
    isLoading: boolean;
    isError: boolean;
@@ -148,6 +188,7 @@ interface ContributionState {
    detail: IContributionDetail | null;
    totalPage: number;
    currentPage: number;
+   zip: string;
 }
 
 const initialState: ContributionState = {
@@ -159,6 +200,7 @@ const initialState: ContributionState = {
    detail: null,
    totalPage: 1,
    currentPage: 1,
+   zip: "",
 };
 
 const contributionSlice = createSlice({
@@ -173,9 +215,50 @@ const contributionSlice = createSlice({
          .addCase(contribute.fulfilled, (state, action) => {
             state.isLoading = false;
             state.message = action.payload.title;
-            console.log(action.payload);
          })
          .addCase(contribute.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message =
+               (action.payload as string) || "An error occurred during login.";
+         });
+      builder
+         .addCase(updateContribution.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(updateContribution.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.message = action.payload.title;
+         })
+         .addCase(updateContribution.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message =
+               (action.payload as string) || "An error occurred during login.";
+         });
+      builder
+         .addCase(publish.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(publish.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.message = action.payload.title;
+         })
+         .addCase(publish.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message =
+               (action.payload as string) || "An error occurred during login.";
+         });
+      builder
+         .addCase(approve.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(approve.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.message = action.payload.title;
+         })
+         .addCase(approve.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.message =
@@ -242,6 +325,23 @@ const contributionSlice = createSlice({
             state.currentPage = action.payload?.currentPage;
          })
          .addCase(getContributionListWithToken.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message =
+               (action.payload as string) || "An error occurred during login.";
+         });
+      builder
+         .addCase(getZipAll.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(getZipAll.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.message = "";
+            console.log(action.payload);
+
+            state.zip = action.payload;
+         })
+         .addCase(getZipAll.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.message =

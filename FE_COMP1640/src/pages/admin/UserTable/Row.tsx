@@ -1,35 +1,34 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React from "react";
-
-import clsx from "clsx";
-import { IContributionDetail } from "../../../types/contribution.type";
-import formatDate from "../../../utils/functions";
-import Status from "../../../components/Contribution/Status";
+import { IUserData } from "../../../types/user.type";
 
 interface IRowProps {
-   contribution?: IContributionDetail;
+   user?: IUserData;
    label?: string[];
 }
 
-const Row = ({ contribution, label }: IRowProps) => {
+const Row = ({ user, label }: IRowProps) => {
    return (
       <div className="grid grid-cols-12 items-center gap-3 py-4 bg-white border-t border-t-slate-200">
-         <span className="col-span-3 truncate">{contribution?.title}</span>
-         <span className="col-span-4 truncate">
-            {contribution?.description}
-         </span>
+         <span className="col-span-3 truncate">{user?.fullName}</span>
+         <span className="col-span-3 truncate">{user?.email}</span>
          <img
-            src={contribution?.coverImageUrl}
-            alt="cover image"
-            className="col-span-1 truncate h-8 object-contain"
+            src={user?.avatarUrl}
+            alt="avatar"
+            className="col-span-2 truncate h-8 object-contain"
          />
 
-         <span className="col-span-3 truncate">
-            {formatDate(contribution?.createdAt || "")}
-         </span>
-         <div className="h-full col-span-1 text-center truncate">
-            <Status status={contribution?.status} />
+         <span className="col-span-2 truncate">{user?.facultyName || "-"}</span>
+         <div className="h-full col-span-1 text-left truncate text-xs font-medium text-gray-600 flex justify-start items-center">
+            {user?.role}
          </div>
+         <span className="col-span-1">
+            <label className="relative inline-flex cursor-pointer items-center">
+               <input id="switch" type="checkbox" className="peer sr-only" />
+               <label htmlFor="switch" className="hidden"></label>
+               {/* <div className="peer h-7 w-12 rounded-full border-2 bg-slate-200 after:absolute after:left-1 after:top-1 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-cyan-500 peer-checked:after:translate-x-full peer-checked:after:border-white"></div> */}
+               <div className="peer h-7 w-12 rounded-full border-2 after:absolute after:left-1 after:top-1 after:h-5 after:w-5 after:rounded-full after:border after:bg-white after:transition-all after:content-[''] bg-cyan-500 after:translate-x-full after:border-white"></div>
+            </label>
+         </span>
       </div>
    );
 };

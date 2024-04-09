@@ -13,17 +13,24 @@ export const ENDPOINTS = {
    LOGIN: constructEndpoint("Auth/Login"),
    REGISTER: constructEndpoint("Auth/Register"),
    FALCUTY: constructEndpoint("Falcuties"),
+   ROLE: constructEndpoint("Auth/Roles"),
    CONTRIBUTION: {
       ALL: constructEndpoint(`Contributions`),
       FILTER: constructEndpoint(
          `Contributions?${PARAMETER.CONTRIBUTION_FILTER}`,
       ),
       BY_ID: constructEndpoint(`Contributions/${PARAMETER.ID}`),
+      APPROVED: constructEndpoint(`Contributions/Approval`),
+      PUBLISHED: constructEndpoint(`Contributions/Publishment`),
+      ZIP_ALL: constructEndpoint(`Contributions/ZipAllContributions`),
    },
    FEEDBACK: {
       ALL: constructEndpoint(`Feedbacks`),
    },
    PERIOD: {
       ALL: constructEndpoint(`Periods`),
-   } 
+   },
+   USER: {
+      ALL: constructEndpoint(`Auth/Users`),
+   },
 };

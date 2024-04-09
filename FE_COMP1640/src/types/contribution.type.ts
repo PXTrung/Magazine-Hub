@@ -11,6 +11,7 @@ export interface IContributionData {
    documentUrl: string;
    facultyName: string;
    facultyId: string;
+   periodId: string;
 }
 
 export interface IContributionDetail {
@@ -24,4 +25,20 @@ export interface IContributionDetail {
    documentUrl: string;
    createdAt: string;
    lastModifiedAt: string;
+   periodId: string;
+}
+
+export interface IUpdateContributionParams {
+   data: FormData;
+   id: string;
+}
+
+export interface IApproval {
+   id: string;
+   approved: boolean;
+}
+
+export interface IPublished {
+   id: string;
+   published: boolean;
 }

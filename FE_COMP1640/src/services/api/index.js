@@ -4,6 +4,7 @@ import contribution from "../modules/contribution";
 import faculty from "../modules/faculty";
 import feedback from "../modules/feedback";
 import period from "../modules/period";
+import role from "../modules/role";
 
 export default {
    user,
@@ -11,4 +12,5 @@ export default {
    faculty,
    feedback,
    period,
+   role,
 };

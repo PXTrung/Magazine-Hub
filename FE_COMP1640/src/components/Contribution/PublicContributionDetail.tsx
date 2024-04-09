@@ -1,11 +1,13 @@
 /* eslint-disable react/style-prop-object */
 import { RootState } from "../../redux/store";
-import Loading from "../../components/loading/Loading";
+import Loading from "../loading/Loading";
 import { getContributionById } from "../../redux/slices/contributionSlice";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import Button from "../../components/CustomButton";
+import Button from "../CustomButton";
 import useRedux from "../../hooks/useRedux";
+import { getFeedbackByContributionId } from "../../redux/slices/feedbackSlide";
+import RelatedContributionList from "./RelatedContributionList";
 
 function formatDate(timestamp: string | undefined): string {
    if (!timestamp) {
@@ -29,18 +31,20 @@ function formatDate(timestamp: string | undefined): string {
    return formattedDate;
 }
 
-const ContributionDetail = () => {
+const PublicContributionDetail = () => {
    const { dispatch, appSelector } = useRedux();
    const { id } = useParams<{ id: string }>();
    const { isError, message, isLoading, detail } = appSelector(
       (state: RootState) => state.contribution,
    );
+   const { feedback } = appSelector((state: RootState) => state.feedback);
 
    let publishedDate = formatDate(detail?.lastModifiedAt);
 
    useEffect(() => {
       if (id) {
          dispatch(getContributionById(id));
+         dispatch(getFeedbackByContributionId(id));
       }
    }, [dispatch, id]);
 
@@ -51,9 +55,9 @@ const ContributionDetail = () => {
          ) : (
             <div
                className="w-full h-full flex-1 pt-5 md:pt-10 my-5 md:my-0
-                         bg-white md:bg-transparent px-32"
+                    bg-white md:bg-transparent md:grid md:grid-cols-3 md:gap-5"
             >
-               <div className="flex flex-col justify-center items-center lg:px-5">
+               <div className="flex flex-col justify-center items-center lg:px-5 md:col-span-2">
                   <div className="w-full lg:pt-0 border-b">
                      <div className="w-full flex justify-between items-center text-gray-400 font-normal text-sm">
                         <span className="font-medium">
@@ -77,15 +81,19 @@ const ContributionDetail = () => {
                      alt="cover-poster"
                      className="w-full object-cover"
                   />
-                  <div className="w-full mt-5 py-5 flex justify-between items-center md:justify-start text-gray-700 border-t">
+                  <a
+                     href={detail?.documentUrl}
+                     className="w-full mt-5 py-5 flex justify-between items-center md:justify-start text-gray-700 border-t"
+                  >
                      <span className="md:mr-8">Document:</span>
                      <Button
                         label="Download"
                         type="primary"
                         style="text-sm h-7"
                      />
-                  </div>
+                  </a>
                </div>
+               <RelatedContributionList />
             </div>
          )}
          {isError && <span>{message}</span>}
@@ -93,4 +101,4 @@ const ContributionDetail = () => {
    );
 };
 
-export default ContributionDetail;
+export default PublicContributionDetail;

@@ -1,9 +1,14 @@
 export interface IFeedback {
-    id: string;
-    content: string;
-    contributionId: string;
-    createByEmail: string;
-    createByFullName: string;
-    createAt: string;
-    lastModifiedAt: string;
+   id: string;
+   content: string;
+   contributionId: string;
+   createdByEmail: string;
+   createdByFullName: string;
+   createAt: string;
+   lastModifiedAt: string;
+}
+
+export interface IUploadFeedback {
+   content: string;
+   contributionId: string;
 }
