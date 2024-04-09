@@ -55,59 +55,61 @@ const ContributorPage = () => {
       <>
          {isLoading && <Loading />}
          <div className="w-full md:w-full lg:w-[960px] xl:w-[1200px] py-5 ">
-            <div className="w-full flex justify-start items-center pb-5">
-               <div className="mr-3">
-                  <label htmlFor="status" className="text-sm text-gray-600">
-                     Status
-                  </label>
-                  <select
-                     id="status"
-                     className="block appearance-none w-60 mt-[2px] h-9 bg-white border border-gray-400 px-2 rounded leading-tight focus:outline-none"
-                     defaultValue={"All"}
-                     onChange={(event) => {
-                        setFilter({ ...filter, status: event.target.value });
-                        changePage(1);
-                     }}
-                  >
-                     {status?.map((item) => {
-                        return (
-                           <option key={item} value={item}>
-                              {item}
-                           </option>
-                        );
-                     })}
-                  </select>
-               </div>
-               <div>
-                  <label htmlFor="period" className="text-sm text-gray-600">
-                     Period
-                  </label>
-                  <select
-                     id="period"
-                     className="block appearance-none w-60 mt-[2px] h-9 bg-white border border-gray-400 px-2 rounded leading-tight focus:outline-none"
-                     defaultValue={"All"}
-                     onChange={(event) => {
-                        setFilter({ ...filter, period: event.target.value });
-                        changePage(1);
-                     }}
-                  >
-                     {period?.map((item) => {
-                        return (
-                           <option key={item.id} value={item.id}>
-                              {item.academicYear}
-                           </option>
-                        );
-                     })}
-                  </select>
+            <div className="w-full flex justify-between items-end pb-5">
+               <div className="w-full flex justify-start items-center">
+                  <div className="mr-3">
+                     <label htmlFor="status" className="text-sm text-gray-600">
+                        Status
+                     </label>
+                     <select
+                        id="status"
+                        className="block appearance-none w-60 mt-[2px] h-9 bg-white border border-gray-400 px-2 rounded leading-tight focus:outline-none"
+                        defaultValue={"All"}
+                        onChange={(event) => {
+                           setFilter({ ...filter, status: event.target.value });
+                           changePage(1);
+                        }}
+                     >
+                        {status?.map((item) => {
+                           return (
+                              <option key={item} value={item}>
+                                 {item}
+                              </option>
+                           );
+                        })}
+                     </select>
+                  </div>
+                  <div>
+                     <label htmlFor="period" className="text-sm text-gray-600">
+                        Period
+                     </label>
+                     <select
+                        id="period"
+                        className="block appearance-none w-60 mt-[2px] h-9 bg-white border border-gray-400 px-2 rounded leading-tight focus:outline-none"
+                        defaultValue={"All"}
+                        onChange={(event) => {
+                           setFilter({ ...filter, period: event.target.value });
+                           changePage(1);
+                        }}
+                     >
+                        {period?.map((item) => {
+                           return (
+                              <option key={item.id} value={item.id}>
+                                 {item.academicYear}
+                              </option>
+                           );
+                        })}
+                     </select>
+                  </div>
                </div>
 
-               <div className="ml-3">
-                  <label htmlFor="sort" className="text-sm text-gray-600">
-                     Sort
+               <div className="flex justify-center items-center">
+                  <label htmlFor="sort" className="w-16 text-sm text-gray-600">
+                     Sort by:
                   </label>
                   <select
                      id="sort"
-                     className="block appearance-none w-60 mt-[2px] h-9 bg-white border border-gray-400 px-2 rounded leading-tight focus:outline-none"
+                     className="bg-transparent text-right appearance-none w-36 py-2 text-gray-600 font-medium border-0 rounded leading-tight focus:outline-none hover:cursor-pointer"
                      defaultValue={"All"}
                      onChange={(event) => {
                         setSort(event.target.value);
@@ -115,16 +117,16 @@ const ContributorPage = () => {
                      }}
                   >
                      <option key={1} value="title">
-                        title (ASCEND)
+                        Title (A-Z)
                      </option>
                      <option key={2} value="-title">
-                        title (DESCEND)
+                        Title (Z-A)
                      </option>
                      <option key={3} value="createdAt">
-                        Create Day (ASCEND)
+                        Created (Newest)
                      </option>
                      <option key={4} value="-createdAt">
-                        Create Day (DESCEND)
+                        Created (Oldest)
                      </option>
                   </select>
                </div>

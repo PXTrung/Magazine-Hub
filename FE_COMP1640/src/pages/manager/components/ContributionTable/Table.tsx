@@ -1,5 +1,7 @@
 import Row from "./Row";
 import { IContributionDetail } from "../../../../types/contribution.type";
+import useRedux from "../../../../hooks/useRedux";
+import Button from "../../../../components/CustomButton";
 
 interface ITableProps {
    name: string;
@@ -7,11 +9,15 @@ interface ITableProps {
 }
 
 const Table = ({ name, data }: ITableProps) => {
+   const { appSelector } = useRedux();
+   const { zip } = appSelector((state) => state.contribution);
    return (
       <>
          <div className="w-full bg-white flex flex-col text-sm px-6 py-6 rounded-lg drop-shadow-md">
-            <h2 className="text-lg font-bold text-blue-950 py-1">{name}</h2>
-
+            <div className="w-full flex justify-between items-center">
+               <h2 className="text-lg font-bold text-blue-950 py-1">{name}</h2>
+               
+            </div>
             <div className="grid grid-cols-12 gap-4 text-gray-400 font-medium py-5">
                <span className="col-span-3">Title</span>
                <span className="col-span-4">Description</span>

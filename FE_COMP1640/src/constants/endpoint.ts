@@ -22,6 +22,7 @@ export const ENDPOINTS = {
       BY_ID: constructEndpoint(`Contributions/${PARAMETER.ID}`),
       APPROVED: constructEndpoint(`Contributions/Approval`),
       PUBLISHED: constructEndpoint(`Contributions/Publishment`),
+      ZIP_ALL: constructEndpoint(`Contributions/ZipAllContributions`),
    },
    FEEDBACK: {
       ALL: constructEndpoint(`Feedbacks`),

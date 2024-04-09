@@ -103,7 +103,7 @@ const UploadForm = () => {
                id="DocumentFile"
                label="Document"
                type="file"
-               accept=".docx, .doc, .pdf"
+               accept=".pdf"
             ></Input>
             <div className="w-full flex justify-center mt-5">
                <button

@@ -169,6 +169,16 @@ export const getContributionListWithToken = createAsyncThunk(
    },
 );
 
+export const getZipAll = createAsyncThunk("getZipAll", async () => {
+   try {
+      const res = await api.contribution.getZipAllContributions();
+      const url = URL.createObjectURL(res.data);
+
+      return url;
+   } catch (error: any) {
+      return error.response.data.title;
+   }
+});
 interface ContributionState {
    isLoading: boolean;
    isError: boolean;
@@ -178,6 +188,7 @@ interface ContributionState {
    detail: IContributionDetail | null;
    totalPage: number;
    currentPage: number;
+   zip: string;
 }
 
 const initialState: ContributionState = {
@@ -189,6 +200,7 @@ const initialState: ContributionState = {
    detail: null,
    totalPage: 1,
    currentPage: 1,
+   zip: "",
 };
 
 const contributionSlice = createSlice({
@@ -313,6 +325,23 @@ const contributionSlice = createSlice({
             state.currentPage = action.payload?.currentPage;
          })
          .addCase(getContributionListWithToken.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message =
+               (action.payload as string) || "An error occurred during login.";
+         });
+      builder
+         .addCase(getZipAll.pending, (state) => {
+            state.isLoading = true;
+         })
+         .addCase(getZipAll.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.message = "";
+            console.log(action.payload);
+
+            state.zip = action.payload;
+         })
+         .addCase(getZipAll.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.message =

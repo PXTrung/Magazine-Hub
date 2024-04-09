@@ -145,7 +145,7 @@ const UpdateContribution = () => {
                   id="DocumentFile"
                   label="Document"
                   type="file"
-                  accept=".docx, .doc, .pdf"
+                  accept=".pdf"
                   link={detail?.documentUrl}
                   disabled={!disableUpdate()}
                ></Input>

@@ -41,6 +41,14 @@ export default {
          params,
       });
    },
+   getZipAllContributions: async () => {
+      return await axios.get(ENDPOINTS.CONTRIBUTION.ZIP_ALL, {
+         headers: {
+            Authorization: `Bearer ${userToken}`,
+         },
+         responseType: "blob",
+      });
+   },
    updateContribution: async (data: FormData, id: string) => {
       return await axios.put(`${ENDPOINTS.CONTRIBUTION.ALL}/${id}`, data, {
          headers: {
