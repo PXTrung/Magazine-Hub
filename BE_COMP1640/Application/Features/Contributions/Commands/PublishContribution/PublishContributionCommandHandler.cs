@@ -48,9 +48,9 @@ public class PublishContributionCommandHandler : IRequestHandler<PublishContribu
 
         var contributor = contribution.CreatedBy;
 
-        string emailSubject = $"Your contribution has been {action} by the Manager";
+        string emailSubject = $"Your contribution has been {action} by the Coordinator";
         string emailBody = $"Hi {contributor.FirstName} {contributor.LastName}," +
-                           $"Your contribution with the title: <strong>{contribution.Title}</strong> has been <strong>{action}</strong> by the <strong>Manager</strong>";
+                           $"Your contribution with the title: <strong>{contribution.Title}</strong> has been <strong>{action}</strong> by your faculty <strong>Coordinator</strong>";
 
         BackgroundJob.Enqueue(() => _emailService.SendEmailAsync(contributor.Email, emailSubject, emailBody));
 
