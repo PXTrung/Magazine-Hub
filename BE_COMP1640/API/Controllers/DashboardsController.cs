@@ -7,52 +7,22 @@ namespace API.Controllers
     [ApiController]
     public class DashboardsController : ApiController
     {
-        private readonly IDashboadService _dashboadService;
+        private readonly IDashboardService _dashboardService;
 
-        public DashboardsController(IDashboadService dashboadService)
+        public DashboardsController(IDashboardService dashboardService)
         {
-            _dashboadService = dashboadService;
+            _dashboardService = dashboardService;
         }
 
-        [HttpGet("GetFacultyRankByContribution")]
+        [HttpGet("Admin")]
         public async Task<IActionResult> GetFacultyContributionRank([FromQuery] Guid periodId)
         {
-            var result = await _dashboadService.GetFacultyRankByContribution(periodId);
+            var result = await _dashboardService.GetAdminDashboard(periodId);
 
             return result.Match(
                 value => base.Ok(value),
                 Problem);
         }
 
-        [HttpGet("NumberOfContributionByStatusWithinFaculty")]
-        public async Task<IActionResult> NumberOfContributionByStatusWithinFaculty(Guid periodId)
-        {
-            var result = await _dashboadService.NumberOfContributionByStatusWithinFaculty(periodId);
-
-
-            return result.Match(
-                value => base.Ok(value),
-                Problem);
-        }
-
-        [HttpGet("PercentageOfContributionByStatus")]
-        public async Task<IActionResult> PercentageOfContributionByStatus(Guid periodId)
-        {
-            var result = await _dashboadService.PercentageOfContributionByStatus(periodId);
-
-            return result.Match(
-                value => base.Ok(value),
-                Problem);
-        }
-
-        [HttpGet("PercentageOfFeedbackedContribution")]
-        public async Task<IActionResult> PercentageOfFeedbackedContribution(Guid periodId)
-        {
-            var result = await _dashboadService.PercentageOfFeedbackedContribution(periodId);
-
-            return result.Match(
-                value => base.Ok(value),
-                Problem);
-        }
     }
 }
