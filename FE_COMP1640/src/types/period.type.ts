@@ -19,3 +19,8 @@ export interface IUpdatePeriod{
     firstSubmissionDeadline: string;
     secondSubmissionDeadline: string;
 }
+
+export interface IUpdatePeriodParams {
+    data: FormData;
+    id: string;
+ }

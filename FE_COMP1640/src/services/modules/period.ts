@@ -8,16 +8,18 @@ export default {
     getPeriod: async() => {
         return await axios.get(ENDPOINTS.PERIOD.ALL);
     },
-    createPeriod: async(data: ICreatePeriod) => {
+    createPeriod: async(data: FormData) => {
         return await axios.post(ENDPOINTS.PERIOD.ALL, data, {
             headers: {
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${userToken}`,
             }
         })
     },
-    updatePeriod: async(data: IUpdatePeriod) => {
-        return await axios.put(ENDPOINTS.PERIOD.BY_ID, data, {
+    updatePeriod: async(data: FormData, id: string) => {
+        return await axios.put(`${ENDPOINTS.PERIOD.ALL}/${id}`, data, {
             headers: {
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${userToken}`,
             }
         })
