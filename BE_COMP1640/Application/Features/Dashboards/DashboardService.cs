@@ -1,12 +1,12 @@
 ﻿using Application.Common.Interfaces;
-using Application.Features.Dashboards.DTO;
+using Application.Features.Dashboards.DTO.AdminDashboardDTO;
 using Domain.Enums;
 using ErrorOr;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Dashboards
 {
-    public class DashboardService : IDashboadService
+    public class DashboardService : IDashboardService
     {
         private readonly IApplicationDbContext _context;
 
@@ -15,13 +15,30 @@ namespace Application.Features.Dashboards
             _context = context;
         }
 
-
-        public async Task<ErrorOr<IDictionary<string, int>>> GetFacultyRankByContribution(Guid periodId)
+        public async Task<ErrorOr<AdminDashboardDataDto>> GetAdminDashboard(Guid periodId)
         {
             var period = await _context.Periods.FirstOrDefaultAsync(p => p.Id == periodId);
 
             if (period == null) return Error.NotFound(description: "Period not found");
 
+            var facultyRankByContribution = await AdminFacultyRankByContribution(periodId);
+            var percentageOfContributionByStatus = await AdminPercentageOfContributionByStatus(periodId);
+            var percentageOfFeedbackedContribution = await AdminPercentageOfFeedbackedContribution(periodId);
+            var numberOfContributionByStatusWithinFaculty = await AdminNumberOfContributionByStatusWithinFaculty(periodId);
+
+            var dashboardData = new AdminDashboardDataDto()
+            {
+                FacultyRankByContribution = facultyRankByContribution,
+                PercentageOfContributionByStatus = percentageOfContributionByStatus,
+                PercentageOfFeedbackedContribution = percentageOfFeedbackedContribution,
+                NumberOfContributionByStatusWithinFaculty = numberOfContributionByStatusWithinFaculty
+            };
+
+            return dashboardData;
+        }
+
+        private async Task<IDictionary<string, int>> AdminFacultyRankByContribution(Guid periodId)
+        {
             var facultyContributions = await _context.Faculties
                 .Include(f => f.Members).ThenInclude(u => u.Contributions)
                 .Select(f => new
@@ -36,12 +53,8 @@ namespace Application.Features.Dashboards
             return facultyContributions;
         }
 
-        public async Task<ErrorOr<IDictionary<ContributionStatus, double>>> PercentageOfContributionByStatus(Guid periodId)
+        private async Task<IDictionary<ContributionStatus, double>> AdminPercentageOfContributionByStatus(Guid periodId)
         {
-            var period = await _context.Periods.FirstOrDefaultAsync(p => p.Id == periodId);
-
-            if (period == null) return Error.NotFound(description: "Period not found");
-
             var totalContributions = await _context.Contributions.CountAsync(c => c.PeriodId == periodId);
 
             var statusDistribution = await _context.Contributions
@@ -57,12 +70,8 @@ namespace Application.Features.Dashboards
             return statusDistribution;
         }
 
-        public async Task<ErrorOr<double>> PercentageOfFeedbackedContribution(Guid periodId)
+        private async Task<double> AdminPercentageOfFeedbackedContribution(Guid periodId)
         {
-            var period = await _context.Periods.FirstOrDefaultAsync(p => p.Id == periodId);
-
-            if (period == null) return Error.NotFound(description: "Period not found");
-
             var totalContributions = await _context.Contributions.CountAsync(c => c.PeriodId == periodId);
 
             var contributionsWithFeedback = await _context.Contributions
@@ -76,12 +85,8 @@ namespace Application.Features.Dashboards
 
 
 
-        public async Task<ErrorOr<List<NumberOfContributionByStatusWithinFacultyDto>>> NumberOfContributionByStatusWithinFaculty(Guid periodId)
+        private async Task<List<NumberOfContributionByStatusWithinFacultyDto>> AdminNumberOfContributionByStatusWithinFaculty(Guid periodId)
         {
-            var period = await _context.Periods.FirstOrDefaultAsync(p => p.Id == periodId);
-
-            if (period == null) return Error.NotFound(description: "Period not found");
-
             var facultyContributionStatus = await _context.Faculties
                 .Include(f => f.Members)
                 .ThenInclude(u => u.Contributions.Where(c => c.PeriodId == periodId))

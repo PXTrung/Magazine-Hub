@@ -1,4 +1,4 @@
-﻿namespace Application.Features.Dashboards.DTO
+﻿namespace Application.Features.Dashboards.DTO.AdminDashboardDTO
 {
     public class NumberOfContributionByStatusWithinFacultyDto
     {

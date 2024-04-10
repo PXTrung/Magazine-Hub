@@ -22,7 +22,7 @@ public static class ApplicationDependencyInjection
             cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
 
-        services.AddScoped<IDashboadService, DashboardService>();
+        services.AddScoped<IDashboardService, DashboardService>();
 
         return services;
     }
