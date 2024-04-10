@@ -29,6 +29,7 @@ export const ENDPOINTS = {
    },
    PERIOD: {
       ALL: constructEndpoint(`Periods`),
+      BY_ID: constructEndpoint(`Periods/${PARAMETER.ID}`)
    },
    USER: {
       ALL: constructEndpoint(`Auth/Users`),
