@@ -11,6 +11,10 @@ namespace Application.Features.Dashboards.DTO.AdminDashboardDTO
         public double PercentageOfFeedbackedContribution { get; set; }
 
         public List<NumberOfContributionByStatusWithinFacultyDto> NumberOfContributionByStatusWithinFaculty { get; set; }
+
+        public int TotalOfContribution { get; set; }
+
+        public int TotalOfPublishedContribution { get; set; }
     }
 
 

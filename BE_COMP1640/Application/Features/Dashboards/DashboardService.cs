@@ -21,17 +21,15 @@ namespace Application.Features.Dashboards
 
             if (period == null) return Error.NotFound(description: "Period not found");
 
-            var facultyRankByContribution = await AdminFacultyRankByContribution(periodId);
-            var percentageOfContributionByStatus = await AdminPercentageOfContributionByStatus(periodId);
-            var percentageOfFeedbackedContribution = await AdminPercentageOfFeedbackedContribution(periodId);
-            var numberOfContributionByStatusWithinFaculty = await AdminNumberOfContributionByStatusWithinFaculty(periodId);
 
             var dashboardData = new AdminDashboardDataDto()
             {
-                FacultyRankByContribution = facultyRankByContribution,
-                PercentageOfContributionByStatus = percentageOfContributionByStatus,
-                PercentageOfFeedbackedContribution = percentageOfFeedbackedContribution,
-                NumberOfContributionByStatusWithinFaculty = numberOfContributionByStatusWithinFaculty
+                FacultyRankByContribution = await AdminFacultyRankByContribution(periodId),
+                PercentageOfContributionByStatus = await AdminPercentageOfContributionByStatus(periodId),
+                PercentageOfFeedbackedContribution = await AdminPercentageOfFeedbackedContribution(periodId),
+                NumberOfContributionByStatusWithinFaculty = await AdminNumberOfContributionByStatusWithinFaculty(periodId),
+                TotalOfContribution = await AdminTotalOfContributions(periodId),
+                TotalOfPublishedContribution = await AdminTotalOfPublishedContributions(periodId),
             };
 
             return dashboardData;
@@ -102,6 +100,34 @@ namespace Application.Features.Dashboards
                 }).ToListAsync();
 
             return facultyContributionStatus;
+        }
+
+        private async Task<int> AdminTotalOfPublishedContributions(Guid periodId)
+        {
+            var publishedContributionsCount = await _context.Contributions
+                .CountAsync(c => c.PeriodId == periodId && c.Status == ContributionStatus.Published);
+
+            return publishedContributionsCount;
+        }
+
+        private async Task<int> AdminTotalOfContributions(Guid periodId)
+        {
+            var totalContributionsCount = await _context.Contributions
+                .CountAsync(c => c.PeriodId == periodId);
+
+            return totalContributionsCount;
+        }
+
+        private async Task<string> TopContributor(Guid periodId)
+        {
+            var topContributor = await _context.Users
+                .Include(u => u.Contributions)
+                .OrderByDescending(u => u.Contributions.Count)
+                .FirstOrDefaultAsync();
+
+            if (topContributor == null) return "There is no contributor in this period";
+
+            return topContributor.Email;
         }
     }
 }

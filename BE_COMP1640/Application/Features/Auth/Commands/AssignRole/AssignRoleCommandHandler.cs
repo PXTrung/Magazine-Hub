@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
-using AutoMapper;
 using Domain.Entities;
 using ErrorOr;
 using MediatR;
@@ -13,15 +12,12 @@ public class AssignRoleCommandHandler : IRequestHandler<AssignRoleCommand, Error
     private readonly IApplicationDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
-    private readonly IMapper _mapper;
 
     public AssignRoleCommandHandler(UserManager<ApplicationUser> userManager,
-        RoleManager<ApplicationRole> roleManager,
-        IMapper mapper)
+        RoleManager<ApplicationRole> roleManager)
     {
         _userManager = userManager;
         _roleManager = roleManager;
-        _mapper = mapper;
     }
 
 

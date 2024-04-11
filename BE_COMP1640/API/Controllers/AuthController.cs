@@ -1,6 +1,9 @@
 ﻿using API.Sieve;
 using Application.Features.Auth.Commands.AssignRole;
+using Application.Features.Auth.Commands.ChangeFaculty;
 using Application.Features.Auth.Commands.ConfirmEmail;
+using Application.Features.Auth.Commands.CreateContributorAccount;
+using Application.Features.Auth.Commands.CreateCoordinatorAccount;
 using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.ResetPassword;
@@ -176,12 +179,44 @@ public class AuthController : ApiController
     }
 
     /// <summary>
-    ///   [Admin]  Assign role to user
+    ///   [Coordinator]  Create account for Contributor
+    /// </summary>
+    [HttpPost]
+    [Route("CreateContributorAccount")]
+    [Authorize(Roles = "Coordinator")]
+    public async Task<IActionResult> CreateContributorAccount([FromBody] CreateContributorAccountCommand request)
+    {
+        var result = await _sender.Send(request);
+
+        return result.Match(
+            value => base.StatusCode(201, value),
+            Problem);
+    }
+
+    /// <summary>
+    ///   [Coordinator]  Create account for Coordinator
+    /// </summary>
+    [HttpPost]
+    [Route("CreateCoordinatorAccount")]
+    [Authorize(Roles = "Manager")]
+    public async Task<IActionResult> CreateCoordinatorAccount([FromBody] CreateCoordinatorAccountCommand request)
+    {
+        var result = await _sender.Send(request);
+
+        return result.Match(
+            value => base.StatusCode(201, value),
+            Problem);
+    }
+
+
+
+    /// <summary>
+    ///   [Admin]  Change role of user
     /// </summary>
     [HttpPut]
-    [Route("AssignRole")]
+    [Route("ChangeRole")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> AssignRole([FromBody] AssignRoleCommand request)
+    public async Task<IActionResult> ChangeRole([FromBody] AssignRoleCommand request)
     {
         var result = await _sender.Send(request);
 
@@ -189,4 +224,22 @@ public class AuthController : ApiController
             value => base.Ok(value),
             Problem);
     }
+
+
+    /// <summary>
+    ///   [Admin]  Change faculty of user
+    /// </summary>
+    [HttpPut]
+    [Route("ChangeFaculty")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> ChangeFaculty([FromBody] ChangeFacultyCommand request)
+    {
+        var result = await _sender.Send(request);
+
+        return result.Match(
+            value => base.Ok(value),
+            Problem);
+    }
+
+
 }
