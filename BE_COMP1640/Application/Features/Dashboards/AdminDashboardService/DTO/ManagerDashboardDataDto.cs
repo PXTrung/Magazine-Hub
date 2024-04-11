@@ -1,8 +1,8 @@
 ﻿using Domain.Enums;
 
-namespace Application.Features.Dashboards.DTO.AdminDashboardDTO
+namespace Application.Features.Dashboards.AdminDashboardService.DTO
 {
-    public class AdminDashboardDataDto
+    public class ManagerDashboardDataDto
     {
         public IDictionary<string, int> FacultyRankByContribution { get; set; }
 
