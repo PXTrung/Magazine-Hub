@@ -32,7 +32,7 @@ const shouldAppendToFormData = (
    return (
       data[key] !== "" &&
       data[key] !== undefined &&
-      data[key] !== detail[key.toLowerCase()]
+      data[key] !== detail[key?.toLowerCase()]
    );
 };
 
@@ -65,10 +65,10 @@ const UpdateContribution = () => {
          if (shouldAppendToFormData(formData, data, detail, "Description")) {
             formData.append("description", data?.Description);
          }
-         if (data?.ImageFile[0]) {
+         if (data?.ImageFile) {
             formData.append("imageFile", data?.ImageFile[0]);
          }
-         if (data?.DocumentFile[0]) {
+         if (data?.DocumentFile) {
             formData.append("documentFile", data?.DocumentFile[0]);
          }
 
@@ -136,6 +136,7 @@ const UpdateContribution = () => {
                   label="Image"
                   type="file"
                   accept="image/*"
+                  labelForLink="Current image"
                   link={detail?.coverImageUrl}
                   disabled={!disableUpdate()}
                ></Input>
@@ -147,6 +148,7 @@ const UpdateContribution = () => {
                   label="Document"
                   type="file"
                   accept=".pdf"
+                  labelForLink="Current document"
                   link={detail?.documentUrl}
                   disabled={!disableUpdate()}
                ></Input>
