@@ -60,7 +60,7 @@ const ContributorPage = () => {
 
    useEffect(() => {
       dispatch(getPeriod());
-   }, [filter]);
+   }, [dispatch]);
 
    return (
       <>
@@ -106,6 +106,9 @@ const ContributorPage = () => {
                            changePage(1);
                         }}
                      >
+                        <option key={"all"} value={""}>
+                           All
+                        </option>
                         {period?.map((item) => {
                            return (
                               <option key={item.id} value={item.id}>
