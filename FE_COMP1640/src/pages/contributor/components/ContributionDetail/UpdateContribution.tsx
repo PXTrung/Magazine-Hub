@@ -76,7 +76,8 @@ const UpdateContribution = () => {
             console.log(key, value);
          });
 
-         dispatch(updateContribution({ data: formData, id: id }));
+         await dispatch(updateContribution({ data: formData, id: id }));
+         dispatch(getContributionById(id));
       }
    };
 
