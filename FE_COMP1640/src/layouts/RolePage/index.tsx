@@ -50,7 +50,7 @@ const menu: Menu = {
       {
          id: 1,
          label: "All Contributions",
-         path: `${PATHS.MANAGER.IDENTITY}/${PATHS.MANAGER.IDENTITY}`,
+         path: `${PATHS.MANAGER.IDENTITY}/${PATHS.CONTRIBUTION.IDENTITY}`,
       },
    ],
    Admin: [
