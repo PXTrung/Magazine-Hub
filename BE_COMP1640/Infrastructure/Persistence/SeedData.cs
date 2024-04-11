@@ -47,7 +47,8 @@ public static class SeedData
                 Email = "admin@gmail.com",
                 FirstName = "Admin",
                 LastName = "Super",
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                IsInitialPasswordChanged = true
             };
 
             // Create Manager account
@@ -57,7 +58,8 @@ public static class SeedData
                 Email = "manager@gmail.com",
                 FirstName = "Manager",
                 LastName = "Super",
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                IsInitialPasswordChanged = true
             };
 
             await userManager.CreateAsync(admin, "Abcd@1234");
@@ -81,7 +83,10 @@ public static class SeedData
                 var faculties = new List<string> { "Graphic Design", "IT", "Business", "Medical" };
                 foreach (var facultyName in faculties)
                 {
-                    context.Faculties.Add(new Faculty { Name = facultyName });
+                    context.Faculties.Add(new Faculty
+                    {
+                        Name = facultyName
+                    });
                 }
             }
 
@@ -103,7 +108,8 @@ public static class SeedData
                     FirstName = $"{facultyName}",
                     LastName = "Coordinator",
                     FacultyId = context.Faculties.FirstOrDefault(f => f.Name == facultyName)?.Id,
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    IsInitialPasswordChanged = true
                 };
 
                 await userManager.CreateAsync(coordinator, "Abcd@1234");
@@ -132,7 +138,8 @@ public static class SeedData
                     FirstName = firstName,
                     LastName = "Contributor",
                     FacultyId = context.Faculties.FirstOrDefault(f => f.Name == facultyName)?.Id,
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    IsInitialPasswordChanged = true
                 };
 
                 await userManager.CreateAsync(contributor, "Abcd@1234");

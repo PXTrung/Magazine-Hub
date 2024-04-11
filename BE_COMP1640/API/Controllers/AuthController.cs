@@ -1,6 +1,7 @@
 ﻿using API.Sieve;
 using Application.Features.Auth.Commands.AssignRole;
 using Application.Features.Auth.Commands.ChangeFaculty;
+using Application.Features.Auth.Commands.ChangeInitialPassword;
 using Application.Features.Auth.Commands.ConfirmEmail;
 using Application.Features.Auth.Commands.CreateContributorAccount;
 using Application.Features.Auth.Commands.CreateCoordinatorAccount;
@@ -205,6 +206,20 @@ public class AuthController : ApiController
 
         return result.Match(
             value => base.StatusCode(201, value),
+            Problem);
+    }
+
+    /// <summary>
+    ///   [Coordinator]  For changing initial password of new user
+    /// </summary>
+    [HttpPost]
+    [Route("ChangeInitialPassword")]
+    public async Task<IActionResult> ChangeInitialPassword([FromBody] ChangeInitialPasswordCommand request)
+    {
+        var result = await _sender.Send(request);
+
+        return result.Match(
+            value => base.Ok(value),
             Problem);
     }
 

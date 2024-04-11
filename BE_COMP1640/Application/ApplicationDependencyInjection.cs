@@ -1,5 +1,6 @@
 ﻿using Application.Common.Behaviours;
 using Application.Features.Dashboards.AdminDashboardService;
+using Application.Features.Dashboards.CoordinatorDashboardService;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -22,7 +23,8 @@ public static class ApplicationDependencyInjection
             cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
 
-        services.AddScoped<IAdminDashboardService, AdminDashboardService>();
+        services.AddScoped<IManagerDashboardService, ManagerDashboardService>();
+        services.AddScoped<ICoordinatorDashboardService, CoordinatorDashboardService>();
 
         return services;
     }
