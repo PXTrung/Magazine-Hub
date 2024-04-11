@@ -1,4 +1,6 @@
-﻿using Application.Features.Auth.Commands.Login;
+﻿using Application.Features.Auth.Commands.CreateContributorAccount;
+using Application.Features.Auth.Commands.CreateCoordinatorAccount;
+using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.UpdateProfile;
 using Application.Features.Auth.Queries.GetSelfProfile;
@@ -69,6 +71,13 @@ public class MappingProfile : Profile
         CreateMap<RegisterCommand, ApplicationUser>()
             .ForMember(dest => dest.UserName, opt => opt.MapFrom((src => src.Email)));
 
+
+        CreateMap<CreateContributorAccountCommand, ApplicationUser>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
+
+        CreateMap<CreateCoordinatorAccountCommand, ApplicationUser>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
+
         CreateMap<UpdateProfileCommand, ApplicationUser>()
             .ForMember(dest => dest.Avatar, opt => opt.Ignore())
             .ForMember(dest => dest.LastName, opt => opt.Condition(src => !string.IsNullOrEmpty(src.LastName)))
@@ -92,6 +101,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.NumberOfContributions, opt => opt.MapFrom(src => src.Contributions.Count))
             //.ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Roles.Select(r => r.Name).Aggregate((current, next) => current + ", " + next)))
             .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.Avatar.UrlFilePath));
+
+
 
 
 
