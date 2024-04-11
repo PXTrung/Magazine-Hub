@@ -87,6 +87,7 @@ const periodSlide = createSlice({
          .addCase(updatePeriod.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isSucess = true;
+            state.isError = false;
             state.message = action.payload.title;
          })
          .addCase(updatePeriod.rejected, (state, action) => {
