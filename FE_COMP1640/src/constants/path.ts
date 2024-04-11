@@ -34,7 +34,8 @@ const PATHS = {
       IDENTITY: "admin",
       MANAGE_USER: "user",
       PERIOD: "period",
-      DETAIL: `${PARAMETER.ID}`
+      DETAIL: `${PARAMETER.ID}`,
+      DASHBOARD: "dashboard",
    },
 };
 
