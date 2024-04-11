@@ -64,6 +64,11 @@ const menu: Menu = {
          label: "Period",
          path: `${PATHS.ADMIN.IDENTITY}/${PATHS.ADMIN.PERIOD}`,
       },
+      {
+         id: 3,
+         label: "Dashboard",
+         path: `${PATHS.ADMIN.IDENTITY}/${PATHS.ADMIN.DASHBOARD}`,
+      },
    ],
 };
 
@@ -84,7 +89,7 @@ const RolePage = () => {
    return userInfor ? (
       <div className="flex flex-row justify-center items-center bg-slate-100">
          {/* Side bar */}
-         <div className="w-56 min-h-screen fixed top-0 left-0 bg-white border-r border-slate-100 flex flex-col items-center justify-start pt-5">
+         <div className="w-56 min-h-screen fixed z-50 top-0 left-0 bg-white border-r border-slate-100 flex flex-col items-center justify-start pt-5">
             <Link
                key={"home"}
                to={`/${PATHS.HOME.IDENTITY}`}
@@ -140,8 +145,8 @@ const RolePage = () => {
          </div>
          <div className="ml-56 w-full flex-1 flex flex-col justify-center items-start min-h-screen">
             {/* Top bar */}
-            <div className="h-20 bg-white w-full flex justify-between items-center px-10 shadow-sm">
-               <h1 className="text-gray-700 font-semibold text-lg">
+            <div className="h-20 pl-56 pr-12 fixed top-0 left-0 right-0 z-40 bg-white w-full flex justify-between items-center drop-shadow">
+               <h1 className="pl-12 text-gray-700 font-semibold text-lg">
                   {userInfor?.role}
                </h1>
                <div className="w-[400px]">
@@ -153,7 +158,7 @@ const RolePage = () => {
             </div>
 
             {/* Content */}
-            <div className="flex-1 flex w-full justify-center">
+            <div className="flex-1 flex w-full justify-center mt-20 overflow-x-scroll">
                <Suspense fallback={<Loading />}>
                   <Outlet />
                </Suspense>
