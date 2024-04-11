@@ -1,4 +1,5 @@
-﻿using Application.Features.Dashboards;
+﻿using Application.Features.Dashboards.AdminDashboardService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -7,17 +8,22 @@ namespace API.Controllers
     [ApiController]
     public class DashboardsController : ApiController
     {
-        private readonly IDashboardService _dashboardService;
+        private readonly IManagerDashboardService _dashboardService;
 
-        public DashboardsController(IDashboardService dashboardService)
+        public DashboardsController(IManagerDashboardService dashboardService)
         {
             _dashboardService = dashboardService;
         }
 
-        [HttpGet("Admin")]
-        public async Task<IActionResult> GetFacultyContributionRank([FromQuery] Guid periodId)
+
+        /// <summary>
+        ///   [Manager] Get dashboard data for manager
+        /// </summary>
+        [HttpGet("Manager")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> ManagerDashboard([FromQuery] Guid periodId)
         {
-            var result = await _dashboardService.GetAdminDashboard(periodId);
+            var result = await _dashboardService.GetManagerDashboard(periodId);
 
             return result.Match(
                 value => base.Ok(value),

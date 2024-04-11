@@ -1,28 +1,28 @@
 ﻿using Application.Common.Interfaces;
-using Application.Features.Dashboards.DTO.AdminDashboardDTO;
+using Application.Features.Dashboards.AdminDashboardService.DTO;
 using Domain.Enums;
 using ErrorOr;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Features.Dashboards
+namespace Application.Features.Dashboards.AdminDashboardService
 {
-    public class DashboardService : IDashboardService
+    public class ManagerDashboardService : IManagerDashboardService
     {
         private readonly IApplicationDbContext _context;
 
-        public DashboardService(IApplicationDbContext context)
+        public ManagerDashboardService(IApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<ErrorOr<AdminDashboardDataDto>> GetAdminDashboard(Guid periodId)
+        public async Task<ErrorOr<ManagerDashboardDataDto>> GetManagerDashboard(Guid periodId)
         {
             var period = await _context.Periods.FirstOrDefaultAsync(p => p.Id == periodId);
 
             if (period == null) return Error.NotFound(description: "Period not found");
 
 
-            var dashboardData = new AdminDashboardDataDto()
+            var dashboardData = new ManagerDashboardDataDto()
             {
                 FacultyRankByContribution = await AdminFacultyRankByContribution(periodId),
                 PercentageOfContributionByStatus = await AdminPercentageOfContributionByStatus(periodId),
@@ -61,7 +61,7 @@ namespace Application.Features.Dashboards
                 .Select(g => new
                 {
                     Status = g.Key,
-                    Percentage = ((double)g.Count() / totalContributions) * 100
+                    Percentage = (double)g.Count() / totalContributions * 100
                 })
                 .ToDictionaryAsync(g => g.Status, g => g.Percentage);
 
@@ -76,7 +76,7 @@ namespace Application.Features.Dashboards
                 .Include(c => c.Feedbacks)
                 .CountAsync(c => c.PeriodId == periodId && c.Feedbacks.Any());
 
-            var feedbackPercentage = ((double)contributionsWithFeedback / totalContributions) * 100;
+            var feedbackPercentage = (double)contributionsWithFeedback / totalContributions * 100;
 
             return feedbackPercentage;
         }
