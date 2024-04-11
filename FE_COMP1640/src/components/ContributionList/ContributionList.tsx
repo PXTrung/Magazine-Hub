@@ -14,36 +14,36 @@ interface IListProps {
 const ContributionList = (data: IListProps) => {
    return (
       <div className="w-full md:w-full lg:w-[960px] xl:w-[1200px] py-3 md:py-5 px-4">
-         {data.data.length > 0 && (
-            <>
-               <div className="w-full my-8 flex flex-row justify-between items-center">
-                  <h3 className="pl-2 pb-1 leading-4 tracking-wide text-lg text-blue-700 font-semibold border-l-4 border-blue-700">
-                     {data.categoryName}
-                  </h3>
-                  {data.type === "category" && (
-                     <Link
-                        to={`/${PATHS.CONTRIBUTION.IDENTITY}/${PATHS.CONTRIBUTION.CATEGORY}/${data.categoryName}`}
+         <div className="w-full my-8 flex flex-row justify-between items-center">
+            <h3 className="pl-2 pb-1 leading-4 tracking-wide text-lg text-blue-700 font-semibold border-l-4 border-blue-700">
+               {data.categoryName}
+            </h3>
+            {data.type === "category" && (
+               <Link
+                  to={`/${PATHS.CONTRIBUTION.IDENTITY}/${PATHS.CONTRIBUTION.CATEGORY}/${data.categoryName}`}
+               >
+                  <div className="flex flex-row justify-center items-center text-blue-500">
+                     <span className="pb-1 mr-2">Explore more</span>
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-5 h-5"
                      >
-                        <div className="flex flex-row justify-center items-center text-blue-500">
-                           <span className="pb-1 mr-2">Explore more</span>
-                           <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-5 h-5"
-                           >
-                              <path
-                                 strokeLinecap="round"
-                                 strokeLinejoin="round"
-                                 d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-                              />
-                           </svg>
-                        </div>
-                     </Link>
-                  )}
-               </div>
+                        <path
+                           strokeLinecap="round"
+                           strokeLinejoin="round"
+                           d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                        />
+                     </svg>
+                  </div>
+               </Link>
+            )}
+         </div>
+         {data.data.length > 0 ? (
+            <>
                <div className="w-full md:hidden grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 justify-between items-center">
                   {data.data.map((item) => (
                      <Contribution
@@ -81,6 +81,10 @@ const ContributionList = (data: IListProps) => {
                   ))}
                </div>
             </>
+         ) : (
+            <span className="text-center w-full text-gray-500">
+               No contribution found matching your search.
+            </span>
          )}
       </div>
    );

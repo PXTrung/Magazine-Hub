@@ -13,7 +13,7 @@ const Home = () => {
    useEffect(() => {
       dispatch(getCurrentUser());
       dispatch(getFaculty());
-   }, []);
+   }, [dispatch]);
 
    return (
       <div className="relative w-screen pr-[5px] min-h-screen bg-white md:bg-gray-100 flex flex-col justify-start items-center">
