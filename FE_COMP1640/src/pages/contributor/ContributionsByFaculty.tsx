@@ -8,8 +8,8 @@ import Loading from "../../components/loading/Loading";
 import Table from "./components/ContributionTable/Table";
 
 interface IFilters {
-   status: string | "";
-   period: string | "";
+  status: string | "";
+  period: string | "";
 }
 
 const ContributionsByFaculty = () => {
@@ -25,9 +25,9 @@ const ContributionsByFaculty = () => {
    const { period } = appSelector((state) => state.period);
    const [sort, setSort] = useState("");
 
-   const changePage = (page: number) => {
-      setCurrent(page);
-   };
+  const changePage = (page: number) => {
+    setCurrent(page);
+  };
 
    useEffect(() => {
       const query = searchParams.get("search") as string;
@@ -53,9 +53,9 @@ const ContributionsByFaculty = () => {
       searchParams,
    ]);
 
-   useEffect(() => {
-      dispatch(getPeriod());
-   }, [dispatch]);
+  useEffect(() => {
+    dispatch(getPeriod());
+  }, [dispatch]);
 
    return (
       <>

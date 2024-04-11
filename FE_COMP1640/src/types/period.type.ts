@@ -8,3 +8,19 @@ export interface IPeriod{
     createdAt: string;
     lastModifiedAt: string;
 }
+
+export interface ICreatePeriod{
+    academicYear: number;
+    firstSubmissionDeadline: string;
+    secondSubmissionDeadline: string;
+}
+
+export interface IUpdatePeriod{
+    firstSubmissionDeadline: string;
+    secondSubmissionDeadline: string;
+}
+
+export interface IUpdatePeriodParams {
+    data: FormData;
+    id: string;
+ }

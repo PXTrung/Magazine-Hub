@@ -12,8 +12,8 @@ import Table from "./components/ContributionTable/Table";
 const status = ["Approved", "Processing", "Processed", "Rejected", "Published"];
 
 interface IFilters {
-   status: string | "";
-   period: string | "";
+  status: string | "";
+  period: string | "";
 }
 
 const Coordinator = () => {
@@ -29,9 +29,9 @@ const Coordinator = () => {
    const { period } = appSelector((state) => state.period);
    const [sort, setSort] = useState("");
 
-   const changePage = (page: number) => {
-      setCurrent(page);
-   };
+  const changePage = (page: number) => {
+    setCurrent(page);
+  };
 
    useEffect(() => {
       const query = searchParams.get("search") as string;
@@ -59,9 +59,9 @@ const Coordinator = () => {
       searchParams,
    ]);
 
-   useEffect(() => {
-      dispatch(getPeriod());
-   }, [filter]);
+  useEffect(() => {
+    dispatch(getPeriod());
+  }, [filter]);
 
    return (
       <>

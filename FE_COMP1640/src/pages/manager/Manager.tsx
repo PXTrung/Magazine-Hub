@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from "react";
 import useRedux from "../../hooks/useRedux";
 import {
-   getContributionListWithToken,
-   getZipAll,
+  getContributionListWithToken,
+  getZipAll,
 } from "../../redux/slices/contributionSlice";
 import { getPeriod } from "../../redux/slices/periodSlide";
 import { useLocation, useSearchParams } from "react-router-dom";
@@ -15,8 +15,8 @@ import Button from "../../components/CustomButton";
 const status = ["Approved", "Processing", "Processed", "Rejected", "Published"];
 
 interface IFilters {
-   status: string | "";
-   period: string | "";
+  status: string | "";
+  period: string | "";
 }
 
 const Manager = () => {
@@ -32,9 +32,9 @@ const Manager = () => {
    const { period } = appSelector((state) => state.period);
    const [sort, setSort] = useState("");
 
-   const changePage = (page: number) => {
-      setCurrent(page);
-   };
+  const changePage = (page: number) => {
+    setCurrent(page);
+  };
 
    useEffect(() => {
       const query = searchParams.get("search") as string;
@@ -61,10 +61,10 @@ const Manager = () => {
       sort,
    ]);
 
-   useEffect(() => {
-      dispatch(getPeriod());
-      dispatch(getZipAll());
-   }, [dispatch, filter]);
+  useEffect(() => {
+    dispatch(getPeriod());
+    dispatch(getZipAll());
+  }, [dispatch, filter]);
 
    return (
       <>

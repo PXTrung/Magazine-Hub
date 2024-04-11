@@ -25,6 +25,10 @@ namespace Application.Features.Contributions.Queries.DownloadContribution
                 .Where(d => d.FileName != null)
                 .ToList();
 
+            if (!documentList.Any())
+                return Error.NotFound(
+                    description: "There is no any documents for download at this time!, please try again later");
+
             return await _fileService.ZipFilesAsync(documentList, "Documents");
         }
     }
