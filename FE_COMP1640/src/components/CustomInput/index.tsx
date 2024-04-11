@@ -15,6 +15,7 @@ interface InputProps {
    link?: string;
    style?: string;
    accept?: string;
+   labelForLink?: string;
 }
 const Input = ({
    label,
@@ -29,6 +30,7 @@ const Input = ({
    style,
    accept,
    link,
+   labelForLink,
 }: InputProps) => {
    const [inputValue, setInputValue] = useState(value);
    useEffect(() => {
@@ -51,7 +53,7 @@ const Input = ({
                   className="text-blue-600 text-base"
                   rel="noreferrer"
                >
-                  (Current image)
+                  ({labelForLink})
                </a>
             )}
             <input
