@@ -37,9 +37,12 @@ const Header = () => {
             <div className="hidden lg:block xl:w-1/4">
                <Searchbar />
             </div>
-            <div className="w-1/4 flex justify-center">
-               <span className="text-3xl font-bold">LOGO</span>
-            </div>
+            <Link
+               to={`/${PATHS.HOME.IDENTITY}`}
+               className="w-1/4 flex justify-center"
+            >
+               <img src="./assets/images/logo.jpg" alt="" className="h-16" />
+            </Link>
 
             <div className="lg:hidden">
                <svg

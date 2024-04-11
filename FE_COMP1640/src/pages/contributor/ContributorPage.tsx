@@ -4,7 +4,7 @@ import useRedux from "../../hooks/useRedux";
 import { getContributionListWithToken } from "../../redux/slices/contributionSlice";
 import { getPeriod } from "../../redux/slices/periodSlide";
 import { RootState } from "../../redux/store";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import Pagination from "../../components/Pagination/Pagination";
 import Loading from "../../components/loading/Loading";
 import Table from "./components/ContributionTable/Table";
@@ -18,6 +18,7 @@ interface IFilters {
 
 const ContributorPage = () => {
    const location = useLocation();
+   const [searchParams] = useSearchParams();
    const { appSelector, dispatch } = useRedux();
    const { userInfor } = appSelector((state) => state.auth);
    const { list, totalPage, isLoading } = appSelector(
@@ -33,23 +34,33 @@ const ContributorPage = () => {
    };
 
    useEffect(() => {
+      const query = searchParams.get("search") as string;
       dispatch(
          getContributionListWithToken({
             filters: {
                email: userInfor?.email,
                status: filter.status,
                period: filter.period,
+               search: query,
             },
             sorts: sort,
             page: current,
             pageSize: 10,
          }),
       );
-   }, [dispatch, userInfor, location.pathname, filter, current, sort]);
+   }, [
+      dispatch,
+      userInfor,
+      location.pathname,
+      filter,
+      current,
+      sort,
+      searchParams,
+   ]);
 
    useEffect(() => {
       dispatch(getPeriod());
-   }, [filter]);
+   }, [dispatch]);
 
    return (
       <>
@@ -70,6 +81,9 @@ const ContributorPage = () => {
                            changePage(1);
                         }}
                      >
+                        <option key={"all"} value={""}>
+                           All
+                        </option>
                         {status?.map((item) => {
                            return (
                               <option key={item} value={item}>
@@ -92,6 +106,9 @@ const ContributorPage = () => {
                            changePage(1);
                         }}
                      >
+                        <option key={"all"} value={""}>
+                           All
+                        </option>
                         {period?.map((item) => {
                            return (
                               <option key={item.id} value={item.id}>

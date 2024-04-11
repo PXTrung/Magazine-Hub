@@ -108,7 +108,7 @@ export const getContributionList = createAsyncThunk(
       if (params.filters?.search) {
          filter +=
             (filter ? "," : "") +
-            `(title|description)@=*${params.filters.search}`;
+            `(title|description|createdByFullName)@=*${params.filters.search}`;
       }
 
       try {
@@ -151,6 +151,12 @@ export const getContributionListWithToken = createAsyncThunk(
       if (params.filters?.email) {
          filter +=
             (filter ? "," : "") + `createdByEmail==${params.filters.email}`;
+      }
+
+      if (params.filters?.search) {
+         filter +=
+            (filter ? "," : "") +
+            `(title|description|createdByFullName)@=*${params.filters.search}`;
       }
 
       try {

@@ -90,9 +90,11 @@ const RolePage = () => {
                to={`/${PATHS.HOME.IDENTITY}`}
                className="w-1/4 flex justify-center mb-10"
             >
-               <div className="">
-                  <span className="text-3xl font-bold">LOGO</span>
-               </div>
+               <img
+                  src="./assets/images/logo.jpg"
+                  alt="LOGO"
+                  className="h-full w-full"
+               />
             </Link>
             <div className="flex flex-col justify-center items-start w-full px-6">
                {menu[userInfor.role]?.map((item) => {

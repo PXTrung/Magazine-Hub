@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { PATHS } from "../../../constants/path";
 
 const Footer = () => {
    return (
@@ -8,12 +10,15 @@ const Footer = () => {
       >
          <div className="grid grid-cols-4 container mx-auto max-w-7xl sm:px-6 text-gray-700 ">
             <div className="">
-               <div className="w-1/4 flex justify-center">
-                  <span className="text-3xl font-bold">LOGO</span>
-               </div>
+               <Link
+                  to={`/${PATHS.HOME.IDENTITY}`}
+                  className="w-1/4 flex justify-center"
+               >
+                  <img src="./assets/images/logo.jpg" alt="" className="h-16" />
+               </Link>
                <ul className="text-gray-700 flex flex-col ">
                   <li className="text-sm my-2 inline-block">
-                     Team of designers and developers in SGU
+                     Team of designers and developers in FPT
                   </li>
                   <li className="text-sm my-2 inline-block">
                      ADDRESS: 6688Princess Road, London, Greater London
@@ -22,7 +27,7 @@ const Footer = () => {
                      PHONE: (012) 800 456 789-987
                   </li>
                   <li className="text-sm my-2 inline-block">
-                     EMAIL: datnt.653@gmail.com
+                     EMAIL: example.653@gmail.com
                   </li>
                </ul>
             </div>
