@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from "react";
 import useRedux from "../../hooks/useRedux";
 import {
-  getContributionListWithToken,
-  getZipAll,
+   getContributionListWithToken,
+   getZipAll,
 } from "../../redux/slices/contributionSlice";
 import { getPeriod } from "../../redux/slices/periodSlide";
 import { useLocation, useSearchParams } from "react-router-dom";
@@ -15,8 +15,9 @@ import Button from "../../components/CustomButton";
 const status = ["Approved", "Processing", "Processed", "Rejected", "Published"];
 
 interface IFilters {
-  status: string | "";
-  period: string | "";
+   status: string | "";
+   period: string | "";
+   faculty: string | "";
 }
 
 const Manager = () => {
@@ -27,14 +28,19 @@ const Manager = () => {
    const { list, totalPage, isLoading, zip } = appSelector(
       (state) => state.contribution,
    );
-   const [filter, setFilter] = useState<IFilters>({ period: "", status: "" });
+   const [filter, setFilter] = useState<IFilters>({
+      period: "",
+      status: "",
+      faculty: "",
+   });
    const [current, setCurrent] = useState(1);
    const { period } = appSelector((state) => state.period);
+   const { faculty } = appSelector((state) => state.faculty);
    const [sort, setSort] = useState("");
 
-  const changePage = (page: number) => {
-    setCurrent(page);
-  };
+   const changePage = (page: number) => {
+      setCurrent(page);
+   };
 
    useEffect(() => {
       const query = searchParams.get("search") as string;
@@ -44,6 +50,7 @@ const Manager = () => {
             filters: {
                status: filter.status,
                period: filter.period,
+               facultyId: filter.faculty,
                search: query,
             },
             sorts: sort,
@@ -61,10 +68,10 @@ const Manager = () => {
       sort,
    ]);
 
-  useEffect(() => {
-    dispatch(getPeriod());
-    dispatch(getZipAll());
-  }, [dispatch, filter]);
+   useEffect(() => {
+      dispatch(getPeriod());
+      dispatch(getZipAll());
+   }, [dispatch, filter]);
 
    return (
       <>
@@ -116,6 +123,35 @@ const Manager = () => {
                            return (
                               <option key={item.id} value={item.id}>
                                  {item.academicYear}
+                              </option>
+                           );
+                        })}
+                     </select>
+                  </div>
+
+                  <div className="mr-5">
+                     <label htmlFor="period" className="text-sm text-gray-600">
+                        Faculty
+                     </label>
+                     <select
+                        id="period"
+                        className="block appearance-none w-60 mt-[2px] h-9 bg-white border border-gray-400 px-2 rounded leading-tight focus:outline-none"
+                        defaultValue={"All"}
+                        onChange={(event) => {
+                           setFilter({
+                              ...filter,
+                              faculty: event.target.value,
+                           });
+                           changePage(1);
+                        }}
+                     >
+                        <option key={"all"} value={""}>
+                           All
+                        </option>
+                        {faculty?.map((item) => {
+                           return (
+                              <option key={item.id} value={item.id}>
+                                 {item.name}
                               </option>
                            );
                         })}

@@ -95,7 +95,7 @@ const ViewContribution = () => {
             />
             {(detail?.status === "Processed" ||
               detail?.status === "Processing") && (
-              <div className="w-full flex justify-center items-center space-x-4">
+              <div className="w-full flex items-center">
                 <Button
                   label="Approve"
                   type="primary"

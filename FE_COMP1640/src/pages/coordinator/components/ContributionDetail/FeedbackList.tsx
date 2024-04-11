@@ -7,6 +7,7 @@ import {
   postFeedback,
 } from "../../../../redux/slices/feedbackSlide";
 import Button from "../../../../components/CustomButton";
+import { getContributionById } from "../../../../redux/slices/contributionSlice";
 
 interface IFeedbackListProps {
   status: string;
@@ -46,8 +47,9 @@ const FeedbackList = (contribution: IFeedbackListProps) => {
   const submitFeedback = async () => {
     if (id) {
       await dispatch(postFeedback({ content, contributionId: id }));
+      await dispatch(getFeedbackByContributionId(id));
+      await dispatch(getContributionById(id));
       clearContent();
-      return !isError && (await dispatch(getFeedbackByContributionId(id)));
     }
   };
 
@@ -59,6 +61,7 @@ const FeedbackList = (contribution: IFeedbackListProps) => {
 
   return (
     <div className="ml-4 w-[400px] overflow-hidden">
+      {/* {!disableUpdate() ? ( */}
       <div className="flex flex-col gap-2">
         <div className="w-full flex flex-col gap-2 mb-1 border-b-2 border-gray-200 pb-4">
           <input
@@ -77,6 +80,9 @@ const FeedbackList = (contribution: IFeedbackListProps) => {
           })}
         </div>
       </div>
+      {/* ) : (
+            "It is over second time line "
+         )} */}
     </div>
   );
 };

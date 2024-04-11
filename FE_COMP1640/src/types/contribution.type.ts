@@ -26,6 +26,8 @@ export interface IContributionDetail {
    createdAt: string;
    lastModifiedAt: string;
    periodId: string;
+   facultyName: string;
+   facultyId: string;
 }
 
 export interface IUpdateContributionParams {
