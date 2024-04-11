@@ -1,18 +1,19 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.Auth.Commands.ResetPassword
+namespace Application.Features.Auth.Commands.ChangeInitialPassword
 {
-    public class ResetPasswordCommandValidator : AbstractValidator<ResetPasswordCommand>
+    public class ChangeInitialPasswordCommandValidator : AbstractValidator<ChangeInitialPasswordCommand>
     {
-        public ResetPasswordCommandValidator()
+        public ChangeInitialPasswordCommandValidator()
         {
+
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("Email is required")
                 .EmailAddress().WithMessage("Email is not valid");
 
 
-            RuleFor(x => x.OTP)
-           .NotEmpty().WithMessage("OTP is required");
+            RuleFor(x => x.ChangeInitialPasswordToken)
+                .NotEmpty().WithMessage("Change Initial Password Token is required");
 
             RuleFor(x => x.NewPassword)
                 .NotEmpty().WithMessage("New password is required")

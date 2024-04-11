@@ -8,6 +8,8 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public string LastName { get; set; }
 
+    public bool IsInitialPasswordChanged { get; set; } = false;
+
     public ICollection<Contribution> Contributions { get; set; }
 
     public ICollection<Feedback> Feedbacks { get; set; }

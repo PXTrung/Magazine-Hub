@@ -29,6 +29,11 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, ErrorOr<Success
         if (!checkPasswordResult) return Error.Unauthorized(description: "Email or password wrong");
 
         if (user.EmailConfirmed == false) return Error.Unauthorized(description: "Please verify your email first!");
+        if (user.IsInitialPasswordChanged == false)
+        {
+            var changeInitialPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+            return new SuccessResult(title: "You must change your initial password first", data: new { ChangeInitialPasswordToken = changeInitialPasswordToken });
+        }
 
         var roles = await _userManager.GetRolesAsync(user);
 
