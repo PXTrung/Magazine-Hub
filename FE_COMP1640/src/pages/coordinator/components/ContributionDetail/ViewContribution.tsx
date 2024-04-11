@@ -119,11 +119,6 @@ const ViewContribution = () => {
                            type="primary"
                            onClick={() => handlePublishContribution(true)}
                         />
-                        <Button
-                           label="Reject"
-                           type="warning"
-                           onClick={() => handleApproveContribution(false)}
-                        />
                      </div>
                   )}
                   {detail?.status === "Published" && (
