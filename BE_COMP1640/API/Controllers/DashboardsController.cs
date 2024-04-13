@@ -21,7 +21,7 @@ namespace API.Controllers
 
 
         /// <summary>
-        ///   Get Manager dashboard
+        ///   Get Manager dashboard data
         /// </summary>
         [HttpGet("Manager")]
         [Authorize(Roles = "Manager")]
@@ -35,6 +35,10 @@ namespace API.Controllers
         }
 
 
+
+        /// <summary>
+        ///   Get Coordinator dashboard data
+        /// </summary>
         [HttpGet("Coordinator")]
         [Authorize(Roles = "Coordinator")]
         public async Task<IActionResult> CoordinatorDashboard([FromQuery] Guid periodId)

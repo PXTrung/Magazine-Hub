@@ -6,6 +6,8 @@ using Application.Features.Auth.Commands.UpdateProfile;
 using Application.Features.Auth.Queries.GetSelfProfile;
 using Application.Features.Auth.Queries.ListRole;
 using Application.Features.Auth.Queries.ListUser;
+using Application.Features.Comments.Commands.CreateComment;
+using Application.Features.Comments.Queries.ListComment;
 using Application.Features.Contributions.Commands.CreateContribution;
 using Application.Features.Contributions.Commands.UpdateContribution;
 using Application.Features.Contributions.Queries.GetContribution;
@@ -49,7 +51,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.DocumentUrl, opt => opt.MapFrom(src => src.Document.UrlFilePath))
             .ForMember(dest => dest.FacultyName,
                 opt => opt.MapFrom(src => src.CreatedBy.Faculty != null ? src.CreatedBy.Faculty.Name : null))
-            .ForMember(dest => dest.FacultyId, opt => opt.MapFrom(src => src.CreatedBy.FacultyId));
+            .ForMember(dest => dest.FacultyId, opt => opt.MapFrom(src => src.CreatedBy.FacultyId))
+            .ForMember(dest => dest.LoveCount, opt => opt.MapFrom(src => src.Ratings.Count));
 
         CreateMap<UpdateContributionCommand, Contribution>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -136,6 +139,13 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.CreatedByFullName, opt => opt.MapFrom(src => src.CreatedBy.FirstName + " " + src.CreatedBy.LastName));
 
 
+        //Mapping of Comment
+        CreateMap<CreateCommentCommand, Comment>();
+
+        CreateMap<Comment, ListCommentDto>()
+            .ForMember(dest => dest.CreatedByEmail, opt => opt.MapFrom(src => src.CreatedBy.Email))
+            .ForMember(dest => dest.CreatedByFullName,
+                opt => opt.MapFrom(src => src.CreatedBy.FirstName + " " + src.CreatedBy.LastName));
     }
 
 

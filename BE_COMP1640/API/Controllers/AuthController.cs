@@ -195,7 +195,7 @@ public class AuthController : ApiController
     }
 
     /// <summary>
-    ///   [Coordinator]  Create account for Coordinator
+    ///   [Manager]  Create account for Coordinator
     /// </summary>
     [HttpPost]
     [Route("CreateCoordinatorAccount")]

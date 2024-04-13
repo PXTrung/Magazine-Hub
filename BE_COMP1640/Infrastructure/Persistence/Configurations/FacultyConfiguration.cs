@@ -20,5 +20,6 @@ public class FacultyConfiguration : IEntityTypeConfiguration<Faculty>
 
 
 
+
     }
 }
