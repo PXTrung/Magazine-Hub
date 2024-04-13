@@ -11,15 +11,6 @@ export interface IUserInformation {
    facultyId: string;
 }
 
-export interface IRegister {
-   email: string;
-   facultyId: string;
-   password: string;
-   confirmPassword: string;
-   firstName: string;
-   lastName: string;
-}
-
 export interface IUserData {
    id: string;
    fullName: string;
@@ -28,4 +19,17 @@ export interface IUserData {
    facultyName: string;
    facultyId: string;
    avatarUrl: string;
+}
+
+export interface ICreateContributor{
+   email: string;
+   firstName: string;
+   lastName: string;
+}
+
+export interface ICreateCoordinator{
+   email: string;
+   firstName: string;
+   lastName: string;
+   facultyId: string;
 }

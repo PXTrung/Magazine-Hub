@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
-import { ILogin, IRegister, IUserInformation } from "../../types/user.type";
+import { ICreateContributor, ICreateCoordinator, ILogin, IUserInformation } from "../../types/user.type";
 import authUtils from "../../utils/auth";
 
 export const login = createAsyncThunk(
@@ -15,17 +15,24 @@ export const login = createAsyncThunk(
    },
 );
 
-export const createAccount = createAsyncThunk(
-   "createAccount",
-   async (data: IRegister, { rejectWithValue }) => {
-      try {
-         const res = await api.user.register(data);
-         return res.data;
-      } catch (error: any) {
-         return rejectWithValue(error.response.data.title);
-      }
-   },
-);
+
+export const createContributorAccount = createAsyncThunk("createContributorAccount", async(data: ICreateContributor, {rejectWithValue}) => {
+   try {
+      const res = await api.user.createContributor(data);
+      return res.data;
+   } catch (error: any) {
+      return rejectWithValue(error.response.data.title);
+   }
+});
+
+export const createCoordinatorAccount = createAsyncThunk("createCoordinatorAccount", async(data: ICreateCoordinator, {rejectWithValue}) => {
+   try {
+      const res = await api.user.createCoordinator(data);
+      return res.data;
+   } catch (error: any) {
+      return rejectWithValue(error.response.data.title);
+   }
+})
 
 interface UserLoginState {
    isLoading: boolean;
@@ -81,19 +88,31 @@ const authSlice = createSlice({
          state.message =
             (action.payload as string) || "An error occurred during login.";
       });
-      builder.addCase(createAccount.pending, (state) => {
+      builder.addCase(createContributorAccount.pending, (state) => {
          state.isLoading = true;
       });
-      builder.addCase(createAccount.fulfilled, (state, action) => {
+      builder.addCase(createContributorAccount.fulfilled, (state, action) => {
          state.isLoading = false;
-         state.message = "";
+         state.message = action.payload.title;
          state.registerResult = true;
       });
-      builder.addCase(createAccount.rejected, (state, action) => {
+      builder.addCase(createContributorAccount.rejected, (state, action) => {
          state.isLoading = false;
          state.isError = true;
-         state.message =
-            (action.payload as string) || "An error occurred during login.";
+         state.message = (action.payload as string) || "An error occurred during create user.";
+      });
+      builder.addCase(createCoordinatorAccount.pending, (state) => {
+         state.isLoading = true;
+      });
+      builder.addCase(createCoordinatorAccount.fulfilled, (state, action) => {
+         state.isLoading = false;
+         state.message = action.payload.title;
+         state.registerResult = true;
+      });
+      builder.addCase(createCoordinatorAccount.rejected, (state, action) => {
+         state.isLoading = false;
+         state.isError = true;
+         state.message = (action.payload as string) || "An error occurred during create user.";
       });
    },
 });

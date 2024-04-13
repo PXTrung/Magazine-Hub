@@ -26,9 +26,11 @@ const PATHS = {
    },
    COORDINATOR: {
       IDENTITY: "coordinator",
+      CREATE_ACCOUNT: "createAccount",
    },
    MANAGER: {
       IDENTITY: "manager",
+      CREATE_ACCOUNT: "createAccount",
    },
    ADMIN: {
       IDENTITY: "admin",
