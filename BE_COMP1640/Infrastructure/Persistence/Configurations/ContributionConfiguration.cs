@@ -27,6 +27,16 @@ public class ContributionConfiguration : IEntityTypeConfiguration<Contribution>
             .OnDelete(DeleteBehavior.NoAction);
 
 
+        builder.HasMany<Comment>(c => c.Comments)
+            .WithOne(c => c.Contribution)
+            .HasForeignKey(c => c.ContributionId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasMany<Rating>(c => c.Ratings)
+            .WithOne(c => c.Contribution)
+            .HasForeignKey(c => c.ContributionId)
+            .OnDelete(DeleteBehavior.NoAction);
+
         builder.HasOne<ApplicationUser>(c => c.CreatedBy)
             .WithMany(u => u.Contributions)
             .HasForeignKey(c => c.CreatedById)

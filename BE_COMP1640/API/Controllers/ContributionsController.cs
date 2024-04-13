@@ -3,6 +3,7 @@ using API.Sieve;
 using Application.Common.Interfaces;
 using Application.Features.Contributions.Commands.ApproveContribution;
 using Application.Features.Contributions.Commands.CreateContribution;
+using Application.Features.Contributions.Commands.LoveContribution;
 using Application.Features.Contributions.Commands.PublishContribution;
 using Application.Features.Contributions.Commands.UpdateContribution;
 using Application.Features.Contributions.Queries.DownloadContribution;
@@ -66,6 +67,22 @@ public class ContributionsController : ApiController
             value => base.Ok(value),
             Problem);
     }
+
+    /// <summary>
+    ///   [Contributor] Toggle contribution love status
+    /// </summary>
+    [HttpPut]
+    [Route("ToggleLoveContribution")]
+    [Authorize(Roles = "Contributor")]
+    public async Task<IActionResult> ToggleLoveContribution([FromBody] LoveContributionCommand request)
+    {
+        var result = await _sender.Send(request);
+
+        return result.Match(
+            value => base.Ok(value),
+            Problem);
+    }
+
 
 
     /// <summary>

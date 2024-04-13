@@ -15,6 +15,10 @@ public interface IApplicationDbContext
 
     public DbSet<Period> Periods { get; }
 
+    public DbSet<Comment> Comments { get; }
+
+    public DbSet<Rating> Ratings { get; }
+
     public DbSet<ApplicationUser> Users { get; }
 
     public DbSet<ApplicationRole> Roles { get; }
