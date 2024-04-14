@@ -10,6 +10,9 @@ import { elements } from "chart.js";
 // Authentication
 const Authentication = lazy(() => import("../pages/auth/Authentication"));
 const LoginForm = lazy(() => import("../pages/auth/components/LoginForm"));
+const ChangePassword = lazy(
+  () => import("../pages/auth/components/ChangePassword")
+);
 
 // Home layout
 const Home = lazy(() => import("../layouts/Home/index"));
@@ -105,6 +108,11 @@ const authRoute = {
     {
       path: PATHS.AUTH.LOGIN,
       element: <LazyLoadingComponent component={LoginForm} />,
+    },
+
+    {
+      path: PATHS.AUTH.CHANGE_PASS,
+      element: <LazyLoadingComponent component={ChangePassword} />,
     },
   ],
 };

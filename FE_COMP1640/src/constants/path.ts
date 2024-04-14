@@ -13,6 +13,7 @@ const PATHS = {
       IDENTITY: "auth",
       LOGIN: "login",
       REGISTER: "register",
+      CHANGE_PASS: "changePassword",
    },
    CONTRIBUTION: {
       IDENTITY: "contribution",
