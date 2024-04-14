@@ -27,7 +27,7 @@ const Pagination = ({ total, paramName, setParams }: IPaginationProps) => {
    }, [currentPage, appSelector]);
 
    return (
-      <div className="flex flex-row justify-end w-full gap-1 py-4">
+      <div className="flex flex-row flex-wrap justify-end w-full gap-1 py-4">
          <button
             className={clsx(
                "border-2 border-slate-200 shadow-sm h-9 w-9 text-sm rounded-md flex justify-center items-center bg-white text-gray-600",
