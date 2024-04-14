@@ -37,14 +37,12 @@ const PublicContributionDetail = () => {
    const { isError, message, isLoading, detail } = appSelector(
       (state: RootState) => state.contribution,
    );
-   const { feedback } = appSelector((state: RootState) => state.feedback);
 
    let publishedDate = formatDate(detail?.lastModifiedAt);
 
    useEffect(() => {
       if (id) {
          dispatch(getContributionById(id));
-         dispatch(getFeedbackByContributionId(id));
       }
    }, [dispatch, id]);
 
@@ -55,43 +53,53 @@ const PublicContributionDetail = () => {
          ) : (
             <div
                className="w-full h-full flex-1 pt-5 md:pt-10 my-5 md:my-0
-                    bg-white md:bg-transparent md:grid md:grid-cols-3 md:gap-5"
+                    bg-white md:bg-transparent lg:grid lg:grid-cols-3 lg:gap-1 items-start"
             >
-               <div className="flex flex-col justify-center items-center lg:px-5 md:col-span-2">
+               <div className="flex flex-col justify-center items-center lg:px-3 lg:col-span-2 pb-5">
                   <div className="w-full lg:pt-0 border-b">
                      <div className="w-full flex justify-between items-center text-gray-400 font-normal text-sm">
                         <span className="font-medium">
-                           {detail?.createdByFullName || "Nguyen Van A"}
+                           {detail?.createdByFullName}
                         </span>
                         <span>{publishedDate}</span>
                      </div>
-                     <h1 className="w-full my-5 leading-normal lg:leading-normal font-semibold text-2xl md:text-3xl lg:text-4xl text-left text-gray-900 line-clamp-2">
+                     <h1 className="w-full my-5 leading-normal lg:leading-normal font-semibold text-2xl md:text-2xl text-left text-gray-800 line-clamp-2">
                         {detail?.title}
                      </h1>
                   </div>
 
-                  <p className="w-full my-4 xl:my-5 text-left text-gray-700 font-medium">
-                     {detail?.description}
-                  </p>
-                  <img
-                     src={
-                        detail?.coverImageUrl ||
-                        "https://th.bing.com/th/id/R.e7b98af026b39429f7b0e71a1f728ee7?rik=0WQqQyiogQB1LQ&pid=ImgRaw&r=0"
-                     }
-                     alt="cover-poster"
-                     className="w-full object-cover"
-                  />
-                  <a
-                     href={detail?.documentUrl}
-                     className="w-full mt-5 py-5 flex justify-between items-center md:justify-start text-gray-700 border-t"
-                  >
-                     <span className="md:mr-8">Document:</span>
-                     <Button
-                        label="Download"
-                        type="primary"
-                        style="text-sm h-7"
-                     />
-                  </a>
+                  <div className="w-full flex flex-col md:grid md:grid-cols-3 justify-center items-start gap-5 mt-5">
+                     <div className="w-full max-w-[300px] col-span-2 md:col-span-1 object-cover flex flex-col justify-center items-center italic">
+                        <img
+                           src={detail?.coverImageUrl}
+                           alt="cover-poster"
+                           className="w-full object-cover"
+                        />
+                        <span className="text-sm text-center w-full mt-3">
+                           (Cover image)
+                        </span>
+                     </div>
+                     <div className="col-span-2">
+                        <p className="w-full mb-4 xl:mb-5 text-left text-gray-700 font-normal">
+                           {detail?.description} Lorem ipsum dolor sit amet
+                           consectetur adipisicing elit. Dolorum placeat
+                           molestias fuga similique repellat maiores voluptatem
+                           nesciunt, fugit doloremque veniam perferendis saepe.
+                           Quaerat, quasi suscipit quisquam itaque perferendis
+                           adipisci a!
+                        </p>
+                        <div className="w-full mt-5 py-5 flex justify-between items-center md:justify-start text-gray-700 border-t">
+                           <span className="md:mr-8">Document:</span>
+                           <a href={detail?.documentUrl}>
+                              <Button
+                                 label="Download"
+                                 type="primary"
+                                 style="text-sm h-7"
+                              />
+                           </a>
+                        </div>
+                     </div>
+                  </div>
                </div>
                <RelatedContributionList />
             </div>

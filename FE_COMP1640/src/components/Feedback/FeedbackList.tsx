@@ -16,13 +16,13 @@ const FeedbackList = () => {
    }, [dispatch, id]);
 
    return (
-      <div className="ml-4 max-h-[550px] overflow-y-scroll">
+      <div className="max-h-[550px] w-full">
          {feedback.length === 0 ? (
-            <h2 className="text-center text-sm text-gray-400 font-medium px-2">
+            <h2 className="w-full text-center text-sm text-gray-400 font-medium px-2">
                There has been no feedback from the coordinator yet.
             </h2>
          ) : (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 w-full">
                {feedback?.map((feedback) => {
                   return <Feedback feedback={feedback} key={feedback.id} />;
                })}

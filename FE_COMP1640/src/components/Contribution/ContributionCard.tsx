@@ -15,7 +15,7 @@ const Contribution = (data: IContributionProps) => {
          <div
             className={clsx(
                data.type === "horizontal" &&
-                  "w-full h-40 md:h-48 lg:h-40 bg-white drop-shadow border rounded grid grid-cols-3 overflow-hidden hover:cursor-pointer hover:drop-shadow-md hover:scale-[1.01] transition-all duration-300",
+                  "w-full h-40 md:h-48 lg:h-36 bg-white drop-shadow border rounded grid grid-cols-3 overflow-hidden hover:cursor-pointer hover:drop-shadow-md hover:scale-[1.01] transition-all duration-300",
                data.type === "vertical" &&
                   "md:w-full flex flex-col justify-center items-center rounded-lg overflow-hidden bg-white shadow-md hover:cursor-pointer hover:shadow-lg transition-all duration-200",
             )}
@@ -28,7 +28,7 @@ const Contribution = (data: IContributionProps) => {
                alt=""
                className={clsx(
                   data.type === "horizontal" &&
-                     "h-40 md:h-48 lg:h-40 object-cover col-span-1",
+                     "h-40 md:h-48 lg:h-36 object-cover col-span-1",
 
                   data.type === "vertical" && "object-cover w-full h-[180px]",
                )}
@@ -44,7 +44,7 @@ const Contribution = (data: IContributionProps) => {
                <h3
                   className={clsx(
                      data.type === "horizontal" &&
-                        "text-lg text-gray-900 font-semibold mb-2 line-clamp-1",
+                        "text-lg  md:text-base lg:text-sm text-gray-900 font-semibold mb-2 line-clamp-1",
 
                      data.type === "vertical" &&
                         "text-lg md:text-base text-gray-900 font-semibold mb-2 truncate",
@@ -71,7 +71,7 @@ const Contribution = (data: IContributionProps) => {
                <div className="w-full flex justify-center items-center">
                   <span
                      className={clsx(
-                        "w-full text-left text-sm font-medium text-blue-600 hover:cursor-pointer",
+                        "w-full text-left text-sm lg:text-xs font-medium text-blue-600 hover:cursor-pointer",
                      )}
                   >
                      Read more

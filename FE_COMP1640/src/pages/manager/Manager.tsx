@@ -1,5 +1,5 @@
 /* eslint-disable react/style-prop-object */
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useRedux from "../../hooks/useRedux";
 import {
   getContributionListWithToken,
@@ -11,188 +11,87 @@ import Pagination from "../../components/Pagination/Pagination";
 import Loading from "../../components/loading/Loading";
 import Table from "./components/ContributionTable/Table";
 import Button from "../../components/CustomButton";
-
-const status = ["Approved", "Processing", "Processed", "Rejected", "Published"];
-
-interface IFilters {
-  status: string | "";
-  period: string | "";
-  faculty: string | "";
-}
+import StatusSelector from "../../components/Dropdown/StatusSelector";
+import PeriodSelector from "../../components/Dropdown/PeriodSelector";
+import SortSelector from "../../components/Dropdown/SortSelector";
+import FacultySelector from "../../components/Dropdown/FacultySelector";
 
 const Manager = () => {
-  const location = useLocation();
-  const { appSelector, dispatch } = useRedux();
-  const [searchParams] = useSearchParams();
-  const { userInfor } = appSelector((state) => state.auth);
-  const { list, totalPage, isLoading, zip } = appSelector(
-    (state) => state.contribution
-  );
-  const [filter, setFilter] = useState<IFilters>({
-    period: "",
-    status: "",
-    faculty: "",
-  });
-  const [current, setCurrent] = useState(1);
-  const { period } = appSelector((state) => state.period);
-  const { faculty } = appSelector((state) => state.faculty);
-  const [sort, setSort] = useState("");
+   const location = useLocation();
+   const { appSelector, dispatch } = useRedux();
+   const [searchParams, setSearchParams] = useSearchParams();
+   const { userInfor } = appSelector((state) => state.auth);
+   const { list, totalPage, isLoading, zip } = appSelector(
+      (state) => state.contribution,
+   );
 
-  const changePage = (page: number) => {
-    setCurrent(page);
-  };
+   const setParams = (key: string, value: string | number) => {
+      setSearchParams((prevParams) => {
+         if (
+            value === null ||
+            value === "" ||
+            value === undefined ||
+            Number.isNaN(value)
+         ) {
+            prevParams.delete(key);
+         } else {
+            prevParams.set(key, value as string);
+         }
+         return prevParams;
+      });
+   };
 
-  useEffect(() => {
-    const query = searchParams.get("search") as string;
+   useEffect(() => {
+      const query = searchParams.get("search") as string;
+      const status = searchParams.get("status") as string;
+      const period = searchParams.get("period") as string;
+      const faculty = searchParams.get("faculty") as string;
+      const sort = searchParams.get("sorts") as string;
+      const page = parseInt(searchParams.get("page") as string);
 
-    dispatch(
-      getContributionListWithToken({
-        filters: {
-          status: filter.status,
-          period: filter.period,
-          facultyId: filter.faculty,
-          search: query,
-        },
-        sorts: sort,
-        page: current,
-        pageSize: 10,
-      })
-    );
-  }, [
-    dispatch,
-    userInfor,
-    location.pathname,
-    filter,
-    current,
-    searchParams,
-    sort,
-  ]);
+      dispatch(
+         getContributionListWithToken({
+            filters: {
+               status: status,
+               period: period,
+               facultyId: faculty,
+               search: query,
+            },
+            sorts: sort,
+            page: page,
+            pageSize: 10,
+         }),
+      );
+   }, [dispatch, userInfor, searchParams, location.pathname]);
 
-  useEffect(() => {
-    dispatch(getPeriod());
-    dispatch(getZipAll());
-  }, [dispatch, filter]);
+   useEffect(() => {
+      dispatch(getPeriod());
+      dispatch(getZipAll());
+   }, [dispatch]);
 
-  return (
-    <>
-      {isLoading && <Loading />}
-      <div className="w-full md:w-full lg:w-[960px] xl:w-[1200px] py-5 ">
-        <div className="w-full flex justify-between items-end pb-5">
-          <div className="w-full flex justify-start items-end">
-            <div className="mr-3">
-              <label htmlFor="status" className="text-sm text-gray-600">
-                Status
-              </label>
-              <select
-                id="status"
-                className="block appearance-none w-60 mt-[2px] h-9 bg-white border border-gray-400 px-2 rounded leading-tight focus:outline-none"
-                onChange={(event) => {
-                  setFilter({ ...filter, status: event.target.value });
-                  changePage(1);
-                }}
-              >
-                <option key={"all"} value={""}>
-                  All
-                </option>
-                {status?.map((item) => {
-                  return (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  );
-                })}
-              </select>
+   return (
+      <div className="w-[calc(100vw-208px)] ">
+         {isLoading && <Loading />}
+         <div className="w-full px-2 md:px-5 lg:px-5 xl:px-10 py-5 overflow-hidden">
+            <div className="w-full flex flex-col gap-3 xl:gap-0 xl:flex-row justify-between items-start xl:items-end pb-5">
+               <div className="w-full flex justify-start items-end">
+                  <StatusSelector paramName="status" setParams={setParams} />
+                  <PeriodSelector paramName="period" setParams={setParams} />
+                  <FacultySelector paramName="faculty" setParams={setParams} />
+               </div>
+               <SortSelector paramName="sorts" setParams={setParams} />
             </div>
-            <div className="mr-5">
-              <label htmlFor="period" className="text-sm text-gray-600">
-                Period
-              </label>
-              <select
-                id="period"
-                className="block appearance-none w-60 mt-[2px] h-9 bg-white border border-gray-400 px-2 rounded leading-tight focus:outline-none"
-                defaultValue={"All"}
-                onChange={(event) => {
-                  setFilter({ ...filter, period: event.target.value });
-                  changePage(1);
-                }}
-              >
-                <option key={"all"} value={""}>
-                  All
-                </option>
-                {period?.map((item) => {
-                  return (
-                    <option key={item.id} value={item.id}>
-                      {item.academicYear}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-
-            <div className="mr-5">
-              <label htmlFor="faculty" className="text-sm text-gray-600">
-                Faculty
-              </label>
-              <select
-                id="faculty"
-                className="block appearance-none w-60 mt-[2px] h-9 bg-white border border-gray-400 px-2 rounded leading-tight focus:outline-none"
-                defaultValue={"All"}
-                onChange={(event) => {
-                  setFilter({
-                    ...filter,
-                    faculty: event.target.value,
-                  });
-                  changePage(1);
-                }}
-              >
-                <option key={"all"} value={""}>
-                  All
-                </option>
-                {faculty?.map((item) => {
-                  return (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            <div className="flex justify-center items-center">
-              <label htmlFor="sort" className="w-16 text-sm text-gray-600">
-                Sort by:
-              </label>
-              <select
-                id="sort"
-                className="bg-transparent text-right appearance-none w-36 py-2 text-gray-600 font-medium border-0 rounded leading-tight focus:outline-none hover:cursor-pointer"
-                onChange={(event) => {
-                  setSort(event.target.value);
-                  changePage(1);
-                }}
-              >
-                <option key={1} value="title">
-                  Title (A-Z)
-                </option>
-                <option key={2} value="-title">
-                  Title (Z-A)
-                </option>
-                <option key={3} value="createdAt">
-                  Created (Newest)
-                </option>
-                <option key={4} value="-createdAt">
-                  Created (Oldest)
-                </option>
-              </select>
-            </div>
-          </div>
-          <a href={zip} download={"PublishedContribution"}>
-            <Button label="Download" type="primary" style="h-9" />
-          </a>
-        </div>
-        <Table data={list} name="My contribution" />
-        <Pagination total={totalPage} current={current} setPage={changePage} />
+            <Table data={list} name="My contribution" />
+            {list.length !== 0 && (
+               <Pagination
+                  total={totalPage}
+                  paramName="page"
+                  setParams={setParams}
+               />
+            )}
+         </div>
       </div>
-    </>
-  );
+   );
 };
 
 export default Manager;
