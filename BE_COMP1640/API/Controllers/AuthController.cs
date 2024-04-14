@@ -3,6 +3,7 @@ using Application.Features.Auth.Commands.AssignRole;
 using Application.Features.Auth.Commands.ChangeFaculty;
 using Application.Features.Auth.Commands.ChangeInitialPassword;
 using Application.Features.Auth.Commands.ConfirmEmail;
+using Application.Features.Auth.Commands.CreateAllAccount;
 using Application.Features.Auth.Commands.CreateContributorAccount;
 using Application.Features.Auth.Commands.CreateCoordinatorAccount;
 using Application.Features.Auth.Commands.Login;
@@ -195,12 +196,27 @@ public class AuthController : ApiController
     }
 
     /// <summary>
-    ///   [Coordinator]  Create account for Coordinator
+    ///   [Manager]  Create account for Coordinator
     /// </summary>
     [HttpPost]
     [Route("CreateCoordinatorAccount")]
     [Authorize(Roles = "Manager")]
     public async Task<IActionResult> CreateCoordinatorAccount([FromBody] CreateCoordinatorAccountCommand request)
+    {
+        var result = await _sender.Send(request);
+
+        return result.Match(
+            value => base.StatusCode(201, value),
+            Problem);
+    }
+
+    /// <summary>
+    ///   [Admin]  Admin can create account with all roles in the system    
+    /// </summary>
+    [HttpPost]
+    [Route("CreateAllAccount")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> CreateAllAccount([FromBody] CreateAllAccountCommand request)
     {
         var result = await _sender.Send(request);
 

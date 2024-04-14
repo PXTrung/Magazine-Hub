@@ -12,6 +12,10 @@ public class GetContributionDto
 
     public ContributionStatus Status { get; set; }
 
+    public int LoveCount { get; set; }
+
+    public bool? IsLoved { get; set; }
+
     public string CreatedByEmail { get; set; }
 
     public string CreatedByFullName { get; set; }

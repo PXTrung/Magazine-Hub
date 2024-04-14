@@ -13,74 +13,84 @@ import { PATHS } from "../../constants/path";
 import clsx from "clsx";
 
 interface MenuItem {
-   id: number;
-   label: string;
-   path: string;
+  id: number;
+  label: string;
+  path: string;
 }
 
 interface Menu {
-   [key: string]: MenuItem[];
+  [key: string]: MenuItem[];
 }
 
 const menu: Menu = {
-   Contributor: [
-      {
-         id: 1,
-         label: "My Contributions",
-         path: `${PATHS.CONTRIBUTOR.IDENTITY}/${PATHS.CONTRIBUTION.IDENTITY}?page=1`,
-      },
-      {
-         id: 2,
-         label: "My Faculty",
-         path: `${PATHS.CONTRIBUTOR.IDENTITY}/${PATHS.CONTRIBUTION.FACULTY}?page=1`,
-      },
-      {
-         id: 3,
-         label: "Contribute",
-         path: `${PATHS.CONTRIBUTOR.IDENTITY}/${PATHS.CONTRIBUTION.CREATE}`,
-      },
-   ],
-   Coordinator: [
-      {
-         id: 1,
-         label: "Contributions",
-         path: `${PATHS.COORDINATOR.IDENTITY}/${PATHS.CONTRIBUTION.IDENTITY}?page=1`,
+  Contributor: [
+    {
+      id: 1,
+      label: "My Contributions",
+      path: `${PATHS.CONTRIBUTOR.IDENTITY}/${PATHS.CONTRIBUTION.IDENTITY}?page=1`,
+    },
+    {
+      id: 2,
+      label: "My Faculty",
+      path: `${PATHS.CONTRIBUTOR.IDENTITY}/${PATHS.CONTRIBUTION.FACULTY}?page=1`,
+    },
+    {
+      id: 3,
+      label: "Contribute",
+      path: `${PATHS.CONTRIBUTOR.IDENTITY}/${PATHS.CONTRIBUTION.CREATE}`,
+    },
+  ],
+  Coordinator: [
+    {
+      id: 1,
+      label: "Contributions",
+      path: `${PATHS.COORDINATOR.IDENTITY}/${PATHS.CONTRIBUTION.IDENTITY}?page=1`,
       },
       {
          id: 2,
          label: "Dashboard",
          path: `${PATHS.COORDINATOR.IDENTITY}/${PATHS.ADMIN.DASHBOARD}`,
-      },
-   ],
-   Manager: [
-      {
-         id: 1,
-         label: "Contributions",
-         path: `${PATHS.MANAGER.IDENTITY}/${PATHS.CONTRIBUTION.IDENTITY}?page=1`,
+    },
+    {
+      id: 2,
+      label: "Create Account",
+      path: `${PATHS.COORDINATOR.IDENTITY}/${PATHS.COORDINATOR.CREATE_ACCOUNT}`,
+    },
+  ],
+  Manager: [
+    {
+      id: 1,
+      label: "Contributions",
+      path: `${PATHS.MANAGER.IDENTITY}/${PATHS.CONTRIBUTION.IDENTITY}?page=1`,
       },
       {
          id: 2,
          label: "Dashboard",
          path: `${PATHS.MANAGER.IDENTITY}/${PATHS.ADMIN.DASHBOARD}`,
-      },
-   ],
-   Admin: [
-      {
-         id: 1,
-         label: "User",
-         path: `${PATHS.ADMIN.IDENTITY}/${PATHS.ADMIN.MANAGE_USER}?page=1`,
-      },
-      {
-         id: 2,
-         label: "Period",
-         path: `${PATHS.ADMIN.IDENTITY}/${PATHS.ADMIN.PERIOD}`,
-      },
-      {
-         id: 3,
-         label: "Dashboard",
-         path: `${PATHS.ADMIN.IDENTITY}/${PATHS.ADMIN.DASHBOARD}`,
-      },
-   ],
+    },
+    {
+      id: 2,
+      label: "Create Account",
+      path: `${PATHS.MANAGER.IDENTITY}/${PATHS.MANAGER.CREATE_ACCOUNT}`,
+    },
+  ],
+  Admin: [
+    {
+      id: 1,
+      label: "User",
+      path: `${PATHS.ADMIN.IDENTITY}/${PATHS.ADMIN.MANAGE_USER}?page=1`,
+    },
+    {
+      id: 2,
+      label: "Period",
+      path: `${PATHS.ADMIN.IDENTITY}/${PATHS.ADMIN.PERIOD}`,
+    },
+    {
+      id: 3,
+      label: "Dashboard",
+      path: `${PATHS.ADMIN.IDENTITY}/${PATHS.ADMIN.DASHBOARD}`,
+    },
+  ],
 };
 
 const RolePage = () => {
@@ -104,10 +114,10 @@ const RolePage = () => {
       });
    };
 
-   useEffect(() => {
-      dispatch(getCurrentUser());
-      dispatch(getFaculty());
-   }, [dispatch]);
+  useEffect(() => {
+    dispatch(getCurrentUser());
+    dispatch(getFaculty());
+  }, [dispatch]);
 
    return userInfor ? (
       <div className="flex flex-row justify-center items-center bg-slate-100">

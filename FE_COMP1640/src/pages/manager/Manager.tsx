@@ -2,8 +2,8 @@
 import { useEffect } from "react";
 import useRedux from "../../hooks/useRedux";
 import {
-   getContributionListWithToken,
-   getZipAll,
+  getContributionListWithToken,
+  getZipAll,
 } from "../../redux/slices/contributionSlice";
 import { getPeriod } from "../../redux/slices/periodSlide";
 import { useLocation, useSearchParams } from "react-router-dom";

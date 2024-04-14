@@ -21,9 +21,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
 
     public DbSet<Period> Periods => Set<Period>();
 
+    public DbSet<Comment> Comments => Set<Comment>();
+
+    public DbSet<Rating> Ratings => Set<Rating>();
+
     public DbSet<ApplicationUser> Users => Set<ApplicationUser>();
 
     public DbSet<ApplicationRole> Roles => Set<ApplicationRole>();
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

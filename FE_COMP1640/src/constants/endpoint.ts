@@ -12,6 +12,8 @@ function constructEndpoint(endpoint: string) {
 export const ENDPOINTS = {
    LOGIN: constructEndpoint("Auth/Login"),
    REGISTER: constructEndpoint("Auth/Register"),
+   CREATE_CONTRIBUTOR_ACCOUNT: constructEndpoint("Auth/CreateContributorAccount"),
+   CREATE_COORDINATOR_ACCOUNT: constructEndpoint("Auth/CreateCoordinatorAccount"),
    FALCUTY: constructEndpoint("Falcuties"),
    ROLE: constructEndpoint("Auth/Roles"),
    CONTRIBUTION: {
