@@ -7,6 +7,7 @@ import { contribute } from "../../redux/slices/contributionSlice";
 import useRedux from "../../hooks/useRedux";
 import { RootState } from "../../redux/store";
 import { useParams } from "react-router-dom";
+import Toast from "../../components/Toast";
 
 const schema = yup.object().shape({
    Title: yup.string().required("Title is required"),
@@ -64,56 +65,59 @@ const UploadForm = () => {
    };
 
    return (
-      <div className="w-[600px] h-fit mx-auto bg-white px-8 py-10 rounded-lg shadow-md mt-5">
-         {message && <span className="text-green-400">{message}</span>}
-         <h2 className="text-2xl font-semibold mb-4">
-            Contribution Upload (
-            {period.find((item) => item.id === id)?.academicYear})
-         </h2>
-         <form onSubmit={handleSubmit(onSubmit)}>
-            <Input
-               register={register}
-               errors={errors}
-               required
-               id="Title"
-               label="Title"
-               type="text"
-            ></Input>
-            <Input
-               register={register}
-               errors={errors}
-               required
-               id="Description"
-               label="Description"
-               type="text"
-            ></Input>
-            <Input
-               register={register}
-               errors={errors}
-               required
-               id="ImageFile"
-               label="Image"
-               type="file"
-               accept="image/*"
-            ></Input>
-            <Input
-               register={register}
-               errors={errors}
-               required
-               id="DocumentFile"
-               label="Document"
-               type="file"
-               accept=".pdf"
-            ></Input>
-            <div className="w-full flex justify-center mt-5">
-               <button
-                  type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-[280px]"
-               >
-                  Submit
-               </button>
-            </div>
-         </form>
+      <div className="w-[calc(100vw-208px)]">
+         <div className="md:w-[500px] lg:w-[600px] h-fit mx-auto bg-white px-8 py-10 rounded-lg shadow-md mt-5">
+            {message && <Toast message={message} type="success" />}
+
+            <h2 className="text-2xl font-semibold mb-4">
+               Contribution Upload (
+               {period.find((item) => item.id === id)?.academicYear})
+            </h2>
+            <form onSubmit={handleSubmit(onSubmit)}>
+               <Input
+                  register={register}
+                  errors={errors}
+                  required
+                  id="Title"
+                  label="Title"
+                  type="text"
+               ></Input>
+               <Input
+                  register={register}
+                  errors={errors}
+                  required
+                  id="Description"
+                  label="Description"
+                  type="text"
+               ></Input>
+               <Input
+                  register={register}
+                  errors={errors}
+                  required
+                  id="ImageFile"
+                  label="Image"
+                  type="file"
+                  accept="image/*"
+               ></Input>
+               <Input
+                  register={register}
+                  errors={errors}
+                  required
+                  id="DocumentFile"
+                  label="Document"
+                  type="file"
+                  accept=".pdf"
+               ></Input>
+               <div className="w-full flex justify-center mt-5">
+                  <button
+                     type="submit"
+                     className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-[280px]"
+                  >
+                     Submit
+                  </button>
+               </div>
+            </form>
+         </div>
       </div>
    );
 };

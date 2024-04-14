@@ -39,9 +39,7 @@ const ContributorDetailPage = lazy(
       ),
 );
 
-const PeriodSelector = lazy(
-   () => import("../pages/contributor/PeriodSelector"),
-);
+const PeriodSelector = lazy(() => import("../pages/contributor/PeriodList"));
 
 const ContributionsByFaculty = lazy(
    () => import("../pages//contributor/ContributionsByFaculty"),
@@ -65,12 +63,14 @@ const ManagerDetailPage = lazy(
    () =>
       import("../pages/manager/components/ContributionDetail/ViewContribution"),
 );
+const ManagerDashboard = lazy(
+   () => import("../pages/manager/components/Dashboard/Dashboard"),
+);
 
 // Admin
 const UserManage = lazy(() => import("../pages/admin/UserTable/UserManage"));
 const PeriodPage = lazy(() => import("../pages/admin/Period/Period"));
 const PeriodDetail = lazy(() => import("../pages/admin/Period/PeriodDetail"));
-const AdminDashboard = lazy(() => import("../pages/admin/Dashboard/Dashboard"));
 
 // Layout
 const RoleLayout = lazy(() => import("../layouts/RolePage/index"));
@@ -192,6 +192,10 @@ const managerRoute = {
          path: `${PATHS.CONTRIBUTION.IDENTITY}/${PATHS.CONTRIBUTION.DETAIL}`,
          element: <LazyLoadingComponent component={ManagerDetailPage} />,
       },
+      {
+         path: `${PATHS.DASHBOARD.INDENTITY}`,
+         element: <LazyLoadingComponent component={ManagerDashboard} />,
+      },
    ],
 };
 
@@ -213,10 +217,6 @@ const adminRoute = {
       {
          path: `${PATHS.ADMIN.PERIOD}/${PATHS.ADMIN.DETAIL}`,
          element: <LazyLoadingComponent component={PeriodDetail} />,
-      },
-      {
-         path: `${PATHS.ADMIN.DASHBOARD}`,
-         element: <LazyLoadingComponent component={AdminDashboard} />,
       },
    ],
 };

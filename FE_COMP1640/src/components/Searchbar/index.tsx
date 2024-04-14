@@ -1,38 +1,45 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
-import { getContributionListWithToken } from "../../redux/slices/contributionSlice";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { SelectComponentProps } from "../../types/params.type";
+import { useLocation } from "react-router-dom";
 
-const Searchbar = () => {
-   const [searchParams, setSearchParams] = useSearchParams();
-   const ref = useRef<HTMLInputElement>(null);
+const Searchbar = ({ paramName, setParams }: SelectComponentProps) => {
    const location = useLocation();
+   const [search, setSearch] = useState<string>("");
 
-   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      setSearchParams({ search: ref.current?.value as string });
+   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+         setParams(paramName, search);
+         setParams("page", "1");
+      }
+   };
+
+   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearch(e.target.value);
    };
 
    useEffect(() => {
-      setSearchParams();
+      setSearch("");
    }, [location.pathname]);
 
    return (
-      <form
-         onSubmit={handleSearch}
+      <div
          className="flex flex-row justify-between items-center h-10 w-full rounded-full
-            border-[2px] border-gray-300 "
+            border-[2px] border-gray-400 px-3"
       >
          <input
             type="text"
+            name="search"
             placeholder="Search..."
-            className="w-full pl-4 outline-none ring-0 rounded-full"
-            ref={ref}
+            className="w-full h-full rounded-full outline-none ring-0 border-0 focus:outline-none focus:ring-0"
+            onKeyDown={(e) => handleSearch(e)}
+            onChange={(e) => handleOnChange(e)}
+            value={search}
          />
-         <button className="pr-3">
+         <button className="">
             <svg
                xmlns="http://www.w3.org/2000/svg"
                fill="none"
@@ -48,7 +55,7 @@ const Searchbar = () => {
                />
             </svg>
          </button>
-      </form>
+      </div>
    );
 };
 

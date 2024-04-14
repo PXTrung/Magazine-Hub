@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Suspense, startTransition, useEffect, useState } from "react";
-import { Link, Navigate, Outlet } from "react-router-dom";
+import { Link, Navigate, Outlet, useSearchParams } from "react-router-dom";
 import Loading from "../../components/loading/Loading";
 import useRedux from "../../hooks/useRedux";
 import { getCurrentUser } from "../../redux/slices/authSlice";
@@ -26,12 +27,12 @@ const menu: Menu = {
       {
          id: 1,
          label: "My Contributions",
-         path: `${PATHS.CONTRIBUTOR.IDENTITY}/${PATHS.CONTRIBUTION.IDENTITY}`,
+         path: `${PATHS.CONTRIBUTOR.IDENTITY}/${PATHS.CONTRIBUTION.IDENTITY}?page=1`,
       },
       {
          id: 2,
          label: "My Faculty",
-         path: `${PATHS.CONTRIBUTOR.IDENTITY}/${PATHS.CONTRIBUTION.FACULTY}`,
+         path: `${PATHS.CONTRIBUTOR.IDENTITY}/${PATHS.CONTRIBUTION.FACULTY}?page=1`,
       },
       {
          id: 3,
@@ -42,22 +43,32 @@ const menu: Menu = {
    Coordinator: [
       {
          id: 1,
-         label: "All Contributions",
-         path: `${PATHS.COORDINATOR.IDENTITY}/${PATHS.CONTRIBUTION.IDENTITY}`,
+         label: "Contributions",
+         path: `${PATHS.COORDINATOR.IDENTITY}/${PATHS.CONTRIBUTION.IDENTITY}?page=1`,
+      },
+      {
+         id: 2,
+         label: "Dashboard",
+         path: `${PATHS.COORDINATOR.IDENTITY}/${PATHS.ADMIN.DASHBOARD}`,
       },
    ],
    Manager: [
       {
          id: 1,
-         label: "All Contributions",
-         path: `${PATHS.MANAGER.IDENTITY}/${PATHS.CONTRIBUTION.IDENTITY}`,
+         label: "Contributions",
+         path: `${PATHS.MANAGER.IDENTITY}/${PATHS.CONTRIBUTION.IDENTITY}?page=1`,
+      },
+      {
+         id: 2,
+         label: "Dashboard",
+         path: `${PATHS.MANAGER.IDENTITY}/${PATHS.ADMIN.DASHBOARD}`,
       },
    ],
    Admin: [
       {
          id: 1,
          label: "User",
-         path: `${PATHS.ADMIN.IDENTITY}/${PATHS.ADMIN.MANAGE_USER}`,
+         path: `${PATHS.ADMIN.IDENTITY}/${PATHS.ADMIN.MANAGE_USER}?page=1`,
       },
       {
          id: 2,
@@ -73,12 +84,24 @@ const menu: Menu = {
 };
 
 const RolePage = () => {
+   const [searchParams, setSearchParams] = useSearchParams();
    const { dispatch, appSelector } = useRedux();
    const { userInfor } = appSelector((state) => state.auth);
    const [isActive, setIsActive] = useState<number>(1);
 
    const handleOnclick = (id: number) => {
       setIsActive(id);
+   };
+
+   const setParams = (key: string, value: string) => {
+      setSearchParams((prevParams) => {
+         if (value === null || value === "") {
+            prevParams.delete(key);
+         } else {
+            prevParams.set(key, value);
+         }
+         return prevParams;
+      });
    };
 
    useEffect(() => {
@@ -89,7 +112,7 @@ const RolePage = () => {
    return userInfor ? (
       <div className="flex flex-row justify-center items-center bg-slate-100">
          {/* Side bar */}
-         <div className="w-56 min-h-screen fixed z-50 top-0 left-0 bg-white border-r border-slate-100 flex flex-col items-center justify-start pt-5">
+         <div className="w-52 min-h-screen fixed z-50 top-0 left-0 bg-white border-r border-slate-100 flex flex-col items-center justify-start pt-5">
             <Link
                key={"home"}
                to={`/${PATHS.HOME.IDENTITY}`}
@@ -143,22 +166,22 @@ const RolePage = () => {
                </div>
             </Link>
          </div>
-         <div className="ml-56 w-full flex-1 flex flex-col justify-center items-start min-h-screen">
+         <div className="relative pl-52 w-[calc(100vw-208px)] flex-1 flex flex-col justify-center items-start min-h-screen">
             {/* Top bar */}
-            <div className="h-20 pl-56 pr-12 fixed top-0 left-0 right-0 z-40 bg-white w-full flex justify-between items-center drop-shadow">
-               <h1 className="pl-12 text-gray-700 font-semibold text-lg">
+            <div className="h-20 md:px-5 lg:px-5 xl:px-10 w-[calc(100vw-208px)] fixed top-0 right-0 z-40 bg-white flex justify-between items-center drop-shadow">
+               <h1 className="text-gray-700 font-semibold text-lg">
                   {userInfor?.role}
                </h1>
-               <div className="w-[400px]">
-                  <Searchbar />
+               <div className="md:w-[260px] lg:w-[400px] xl:w-[500px]">
+                  <Searchbar paramName="search" setParams={setParams} />
                </div>
-               <div className="w-fit">
+               <div className="w-fit text-sm">
                   <UserInformation data={userInfor as IUserInformation} />
                </div>
             </div>
 
             {/* Content */}
-            <div className="flex-1 flex w-full justify-center mt-20 overflow-x-scroll">
+            <div className="flex-1 flex justify-center mt-20 overflow-x-hidden">
                <Suspense fallback={<Loading />}>
                   <Outlet />
                </Suspense>

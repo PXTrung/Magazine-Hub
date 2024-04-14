@@ -343,8 +343,6 @@ const contributionSlice = createSlice({
          .addCase(getZipAll.fulfilled, (state, action) => {
             state.isLoading = false;
             state.message = "";
-            console.log(action.payload);
-
             state.zip = action.payload;
          })
          .addCase(getZipAll.rejected, (state, action) => {

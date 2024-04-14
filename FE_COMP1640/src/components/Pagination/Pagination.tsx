@@ -1,13 +1,31 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import clsx from "clsx";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import useRedux from "../../hooks/useRedux";
 
 interface IPaginationProps {
-   setPage: Function;
    total: number;
-   current: number;
+   paramName: string;
+   setParams: (paramName: string, paramValue: string | number) => void;
 }
 
-const Pagination = ({ setPage, total, current }: IPaginationProps) => {
+const Pagination = ({ total, paramName, setParams }: IPaginationProps) => {
+   const { appSelector } = useRedux();
+   const { currentPage } = appSelector((state) => state.contribution);
+   const [current, setCurrent] = useState<number>(currentPage);
+
+   const handleChange = (value: number) => {
+      setCurrent(value);
+   };
+
+   useEffect(() => {
+      setParams(paramName, current);
+   }, [current]);
+
+   useEffect(() => {
+      setCurrent(currentPage);
+   }, [currentPage, appSelector]);
+
    return (
       <div className="flex flex-row justify-end w-full gap-1 py-4">
          <button
@@ -15,7 +33,7 @@ const Pagination = ({ setPage, total, current }: IPaginationProps) => {
                "border-2 border-slate-200 shadow-sm h-9 w-9 text-sm rounded-md flex justify-center items-center bg-white text-gray-600",
                current === 1 && "opacity-30",
             )}
-            onClick={() => setPage(current - 1)}
+            onClick={() => handleChange(current - 1)}
             disabled={current === 1}
          >
             <svg
@@ -42,7 +60,7 @@ const Pagination = ({ setPage, total, current }: IPaginationProps) => {
                      ? "bg-blue-500 text-white border-blue-600"
                      : "bg-white text-gray-500 border-slate-200",
                )}
-               onClick={() => setPage(index + 1)}
+               onClick={() => handleChange(index + 1)}
             >
                {index + 1}
             </button>
@@ -52,7 +70,7 @@ const Pagination = ({ setPage, total, current }: IPaginationProps) => {
                "border-2 border-slate-200 shadow-sm h-9 w-9 text-sm rounded-md flex justify-center items-center bg-white text-gray-600",
                current === total && "opacity-30",
             )}
-            onClick={() => setPage(current + 1)}
+            onClick={() => handleChange(current + 1)}
             disabled={current === total}
          >
             <svg
