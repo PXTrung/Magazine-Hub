@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios";
 import { ENDPOINTS } from "../../constants/endpoint";
-import { ICreateContributor, ICreateCoordinator, ILogin, IResetPassword } from "../../types/user.type";
+import { ICreateAllAccount, ICreateContributor, ICreateCoordinator, ILogin, IResetPassword } from "../../types/user.type";
 import { IParamsAxios } from "../../types/filter.type";
 
 const userToken = sessionStorage.getItem("user-token");
@@ -34,5 +34,12 @@ export default {
    },
    resetPassword: (data: IResetPassword) => {
       return axios.post(ENDPOINTS.RESET_PASS, data);
+   },
+   createAllAccount: (data: ICreateAllAccount) => {
+      return axios.post(ENDPOINTS.CREATE_ALL_ACCOUNT, data, {
+         headers: {
+            Authorization: `Bearer ${userToken}`,
+         }
+      })
    }
 };

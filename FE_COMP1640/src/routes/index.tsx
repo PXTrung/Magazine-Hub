@@ -79,6 +79,7 @@ const ManagerDashboard = lazy(
 const UserManage = lazy(() => import("../pages/admin/UserTable/UserManage"));
 const PeriodPage = lazy(() => import("../pages/admin/Period/Period"));
 const PeriodDetail = lazy(() => import("../pages/admin/Period/PeriodDetail"));
+const CreateAllAccount = lazy(() => import("../pages/admin/CreateAllAccount"));
 
 // Layout
 const RoleLayout = lazy(() => import("../layouts/RolePage/index"));
@@ -238,6 +239,10 @@ const adminRoute = {
     {
       path: `${PATHS.ADMIN.PERIOD}/${PATHS.ADMIN.DETAIL}`,
       element: <LazyLoadingComponent component={PeriodDetail} />,
+    },
+    {
+      path: PATHS.ADMIN.CREATE_ALL,
+      element: <LazyLoadingComponent component={CreateAllAccount} />,
     },
   ],
 };

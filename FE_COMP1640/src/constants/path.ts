@@ -42,6 +42,7 @@ const PATHS = {
       PERIOD: "period",
       DETAIL: `${PARAMETER.ID}`,
       DASHBOARD: "dashboard",
+      CREATE_ALL: "createAll",
    },
 };
 

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
-import { ICreateContributor, ICreateCoordinator, ILogin, IResetPassword, IUserInformation } from "../../types/user.type";
+import { ICreateAllAccount, ICreateContributor, ICreateCoordinator, ILogin, IResetPassword, IUserInformation } from "../../types/user.type";
 import authUtils from "../../utils/auth";
 
 export const login = createAsyncThunk(
@@ -37,7 +37,15 @@ export const createCoordinatorAccount = createAsyncThunk("createCoordinatorAccou
 export const changePassword = createAsyncThunk("resetPassword", async(data: IResetPassword, {rejectWithValue}) => {
    try {
       const res = await api.user.resetPassword(data);
-      console.log(res);
+      return res.data;
+   } catch (error: any) {
+      return rejectWithValue(error.response.data.title);
+   }
+});
+
+export const createAllAccount = createAsyncThunk("createAllAccount", async(data: ICreateAllAccount, {rejectWithValue}) => {
+   try {
+      const res = await api.user.createAllAccount(data);
       return res.data;
    } catch (error: any) {
       return rejectWithValue(error.response.data.title);
@@ -148,6 +156,17 @@ const authSlice = createSlice({
          state.isLoading = false;
          state.isChangePassword = false;
          state.message = (action.payload as string) || "An error occurred during create user.";
+      });
+      builder.addCase(createAllAccount.pending, (state) => {
+         state.isLoading = true;
+      });
+      builder.addCase(createAllAccount.fulfilled, (state, action) => {
+         state.isLoading = false;
+         state.message = action.payload.title;
+      });
+      builder.addCase(createAllAccount.rejected, (state, action) => {
+         state.isLoading = false;
+         state.message = (action.payload as string) || "An error occurred during create user";
       })
    },
 });

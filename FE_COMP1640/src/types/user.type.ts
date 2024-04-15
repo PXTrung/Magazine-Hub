@@ -40,3 +40,11 @@ export interface IResetPassword{
    confirmNewPassword: string;
    changeInitialPasswordToken: string;
 }
+
+export interface ICreateAllAccount{
+   email: string;
+   firstName: string;
+   lastName: string;
+   roleId: string;
+   facultyId?: string;
+}
