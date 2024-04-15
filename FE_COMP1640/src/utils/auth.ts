@@ -22,6 +22,8 @@ export default {
       if (token) {
          let userData: any = jwtDecode(token);
 
+         console.log(userData);
+         
          return {
             firstName:
                userData[
@@ -37,9 +39,7 @@ export default {
             email: userData[
                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
             ],
-            facultyId: userData[
-               "facultyId"
-            ],
+            facultyId: userData["facultyId"],
          };
       } else return null;
    },

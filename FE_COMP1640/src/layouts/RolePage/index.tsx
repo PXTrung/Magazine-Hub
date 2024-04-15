@@ -10,6 +10,7 @@ import Searchbar from "../../components/Searchbar";
 import UserInformation from "../../pages/landing/components/UserInformation";
 import { IUserInformation } from "../../types/user.type";
 import { PATHS } from "../../constants/path";
+import image from "../../assets/images/logo.jpg";
 import clsx from "clsx";
 import { getRole } from "../../redux/slices/roleSlice";
 
@@ -126,42 +127,38 @@ const RolePage = () => {
     dispatch(getRole());
   }, [dispatch]);
 
-  return userInfor ? (
-    <div className="flex flex-row justify-center items-center bg-slate-100">
-      {/* Side bar */}
-      <div className="w-52 min-h-screen fixed z-50 top-0 left-0 bg-white border-r border-slate-100 flex flex-col items-center justify-start pt-5">
-        <Link
-          key={"home"}
-          to={`/${PATHS.HOME.IDENTITY}`}
-          className="w-1/4 flex justify-center mb-10"
-        >
-          <img
-            src="./assets/images/logo.jpg"
-            alt="LOGO"
-            className="h-full w-full"
-          />
-        </Link>
-        <div className="flex flex-col justify-center items-start w-full px-6">
-          {menu[userInfor.role]?.map((item) => {
-            return (
-              <Link
-                key={item.label}
-                to={`/${item.path}`}
-                className={clsx(
-                  "py-2 px-5 mb-2 w-full rounded-md text-sm drop-shadow",
-                  isActive === item.id
-                    ? "bg-blue-600 text-white"
-                    : "bg-slate-100"
-                )}
-                onClick={() => {
-                  handleOnclick(item.id);
-                }}
-              >
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </div>
+   return userInfor ? (
+      <div className="flex flex-row justify-center items-center bg-slate-100">
+         {/* Side bar */}
+         <div className="w-52 min-h-screen fixed z-50 top-0 left-0 bg-white border-r border-slate-100 flex flex-col items-center justify-start pt-5">
+            <Link
+               key={"home"}
+               to={`/${PATHS.HOME.IDENTITY}`}
+               className="w-1/3 flex justify-center mb-10"
+            >
+               <img src={image} alt="LOGO" className="h-full w-full" />
+            </Link>
+            <div className="flex flex-col justify-center items-start w-full px-6">
+               {menu[userInfor.role]?.map((item) => {
+                  return (
+                     <Link
+                        key={item.label}
+                        to={`/${item.path}`}
+                        className={clsx(
+                           "py-2 px-5 mb-2 w-full rounded-md text-sm drop-shadow",
+                           isActive === item.id
+                              ? "bg-blue-600 text-white"
+                              : "bg-slate-100",
+                        )}
+                        onClick={() => {
+                           handleOnclick(item.id);
+                        }}
+                     >
+                        <span>{item.label}</span>
+                     </Link>
+                  );
+               })}
+            </div>
 
         <Link to={`/${PATHS.HOME.IDENTITY}`}>
           <div className="absolute w-full px-4 py-2 flex flex-row justify-center items-center bottom-0 left-0 z-20 text-white font-medium bg-blue-500 shadow-sm hover:shadow transition-all duration-200">
