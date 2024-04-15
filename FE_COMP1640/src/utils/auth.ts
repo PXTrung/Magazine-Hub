@@ -3,6 +3,8 @@ import { IUserInformation } from "../types/user.type";
 
 /* eslint-disable import/no-anonymous-default-export */
 const TOKEN_KEY = "user-token";
+const TEMP_TOKEN = "temp-token"
+const EMAIL = "email";
 
 export default {
    getSessionToken(): string | null {
@@ -41,4 +43,29 @@ export default {
          };
       } else return null;
    },
+   setEmail(email?: string){
+      if(email){
+         sessionStorage.setItem(EMAIL, email);
+      }else{
+         sessionStorage.removeItem(EMAIL);
+      }
+   },
+   getEmail() {
+      let email = sessionStorage.getItem(EMAIL);
+      return email;
+   },
+   setTempToken(token?: string){
+      if(token){
+         sessionStorage.setItem(TEMP_TOKEN, token);
+      } else {
+         sessionStorage.removeItem(TEMP_TOKEN);
+      }
+   },
+   getTempToken(): string | null {
+      let token = sessionStorage.getItem(TEMP_TOKEN);
+      return token ? token : null;
+   },
+   removeTempToken(){
+      sessionStorage.removeItem(TEMP_TOKEN);
+   }
 };

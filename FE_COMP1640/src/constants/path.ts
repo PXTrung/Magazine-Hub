@@ -13,6 +13,7 @@ const PATHS = {
       IDENTITY: "auth",
       LOGIN: "login",
       REGISTER: "register",
+      CHANGE_PASS: "changePassword",
    },
    DASHBOARD: {
       INDENTITY: "dashboard",
@@ -41,6 +42,7 @@ const PATHS = {
       PERIOD: "period",
       DETAIL: `${PARAMETER.ID}`,
       DASHBOARD: "dashboard",
+      CREATE_ALL: "createAll",
    },
 };
 
