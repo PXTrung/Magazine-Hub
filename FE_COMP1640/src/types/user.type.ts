@@ -33,3 +33,18 @@ export interface ICreateCoordinator{
    lastName: string;
    facultyId: string;
 }
+
+export interface IResetPassword{
+   email: string;
+   newPassword: string;
+   confirmNewPassword: string;
+   changeInitialPasswordToken: string;
+}
+
+export interface ICreateAllAccount{
+   email: string;
+   firstName: string;
+   lastName: string;
+   roleId: string;
+   facultyId?: string;
+}
