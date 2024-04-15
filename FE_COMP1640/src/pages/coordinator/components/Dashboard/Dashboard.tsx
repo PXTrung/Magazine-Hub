@@ -15,7 +15,9 @@ const Dashboard = () => {
    const { appSelector, dispatch } = useRedux();
    const [current, setCurrent] = useState<string>();
    const [searchParams, setSearchParams] = useSearchParams();
-   const { dashboard, isLoading } = appSelector((state) => state.dashboard);
+   const { coordinatorDashboard, isLoading } = appSelector(
+      (state) => state.dashboard,
+   );
    const { period } = appSelector((state) => state.period);
 
    const setParams = (key: string, value: string | number) => {
@@ -54,7 +56,7 @@ const Dashboard = () => {
 
    const renderChart = useMemo(() => {
       let data = Object.entries(
-         dashboard?.percentageOfContributionByStatus || {},
+         coordinatorDashboard?.percentageOfContributionByStatus || {},
       );
 
       const chartData = data?.map(([status, value]) => ({
@@ -70,7 +72,7 @@ const Dashboard = () => {
             chartData={chartData}
          />
       );
-   }, [dashboard, searchParams]);
+   }, [coordinatorDashboard, searchParams]);
 
    return (
       <div className="w-[calc(100vw-208px)] ">
@@ -101,22 +103,27 @@ const Dashboard = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 xl:gap-5 mb-5">
                <Card
                   label="Top 1 Contributor"
-                  value={dashboard?.topContributorEmail}
+                  value={coordinatorDashboard?.topContributorEmail}
                   icon="top"
                />
                <Card
                   label="Total contributions"
-                  value={dashboard?.totalOfContribution + ""}
+                  value={coordinatorDashboard?.totalOfContribution + ""}
                   icon="total-contributions"
                />
                <Card
                   label="Total published"
-                  value={dashboard?.totalOfPublishedContribution + ""}
+                  value={
+                     coordinatorDashboard?.totalOfPublishedContribution + ""
+                  }
                   icon="total-published"
                />
                <Card
                   label="Feedback"
-                  value={dashboard?.percentageOfFeedbackedContribution + "%"}
+                  value={
+                     coordinatorDashboard?.percentageOfFeedbackedContribution +
+                     "%"
+                  }
                   icon="feedback"
                />
             </div>
@@ -126,7 +133,7 @@ const Dashboard = () => {
                <div className="lg:col-span-3 min-h-80">
                   <DashboardTable
                      name="Top contributor"
-                     data={dashboard?.top5ContributorOfFaculty}
+                     data={coordinatorDashboard?.top5ContributorOfFaculty}
                   />
                </div>
             </div>

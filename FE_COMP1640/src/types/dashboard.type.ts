@@ -21,3 +21,29 @@ export interface ICoordinatorDashboard {
    contributionsVsContributorsCorrelation: number;
    top5ContributorOfFaculty: ITopContributor[];
 }
+
+interface IFacultyRank {
+   [key: string]: number;
+}
+
+interface IFacultyContribution {
+   facultyName: string;
+   publishedCount: number;
+   approvedCount: number;
+   rejectedCount: number;
+}
+
+export interface IManagerDashboard {
+   facultyRankByContribution: IFacultyRank;
+   percentageOfContributionByStatus: {
+      Approved: number;
+      Processed: number;
+      Processing: number;
+      Published: number;
+      Rejected: number;
+   };
+   percentageOfFeedbackedContribution: number;
+   numberOfContributionByStatusWithinFaculty: IFacultyContribution[];
+   totalOfContribution: number;
+   totalOfPublishedContribution: number;
+}
