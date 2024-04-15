@@ -41,10 +41,7 @@ function ProtectedRoute({
          );
       }
    }
-   // @ts-ignore
-   // return (
-   //          <RouteComponent />
-   // );
+
    return RouteComponent ? (
       <Suspense fallback={<Loading />}>
          <RouteComponent />

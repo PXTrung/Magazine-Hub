@@ -23,16 +23,16 @@ const FeedbackList = (contribution: IFeedbackListProps) => {
   const allowedStatuses = ["Approved", "Rejected", "Published"];
   const thisPeriod = period.find((p) => p.id === contribution?.period);
 
-  // const disableUpdate = () => {
-  //   if (allowedStatuses.includes(contribution.status as string)) {
-  //     return false;
-  //   }
+  const disableUpdate = () => {
+    if (allowedStatuses.includes(contribution.status as string)) {
+      return false;
+    }
 
-  //   const today = new Date();
-  //   const deadline = new Date(thisPeriod?.secondSubmissionDeadline as string);
+    const today = new Date();
+    const deadline = new Date(thisPeriod?.secondSubmissionDeadline as string);
 
-  //   return today < deadline;
-  // };
+    return today < deadline;
+  };
 
   const handleOnchange = (e: any) => {
     setContent(e.target.value);
@@ -60,8 +60,9 @@ const FeedbackList = (contribution: IFeedbackListProps) => {
   }, [dispatch, id]);
 
   return (
-    <div className="ml-4 w-[400px] overflow-hidden">
-      {/* {!disableUpdate() ? ( */}
+    <div className="max-h-[550px] w-full">
+
+      {!disableUpdate() ? (
       <div className="flex flex-col gap-2">
         <div className="w-full flex flex-col gap-2 mb-1 border-b-2 border-gray-200 pb-4">
           <input
@@ -80,9 +81,9 @@ const FeedbackList = (contribution: IFeedbackListProps) => {
           })}
         </div>
       </div>
-      {/* ) : (
+       ) : (
             "It is over second time line "
-         )} */}
+         )} 
     </div>
   );
 };

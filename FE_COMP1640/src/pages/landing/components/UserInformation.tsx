@@ -8,11 +8,11 @@ import useRedux from "../../../hooks/useRedux";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { PATHS } from "../../../constants/path";
 
-interface UserInformationProps {
+export interface UserInformationProps {
    data: IUserInformation;
 }
 
-const protectedMenuItems = [
+export const protectedMenuItems = [
    {
       lable: "Contribution Page",
       path: `${PATHS.CONTRIBUTOR.IDENTITY}`,

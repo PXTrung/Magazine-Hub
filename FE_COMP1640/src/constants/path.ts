@@ -15,6 +15,9 @@ const PATHS = {
       REGISTER: "register",
       CHANGE_PASS: "changePassword",
    },
+   DASHBOARD: {
+      INDENTITY: "dashboard",
+   },
    CONTRIBUTION: {
       IDENTITY: "contribution",
       DETAIL: `${PARAMETER.ID}`,

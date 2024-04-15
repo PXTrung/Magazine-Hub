@@ -23,12 +23,6 @@ export const getUserList = createAsyncThunk(
          filter += (filter ? "," : "") + `periodId==${params.filters.period}`;
       }
 
-      // Thêm điều kiện nếu có period
-      // if (params.filters?.search) {
-      //    filter +=
-      //       (filter ? "," : "") +
-      //       `(title|description)@=*${params.filters.search}`;
-      // }
 
       try {
          const res = await api.user.getUserList(

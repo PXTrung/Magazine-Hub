@@ -1,113 +1,83 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useRedux from "../../../hooks/useRedux";
 import Table from "./Table";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import Pagination from "../../../components/Pagination/Pagination";
 import Loading from "../../../components/loading/Loading";
 import { getUserList } from "../../../redux/slices/userSlice";
 import { getRole } from "../../../redux/slices/roleSlice";
-
-interface IFilters {
-   facultyId: string;
-   roleName: string | "";
-}
+import FacultySelector from "../../../components/Dropdown/FacultySelector";
+import RoleSelector from "../../../components/Dropdown/RoleSelector";
+import { getFaculty } from "../../../redux/slices/facultySlice";
 
 const UserManage = () => {
    const location = useLocation();
    const { appSelector, dispatch } = useRedux();
-   const { faculty } = appSelector((state) => state.faculty);
-   const { role } = appSelector((state) => state.role);
+   const [searchParams, setSearchParams] = useSearchParams();
    const { userInfor } = appSelector((state) => state.auth);
-   const { list, currentPage, totalPage, isLoading } = appSelector(
-      (state) => state.user,
-   );
-   const [filter, setFilter] = useState<IFilters>({
-      facultyId: "",
-      roleName: "",
-   });
-   const [current, setCurrent] = useState(currentPage | 1);
+   const { list, totalPage, isLoading } = appSelector((state) => state.user);
 
-   const changePage = (page: number) => {
-      setCurrent(page);
+   const setParams = (key: string, value: string | number) => {
+      setSearchParams((prevParams) => {
+         if (
+            value === null ||
+            value === "" ||
+            value === undefined ||
+            Number.isNaN(value)
+         ) {
+            prevParams.delete(key);
+         } else {
+            prevParams.set(key, value as string);
+         }
+         return prevParams;
+      });
    };
 
-   console.log(current);
-
    useEffect(() => {
-      dispatch(getRole());
+      const query = searchParams.get("search") as string;
+      const role = searchParams.get("role") as string;
+      const faculty = searchParams.get("faculty") as string;
+      const sort = searchParams.get("sorts") as string;
+      const page = parseInt(searchParams.get("page") as string);
+
       dispatch(
          getUserList({
-            filters: { facultyId: filter.facultyId, role: filter.roleName },
-            page: current,
+            filters: {
+               facultyId: faculty,
+               role: role,
+               search: query,
+            },
+            sorts: sort,
+            page: page,
             pageSize: 10,
          }),
       );
-   }, [dispatch, userInfor, location.pathname, filter, current]);
+   }, [dispatch, userInfor, searchParams, location.pathname]);
+
+   useEffect(() => {
+      dispatch(getRole());
+      dispatch(getFaculty());
+   }, [dispatch]);
 
    return (
-      <>
+      <div className="w-[calc(100vw-208px)] ">
          {isLoading && <Loading />}
-         <div className="w-full md:w-full lg:w-[960px] xl:w-[1200px] py-5 ">
+         <div className="w-full px-2 md:px-5 lg:px-5 xl:px-10 py-5 overflow-hidden">
             <div className="w-full flex justify-start items-center pb-5">
-               <div className="mr-3">
-                  <label htmlFor="falcuty" className="text-sm text-gray-600">
-                     Faculty
-                  </label>
-                  <select
-                     id="falcuty"
-                     className="block appearance-none w-60 mt-[2px] h-9 bg-white border border-gray-400 px-2 rounded leading-tight focus:outline-none"
-                     defaultValue={"All"}
-                     onChange={(event) => {
-                        setFilter({ ...filter, facultyId: event.target.value });
-                        changePage(1);
-                     }}
-                  >
-                     <option key={"all"} value={""}>
-                        {"All"}
-                     </option>
-                     {faculty?.map((item) => {
-                        return (
-                           <option key={item.id} value={item.id}>
-                              {item.name}
-                           </option>
-                        );
-                     })}
-                  </select>
-               </div>
-               <div>
-                  <label htmlFor="role" className="text-sm text-gray-600">
-                     Role
-                  </label>
-                  <select
-                     id="role"
-                     className="block appearance-none w-60 mt-[2px] h-9 bg-white border border-gray-400 px-2 rounded leading-tight focus:outline-none"
-                     defaultValue={"All"}
-                     onChange={(event) => {
-                        setFilter({ ...filter, roleName: event.target.value });
-                     }}
-                  >
-                     <option key={"all"} value={""}>
-                        {"All"}
-                     </option>
-                     {role?.map((item) => {
-                        return (
-                           <option key={item.id} value={item.name}>
-                              {item.name}
-                           </option>
-                        );
-                     })}
-                  </select>
-               </div>
+               <FacultySelector paramName="faculty" setParams={setParams} />
+               <RoleSelector paramName="role" setParams={setParams} />
             </div>
             <Table data={list} name="Users" />
-            <Pagination
-               total={totalPage}
-               current={current}
-               setPage={changePage}
-            />
+            {list.length !== 0 && (
+               <Pagination
+                  total={totalPage}
+                  paramName="page"
+                  setParams={setParams}
+               />
+            )}
          </div>
-      </>
+      </div>
    );
 };
 

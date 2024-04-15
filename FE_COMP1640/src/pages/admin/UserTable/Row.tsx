@@ -8,7 +8,7 @@ interface IRowProps {
 
 const Row = ({ user, label }: IRowProps) => {
    return (
-      <div className="grid grid-cols-12 items-center gap-3 py-4 bg-white border-t border-t-slate-200">
+      <div className="grid grid-cols-12 items-center gap-3 py-4 bg-white border-t border-t-slate-200 min-w-[650px]">
          <span className="col-span-3 truncate">{user?.fullName}</span>
          <span className="col-span-3 truncate">{user?.email}</span>
          <img

@@ -3,4 +3,4 @@ export const content = ["./src/**/*.{html,js,tsx,jsx}"];
 export const theme = {
    extend: {},
 };
-export const plugins = [];
+export const plugins = [require("flowbite/plugin")];

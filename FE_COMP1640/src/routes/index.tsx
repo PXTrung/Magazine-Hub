@@ -4,8 +4,6 @@ import { PARAMETER, PATHS } from "../constants/path";
 import Loading from "../components/loading/Loading";
 import LandingPage from "../pages/landing/LandingPage";
 import ProtectedRoute from "./ProtectedRoute";
-import UploadForm from "../pages/contributor/UploadForm";
-import { elements } from "chart.js";
 
 // Authentication
 const Authentication = lazy(() => import("../pages/auth/Authentication"));
@@ -40,9 +38,7 @@ const ContributorDetailPage = lazy(
     )
 );
 
-const PeriodSelector = lazy(
-  () => import("../pages/contributor/PeriodSelector")
-);
+const PeriodSelector = lazy(() => import("../pages/contributor/PeriodList"));
 
 const ContributionsByFaculty = lazy(
   () => import("../pages//contributor/ContributionsByFaculty")
@@ -62,6 +58,9 @@ const CoordinatorDetailPage = lazy(
 const CreateContributor = lazy(
   () => import("../pages/coordinator/CreateContributor")
 );
+const CoordinatorDashboard = lazy(
+  () => import("../pages/coordinator/components/Dashboard/Dashboard")
+);
 
 // Manager
 const ManagerPage = lazy(() => import("../pages/manager/Manager"));
@@ -72,12 +71,14 @@ const ManagerDetailPage = lazy(
 const CreateCoordinator = lazy(
   () => import("../pages/manager/CreateCoordinator")
 );
+const ManagerDashboard = lazy(
+  () => import("../pages/manager/components/Dashboard/Dashboard")
+);
 
 // Admin
 const UserManage = lazy(() => import("../pages/admin/UserTable/UserManage"));
 const PeriodPage = lazy(() => import("../pages/admin/Period/Period"));
 const PeriodDetail = lazy(() => import("../pages/admin/Period/PeriodDetail"));
-const AdminDashboard = lazy(() => import("../pages/admin/Dashboard/Dashboard"));
 
 // Layout
 const RoleLayout = lazy(() => import("../layouts/RolePage/index"));
@@ -186,6 +187,10 @@ const coordinatorRoute = {
       path: PATHS.COORDINATOR.CREATE_ACCOUNT,
       element: <LazyLoadingComponent component={CreateContributor} />,
     },
+    {
+      path: PATHS.DASHBOARD.INDENTITY,
+      element: <LazyLoadingComponent component={CoordinatorDashboard} />,
+    },
   ],
 };
 
@@ -208,6 +213,10 @@ const managerRoute = {
       path: PATHS.MANAGER.CREATE_ACCOUNT,
       element: <LazyLoadingComponent component={CreateCoordinator} />,
     },
+    {
+      path: `${PATHS.DASHBOARD.INDENTITY}`,
+      element: <LazyLoadingComponent component={ManagerDashboard} />,
+    },
   ],
 };
 
@@ -229,10 +238,6 @@ const adminRoute = {
     {
       path: `${PATHS.ADMIN.PERIOD}/${PATHS.ADMIN.DETAIL}`,
       element: <LazyLoadingComponent component={PeriodDetail} />,
-    },
-    {
-      path: `${PATHS.ADMIN.DASHBOARD}`,
-      element: <LazyLoadingComponent component={AdminDashboard} />,
     },
   ],
 };
