@@ -128,6 +128,7 @@ namespace Application.Features.Dashboards.CoordinatorDashboardService
         private async Task<List<TopContributorOfFacultyDto>> TopContributors(Guid facultyId, Guid periodId, int count)
         {
             var topContributors = await _context.Users
+                .Include(u => u.Faculty)
                 .Include(u => u.Contributions).ThenInclude(c => c.Period)
                 .Include(u => u.Avatar)
                 .Where(u => u.FacultyId == facultyId && u.Contributions.Any(c => c.PeriodId == periodId))
@@ -138,6 +139,8 @@ namespace Application.Features.Dashboards.CoordinatorDashboardService
                     Email = u.Email,
                     FullName = $"{u.FirstName} {u.LastName}",
                     AvatarUrl = u.Avatar.UrlFilePath,
+                    ContributionCount = u.Contributions.Count,
+                    FacultyName = u.Faculty.Name
                 })
                 .ToListAsync();
 
