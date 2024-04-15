@@ -40,7 +40,8 @@ namespace Application.Features.Dashboards.CoordinatorDashboardService
                 TotalOfContribution = await TotalContributionsCount(facultyId, periodId),
                 TotalOfPublishedContribution = await TotalPublishedContributionsCount(facultyId, periodId),
                 PercentageOfFeedbackedContribution = await PercentageOfFeedbackedContribution(facultyId, periodId),
-                ContributionsVsContributorsCorrelation = await GetContributionsVsContributorsCorrelation(facultyId, periodId)
+                ContributionsVsContributorsCorrelation = await GetContributionsVsContributorsCorrelation(facultyId, periodId),
+                Top5ContributorOfFaculty = await TopContributors(facultyId, periodId, 5)
             };
 
             return dashboardData;
@@ -122,6 +123,25 @@ namespace Application.Features.Dashboards.CoordinatorDashboardService
             double correlation = totalContributors > 0 ? (double)totalContributions / totalContributors : 0;
 
             return correlation;
+        }
+
+        private async Task<List<TopContributorOfFacultyDto>> TopContributors(Guid facultyId, Guid periodId, int count)
+        {
+            var topContributors = await _context.Users
+                .Include(u => u.Contributions).ThenInclude(c => c.Period)
+                .Include(u => u.Avatar)
+                .Where(u => u.FacultyId == facultyId && u.Contributions.Any(c => c.PeriodId == periodId))
+                .OrderByDescending(u => u.Contributions.Count)
+                .Take(count)
+                .Select(u => new TopContributorOfFacultyDto()
+                {
+                    Email = u.Email,
+                    FullName = $"{u.FirstName} {u.LastName}",
+                    AvatarUrl = u.Avatar.UrlFilePath,
+                })
+                .ToListAsync();
+
+            return topContributors;
         }
     }
 }
