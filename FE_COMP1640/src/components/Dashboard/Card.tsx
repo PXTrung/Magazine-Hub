@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React from "react";
 
 interface ICardProps {
@@ -12,7 +13,12 @@ const Card = (data: ICardProps) => {
          <div className="flex flex-col justify-between h-full">
             <h5 className="text-sm text-gray-500 font-medium">{data.label}</h5>
             <div className="flex justify-between items-center">
-               <h3 className="text-2xl text-gray-900 font-medium">
+               <h3
+                  className={clsx(
+                     "text-gray-900 font-medium",
+                     data.icon === "top" ? "md:text-base xl:text-xl" : "text-2xl",
+                  )}
+               >
                   {data.value}
                </h3>
                {data.icon === "top" && (
