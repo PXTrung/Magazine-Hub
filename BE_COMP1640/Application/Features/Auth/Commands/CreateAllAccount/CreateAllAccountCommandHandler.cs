@@ -47,6 +47,9 @@ namespace Application.Features.Auth.Commands.CreateAllAccount
 
             if (role == null) return Error.NotFound(description: "Role with the given RoleId not found");
 
+            if ((role.Name == "Manager" || role.Name == "Admin") && request.FacultyId != null) return Error.Validation("You can't specify the faculty for Manager or Admin roles.");
+
+            if ((role.Name == "Contributor" || role.Name == "Coordinator") && request.FacultyId == null) return Error.Validation("You must specify the faculty for Contributor or Coordinator roles.");
 
 
             var newUser = new ApplicationUser()
@@ -54,6 +57,7 @@ namespace Application.Features.Auth.Commands.CreateAllAccount
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Email = request.Email,
+                UserName = request.Email
             };
 
 
