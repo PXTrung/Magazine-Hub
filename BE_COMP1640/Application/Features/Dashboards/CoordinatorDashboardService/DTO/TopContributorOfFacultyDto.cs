@@ -8,6 +8,10 @@
         public string Email { get; set; }
 
         public string AvatarUrl { get; set; }
+
+        public string FacultyName { get; set; }
+
+        public int ContributionCount { get; set; }
     }
 }
 

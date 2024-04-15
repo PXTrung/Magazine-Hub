@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.Features.Dashboards.AdminDashboardService.DTO;
+using Application.Features.Dashboards.CoordinatorDashboardService.DTO;
 using Domain.Enums;
 using ErrorOr;
 using Microsoft.EntityFrameworkCore;
@@ -118,16 +119,31 @@ namespace Application.Features.Dashboards.AdminDashboardService
             return totalContributionsCount;
         }
 
-        private async Task<string> TopContributor(Guid periodId)
+        private async Task<List<TopContributorOfFacultyDto>> TopContributor(Guid periodId, int count)
         {
-            var topContributor = await _context.Users
-                .Include(u => u.Contributions)
+            var topContributors = await _context.Users
+                .Include(u => u.Faculty)
+                .Include(u => u.Contributions).ThenInclude(c => c.Period)
+                .Include(u => u.Avatar)
+                .Where(u => u.Contributions.Any(c => c.PeriodId == periodId))
                 .OrderByDescending(u => u.Contributions.Count)
-                .FirstOrDefaultAsync();
+                .Take(count)
+                .Select(u => new TopContributorOfFacultyDto()
+                {
+                    Email = u.Email,
+                    FullName = $"{u.FirstName} {u.LastName}",
+                    AvatarUrl = u.Avatar.UrlFilePath,
+                    ContributionCount = u.Contributions.Count,
+                    FacultyName = u.Faculty.Name
+                })
+                .ToListAsync();
 
-            if (topContributor == null) return "There is no contributor in this period";
+            return topContributors;
 
-            return topContributor.Email;
+
+
+
+
         }
     }
 }
