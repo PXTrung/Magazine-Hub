@@ -2,7 +2,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Loading from "../../../../components/loading/Loading";
 import "flowbite";
-import ApexCharts from "apexcharts";
 import Card from "../../../../components/Dashboard/Card";
 import DashboardTable from "./DashboardTable";
 import useRedux from "../../../../hooks/useRedux";
