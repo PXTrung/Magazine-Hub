@@ -14,5 +14,7 @@
         public double PercentageOfFeedbackedContribution { get; set; }
 
         public double ContributionsVsContributorsCorrelation { get; set; }
+
+        public List<TopContributorOfFacultyDto> Top5ContributorOfFaculty { get; set; }
     }
 }
