@@ -13,12 +13,7 @@ const variants = {
       to: `/auth/${PATHS.AUTH.LOGIN}`,
       linkText: "Login",
       text: "Have an account?",
-   },
-   [`/auth/${PATHS.AUTH.LOGIN}`]: {
-      to: `/auth/${PATHS.AUTH.REGISTER}`,
-      linkText: "Register now",
-      text: "Do not have account yet?",
-   },
+   }
 };
 
 const Authentication = () => {

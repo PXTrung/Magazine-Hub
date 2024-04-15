@@ -10,6 +10,7 @@ import Searchbar from "../../components/Searchbar";
 import UserInformation from "../../pages/landing/components/UserInformation";
 import { IUserInformation } from "../../types/user.type";
 import { PATHS } from "../../constants/path";
+import image from "../../assets/images/logo.jpg";
 import clsx from "clsx";
 
 interface MenuItem {
@@ -126,13 +127,9 @@ const RolePage = () => {
             <Link
                key={"home"}
                to={`/${PATHS.HOME.IDENTITY}`}
-               className="w-1/4 flex justify-center mb-10"
+               className="w-1/3 flex justify-center mb-10"
             >
-               <img
-                  src="./assets/images/logo.jpg"
-                  alt="LOGO"
-                  className="h-full w-full"
-               />
+               <img src={image} alt="LOGO" className="h-full w-full" />
             </Link>
             <div className="flex flex-col justify-center items-start w-full px-6">
                {menu[userInfor.role]?.map((item) => {
