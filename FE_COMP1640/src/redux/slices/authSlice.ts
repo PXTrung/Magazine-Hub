@@ -1,6 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
-import { ICreateAllAccount, ICreateContributor, ICreateCoordinator, ILogin, IResetPassword, IUserInformation } from "../../types/user.type";
+import {
+   ICreateAllAccount,
+   ICreateContributor,
+   ICreateCoordinator,
+   ILogin,
+   IResetPassword,
+   IUserInformation,
+} from "../../types/user.type";
 import authUtils from "../../utils/auth";
 
 export const login = createAsyncThunk(
@@ -15,42 +22,53 @@ export const login = createAsyncThunk(
    },
 );
 
+export const createContributorAccount = createAsyncThunk(
+   "createContributorAccount",
+   async (data: ICreateContributor, { rejectWithValue }) => {
+      try {
+         const res = await api.user.createContributor(data);
+         return res.data;
+      } catch (error: any) {
+         return rejectWithValue(error.response.data.title);
+      }
+   },
+);
 
-export const createContributorAccount = createAsyncThunk("createContributorAccount", async(data: ICreateContributor, {rejectWithValue}) => {
-   try {
-      const res = await api.user.createContributor(data);
-      return res.data;
-   } catch (error: any) {
-      return rejectWithValue(error.response.data.title);
-   }
-});
+export const createCoordinatorAccount = createAsyncThunk(
+   "createCoordinatorAccount",
+   async (data: ICreateCoordinator, { rejectWithValue }) => {
+      try {
+         const res = await api.user.createCoordinator(data);
+         return res.data;
+      } catch (error: any) {
+         return rejectWithValue(error.response.data.title);
+      }
+   },
+);
 
-export const createCoordinatorAccount = createAsyncThunk("createCoordinatorAccount", async(data: ICreateCoordinator, {rejectWithValue}) => {
-   try {
-      const res = await api.user.createCoordinator(data);
-      return res.data;
-   } catch (error: any) {
-      return rejectWithValue(error.response.data.title);
-   }
-});
+export const changePassword = createAsyncThunk(
+   "resetPassword",
+   async (data: IResetPassword, { rejectWithValue }) => {
+      try {
+         const res = await api.user.resetPassword(data);
+         return res.data;
+      } catch (error: any) {
+         return rejectWithValue(error.response.data.title);
+      }
+   },
+);
 
-export const changePassword = createAsyncThunk("resetPassword", async(data: IResetPassword, {rejectWithValue}) => {
-   try {
-      const res = await api.user.resetPassword(data);
-      return res.data;
-   } catch (error: any) {
-      return rejectWithValue(error.response.data.title);
-   }
-});
-
-export const createAllAccount = createAsyncThunk("createAllAccount", async(data: ICreateAllAccount, {rejectWithValue}) => {
-   try {
-      const res = await api.user.createAllAccount(data);
-      return res.data;
-   } catch (error: any) {
-      return rejectWithValue(error.response.data.title);
-   }
-})
+export const createAllAccount = createAsyncThunk(
+   "createAllAccount",
+   async (data: ICreateAllAccount, { rejectWithValue }) => {
+      try {
+         const res = await api.user.createAllAccount(data);
+         return res.data;
+      } catch (error: any) {
+         return rejectWithValue(error.response.data.title);
+      }
+   },
+);
 
 interface UserLoginState {
    isLoading: boolean;
@@ -94,10 +112,7 @@ const authSlice = createSlice({
       });
       builder.addCase(login.fulfilled, (state, action) => {
          state.isLoading = false;
-         
-         console.log(action.payload.data.hasOwnProperty("changeInitialPasswordToken"));
-
-         if(action.payload.data.hasOwnProperty("changeInitialPasswordToken")) {
+         if (action.payload.data.hasOwnProperty("changeInitialPasswordToken")) {
             let tempToken = action.payload.data.changeInitialPasswordToken;
             authUtils.setTempToken(tempToken);
             state.isFirstLogin = true;
@@ -108,7 +123,6 @@ const authSlice = createSlice({
             state.isLogin = true;
          }
 
-      
          state.message = "";
       });
       builder.addCase(login.rejected, (state, action) => {
@@ -128,7 +142,9 @@ const authSlice = createSlice({
       builder.addCase(createContributorAccount.rejected, (state, action) => {
          state.isLoading = false;
          state.isError = true;
-         state.message = (action.payload as string) || "An error occurred during create user.";
+         state.message =
+            (action.payload as string) ||
+            "An error occurred during create user.";
       });
       builder.addCase(createCoordinatorAccount.pending, (state) => {
          state.isLoading = true;
@@ -140,7 +156,9 @@ const authSlice = createSlice({
       builder.addCase(createCoordinatorAccount.rejected, (state, action) => {
          state.isLoading = false;
          state.isError = true;
-         state.message = (action.payload as string) || "An error occurred during create user.";
+         state.message =
+            (action.payload as string) ||
+            "An error occurred during create user.";
       });
       builder.addCase(changePassword.pending, (state) => {
          state.isLoading = true;
@@ -155,7 +173,9 @@ const authSlice = createSlice({
       builder.addCase(changePassword.rejected, (state, action) => {
          state.isLoading = false;
          state.isChangePassword = false;
-         state.message = (action.payload as string) || "An error occurred during create user.";
+         state.message =
+            (action.payload as string) ||
+            "An error occurred during create user.";
       });
       builder.addCase(createAllAccount.pending, (state) => {
          state.isLoading = true;
@@ -166,8 +186,10 @@ const authSlice = createSlice({
       });
       builder.addCase(createAllAccount.rejected, (state, action) => {
          state.isLoading = false;
-         state.message = (action.payload as string) || "An error occurred during create user";
-      })
+         state.message =
+            (action.payload as string) ||
+            "An error occurred during create user";
+      });
    },
 });
 

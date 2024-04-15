@@ -11,12 +11,12 @@ const Card = (data: ICardProps) => {
    return (
       <div className="bg-white shadow w-full h-28 rounded-lg px-5 py-5 hover:shadow-md transition-all duration-200">
          <div className="flex flex-col justify-between h-full">
-            <h5 className="text-sm text-gray-500 font-medium">{data.label}</h5>
+            <h5 className="text-sm text-gray-600 font-normal">{data.label}</h5>
             <div className="flex justify-between items-center">
                <h3
                   className={clsx(
-                     "text-gray-900 font-medium",
-                     data.icon === "top" ? "md:text-base xl:text-xl" : "text-2xl",
+                     "text-gray-900 font-medium truncate",
+                     data.icon === "top" ? "md:text-base xl:text-md" : "text-3xl",
                   )}
                >
                   {data.value}

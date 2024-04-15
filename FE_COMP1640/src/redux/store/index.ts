@@ -6,6 +6,7 @@ import feedbackReducer from "../slices/feedbackSlide";
 import periodReducer from "../slices/periodSlide";
 import userReducer from "../slices/userSlice";
 import roleReducer from "../slices/roleSlice";
+import dashboardReducer from "../slices/dashboardSlice";
 
 const store = configureStore({
    reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
       period: periodReducer,
       user: userReducer,
       role: roleReducer,
+      dashboard: dashboardReducer,
    },
 });
 
