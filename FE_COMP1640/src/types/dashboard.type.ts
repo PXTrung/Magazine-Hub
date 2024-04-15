@@ -26,7 +26,7 @@ interface IFacultyRank {
    [key: string]: number;
 }
 
-interface IFacultyContribution {
+export interface IFacultyContribution {
    facultyName: string;
    publishedCount: number;
    approvedCount: number;
