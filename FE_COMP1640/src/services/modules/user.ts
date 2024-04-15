@@ -4,13 +4,15 @@ import { ENDPOINTS } from "../../constants/endpoint";
 import { ICreateAllAccount, ICreateContributor, ICreateCoordinator, ILogin, IResetPassword } from "../../types/user.type";
 import { IParamsAxios } from "../../types/filter.type";
 
-const userToken = sessionStorage.getItem("user-token");
+
 
 export default {
    loginToGetToken: async (data: ILogin) => {
       return await axios.post(ENDPOINTS.LOGIN, data);
    },
    getUserList: async (params: IParamsAxios) => {
+      const userToken = sessionStorage.getItem("user-token");
+
       return await axios.get(ENDPOINTS.USER.ALL, {
          headers: {
             Authorization: `Bearer ${userToken}`,
@@ -19,6 +21,8 @@ export default {
       });
    },
    createContributor: (data: ICreateContributor) => {
+      const userToken = sessionStorage.getItem("user-token");
+
       return axios.post(ENDPOINTS.CREATE_CONTRIBUTOR_ACCOUNT, data, {
          headers: {
             Authorization: `Bearer ${userToken}`,
@@ -26,6 +30,8 @@ export default {
       });
    },
    createCoordinator: (data: ICreateCoordinator) => {
+      const userToken = sessionStorage.getItem("user-token");
+
       return axios.post(ENDPOINTS.CREATE_COORDINATOR_ACCOUNT, data, {
          headers: {
             Authorization: `Bearer ${userToken}`,
@@ -36,8 +42,11 @@ export default {
       return axios.post(ENDPOINTS.RESET_PASS, data);
    },
    createAllAccount: (data: ICreateAllAccount) => {
+      const userToken = sessionStorage.getItem("user-token");
+
       return axios.post(ENDPOINTS.CREATE_ALL_ACCOUNT, data, {
          headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${userToken}`,
          }
       })

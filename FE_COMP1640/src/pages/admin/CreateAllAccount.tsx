@@ -52,7 +52,7 @@ const CreateAllAccount = () => {
 
     console.log(selectedRoleId);
 
-    if (selectedRoleId === managerRoleId) {
+    if (selectedRoleId === managerRoleId || selectedRoleId === adminRoleId) {
       const facultyInput = facultyRef.current;
       if (facultyInput) {
         facultyInput.setAttribute("disabled", "true");
@@ -84,10 +84,11 @@ const CreateAllAccount = () => {
     <div className="w-[calc(100vw-208px)] ">
       <div className="w-full px-2 md:px-5 lg:px-5 xl:px-10 py-5 overflow-hidden flex justify-center items-start">
         <div className=" bg-white/70 mt-5 p-8 rounded shadow-md  w-[600px] z-20">
+          {message && <span className="text-green-600">{message}</span>}
           <h1 className="text-2xl font-semibold mb-6">
             Create Contributor Account
           </h1>
-          {message && <span className="text-green-600">{message}</span>}
+
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-row justify-between items-start">
               <Input
@@ -167,6 +168,7 @@ const CreateAllAccount = () => {
                 className="block appearance-none w-full bg-white border border-gray-400 mt-1 p-[10px] rounded leading-tight focus:outline-none"
                 {...(register && register("facultyId", {}))}
                 ref={facultyRef}
+                disabled={defaultRoleValue ? true : false}
               >
                 <option key="0" value={""}>
                   -----
