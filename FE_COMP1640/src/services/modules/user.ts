@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios";
 import { ENDPOINTS } from "../../constants/endpoint";
-import { ICreateAllAccount, ICreateContributor, ICreateCoordinator, ILogin, IResetPassword } from "../../types/user.type";
+import { ICreateAllAccount, ICreateContributor, ICreateCoordinator, ILogin, IChangePassword, ISendOTP, IResetPassword } from "../../types/user.type";
 import { IParamsAxios } from "../../types/filter.type";
 
 
@@ -38,7 +38,7 @@ export default {
          },
       });
    },
-   resetPassword: (data: IResetPassword) => {
+   changePassword: (data: IChangePassword) => {
       return axios.post(ENDPOINTS.RESET_PASS, data);
    },
    createAllAccount: (data: ICreateAllAccount) => {
@@ -50,5 +50,11 @@ export default {
             Authorization: `Bearer ${userToken}`,
          }
       })
-   }
+   },
+   sendOTP: (data: ISendOTP) => {
+      return axios.post(ENDPOINTS.SENT_OTP, data);
+   },
+   resetPassword: (data: IResetPassword) => {
+      return axios.post(ENDPOINTS.CHANGE_PASS, data);
+   },
 };

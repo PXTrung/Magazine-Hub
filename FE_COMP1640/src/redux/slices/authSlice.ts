@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
-import { ICreateAllAccount, ICreateContributor, ICreateCoordinator, ILogin, IResetPassword, IUserInformation } from "../../types/user.type";
+import { IChangePassword, ICreateAllAccount, ICreateContributor, ICreateCoordinator, ILogin, IResetPassword, ISendOTP, IUserInformation } from "../../types/user.type";
 import authUtils from "../../utils/auth";
 
 export const login = createAsyncThunk(
@@ -34,9 +34,9 @@ export const createCoordinatorAccount = createAsyncThunk("createCoordinatorAccou
    }
 });
 
-export const changePassword = createAsyncThunk("resetPassword", async(data: IResetPassword, {rejectWithValue}) => {
+export const changePassword = createAsyncThunk("changePassword", async(data: IChangePassword, {rejectWithValue}) => {
    try {
-      const res = await api.user.resetPassword(data);
+      const res = await api.user.changePassword(data);
       return res.data;
    } catch (error: any) {
       return rejectWithValue(error.response.data.title);
@@ -46,6 +46,24 @@ export const changePassword = createAsyncThunk("resetPassword", async(data: IRes
 export const createAllAccount = createAsyncThunk("createAllAccount", async(data: ICreateAllAccount, {rejectWithValue}) => {
    try {
       const res = await api.user.createAllAccount(data);
+      return res.data;
+   } catch (error: any) {
+      return rejectWithValue(error.response.data.title);
+   }
+});
+
+export const SendResetPasswordOTP = createAsyncThunk("SendResetPasswordOTP", async(data: ISendOTP, {rejectWithValue}) => {
+   try {
+      const res = await api.user.sendOTP(data);
+      return res.data;
+   } catch (error: any) {
+      return rejectWithValue(error.response.data.title);
+   }
+});
+
+export const resetPassword = createAsyncThunk("resetPassword", async(data: IResetPassword, {rejectWithValue}) => {
+   try {
+      const res = await api.user.resetPassword(data);
       return res.data;
    } catch (error: any) {
       return rejectWithValue(error.response.data.title);
@@ -60,6 +78,8 @@ interface UserLoginState {
    isLogin: boolean;
    isChangePassword: boolean;
    isFirstLogin: boolean;
+   isSendOTP: boolean;
+   isResetPassword: boolean;
 }
 
 const initialState: UserLoginState = {
@@ -70,6 +90,8 @@ const initialState: UserLoginState = {
    isLogin: authUtils.getSessionToken() ? true : false,
    isChangePassword: false,
    isFirstLogin: false,
+   isSendOTP: false,
+   isResetPassword: false,
 };
 
 const authSlice = createSlice({
@@ -95,8 +117,7 @@ const authSlice = createSlice({
       builder.addCase(login.fulfilled, (state, action) => {
          state.isLoading = false;
          
-         console.log(action.payload.data.hasOwnProperty("changeInitialPasswordToken"));
-
+         // Check if the token has the specific property to proceed based on that
          if(action.payload.data.hasOwnProperty("changeInitialPasswordToken")) {
             let tempToken = action.payload.data.changeInitialPasswordToken;
             authUtils.setTempToken(tempToken);
@@ -167,6 +188,34 @@ const authSlice = createSlice({
       builder.addCase(createAllAccount.rejected, (state, action) => {
          state.isLoading = false;
          state.message = (action.payload as string) || "An error occurred during create user";
+      });
+      builder.addCase(SendResetPasswordOTP.pending, (state) => {
+         state.isLoading = true;
+      });
+      builder.addCase(SendResetPasswordOTP.fulfilled, (state, action) => {
+         state.isLoading = false;
+         state.isSendOTP = true;
+         state.isResetPassword = false;
+         state.message = "";
+      });
+      builder.addCase(SendResetPasswordOTP.rejected, (state, action) => {
+         state.isLoading = false;
+         state.isError = true;
+         state.message = (action.payload as string) || "An error occurred during send OTP";
+      });
+      builder.addCase(resetPassword.pending, (state) => {
+         state.isLoading = true;
+      });
+      builder.addCase(resetPassword.fulfilled, (state, action) => {
+         state.isLoading = false;
+         state.isResetPassword = true;
+         state.isSendOTP = false;
+         state.message = action.payload.title;
+      });
+      builder.addCase(resetPassword.rejected, (state, action) => {
+         state.isLoading = false;
+         state.isError = true;
+         state.message = (action.payload as string) || "An error occurred during reset password";
       })
    },
 });

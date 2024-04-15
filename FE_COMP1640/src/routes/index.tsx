@@ -11,6 +11,10 @@ const LoginForm = lazy(() => import("../pages/auth/components/LoginForm"));
 const ChangePassword = lazy(
   () => import("../pages/auth/components/ChangePassword")
 );
+const SendEmail = lazy(() => import("../pages/auth/components/SendEmail"));
+const ResetPassword = lazy(
+  () => import("../pages/auth/components/ResetPassword")
+);
 
 // Home layout
 const Home = lazy(() => import("../layouts/Home/index"));
@@ -115,6 +119,14 @@ const authRoute = {
     {
       path: PATHS.AUTH.CHANGE_PASS,
       element: <LazyLoadingComponent component={ChangePassword} />,
+    },
+    {
+      path: PATHS.AUTH.SEND_OTP,
+      element: <LazyLoadingComponent component={SendEmail} />,
+    },
+    {
+      path: PATHS.AUTH.RESET_PASS,
+      element: <LazyLoadingComponent component={ResetPassword} />,
     },
   ],
 };

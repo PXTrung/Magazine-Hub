@@ -14,6 +14,8 @@ const PATHS = {
       LOGIN: "login",
       REGISTER: "register",
       CHANGE_PASS: "changePassword",
+      SEND_OTP: "verifyEmail",
+      RESET_PASS: "resetPassword",
    },
    DASHBOARD: {
       INDENTITY: "dashboard",
