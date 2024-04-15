@@ -23,7 +23,7 @@ const Row = ({ contribution, label }: IRowProps) => {
          <img
             src={contribution?.coverImageUrl}
             alt="cover image"
-            className="col-span-2 truncate h-8 object-contain"
+            className="col-span-2 h-8 object-contain"
          />
 
          <span className="col-span-2 truncate">

@@ -35,9 +35,9 @@ const PeriodSelector = ({ paramName, setParams }: SelectComponentProps) => {
                handleChange(event);
             }}
          >
-            <option key={"all"} value={""}>
+            {/* <option key={"all"} value={""}>
                All
-            </option>
+            </option> */}
             {period?.map((item) => {
                return (
                   <option key={item.id} value={item.id}>
