@@ -34,7 +34,7 @@ namespace Application.Features.Auth.Commands.CreateCoordinatorAccount
         }
         public async Task<ErrorOr<SuccessResult>> Handle(CreateCoordinatorAccountCommand request, CancellationToken cancellationToken)
         {
-            //Check if email and password exist
+            //Check if email exist
             var emailExist = await _userManager.Users.AnyAsync(u => u.NormalizedEmail == request.Email.ToUpperInvariant(), cancellationToken);
 
             if (emailExist) return Error.Conflict(description: "This email already exists");
