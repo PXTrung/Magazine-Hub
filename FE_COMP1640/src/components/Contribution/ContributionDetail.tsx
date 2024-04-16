@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import Button from "../CustomButton";
 import useRedux from "../../hooks/useRedux";
-import formatDate from "../../utils/functions";
+import { formatDate } from "../../utils/functions";
 
 const ContributionDetail = () => {
    const { dispatch, appSelector } = useRedux();

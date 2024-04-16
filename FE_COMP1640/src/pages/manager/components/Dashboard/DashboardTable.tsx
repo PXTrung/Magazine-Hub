@@ -1,14 +1,9 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import { IContributionDetail } from "../../../../types/contribution.type";
-import {
-   IFacultyContribution,
-   ITopContributor,
-} from "../../../../types/dashboard.type";
-import avatar from "../../../../assets/images/Avatar.png";
+import { IFacultyRank } from "../../../../types/dashboard.type";
 
 interface ITableProps {
    name: string;
-   data: IFacultyContribution[];
+   data: IFacultyRank;
 }
 
 const DashboardTable = ({ name, data }: ITableProps) => {
@@ -18,34 +13,23 @@ const DashboardTable = ({ name, data }: ITableProps) => {
             <h2 className="text-lg font-bold text-blue-950 py-1">{name}</h2>
             <div className="w-full overflow-x-scroll">
                <div className="min-w-[480px] grid grid-cols-5 gap-4 text-gray-400 font-medium py-5">
+                  <span className="col-span-1">#Rank</span>
                   <span className="col-span-2">Faculty</span>
-                  <span className="col-span-1">Approved</span>
-                  <span className="col-span-1">Published</span>
-                  <span className="col-span-1">Rejected</span>
+                  <span className="col-span-2">Contributions</span>
                </div>
 
                <div>
-                  {data?.map((facultu) => {
-                     return (
+                  {data &&
+                     Object?.entries(data)?.map(([key, value], index) => (
                         <div
-                           key={facultu.facultyName}
+                           key={key}
                            className="min-w-[480px] w-full grid grid-cols-5 items-center gap-3 py-4 bg-white border-t border-t-slate-200 hover:bg-slate-50 transition-all duration-150"
                         >
-                           <span className="col-span-2">
-                              {facultu.facultyName}
-                           </span>
-                           <span className="col-span-1 text-green-600">
-                              {facultu.approvedCount}
-                           </span>
-                           <span className="col-span-1 text-sky-700">
-                              {facultu.publishedCount}
-                           </span>
-                           <span className="col-span-1 text-rose-700">
-                              {facultu.rejectedCount}
-                           </span>
+                           <span className="col-span-1">{index + 1}</span>
+                           <span className="col-span-2">{key}</span>
+                           <span className="col-span-2">{value}</span>
                         </div>
-                     );
-                  })}
+                     ))}
                </div>
             </div>
          </div>

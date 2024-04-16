@@ -38,12 +38,12 @@ const Dashboard = () => {
    useEffect(() => {
       dispatch(getPeriod());
       if (!searchParams.get("period")) setParams("period", period[0]?.id);
-   }, [dispatch]);
+   }, [dispatch, searchParams]);
 
    useEffect(() => {
       const period = searchParams.get("period") as string;
       dispatch(getCoordinatorDashboard(period));
-   }, [dispatch, searchParams]);
+   }, [dispatch, searchParams, period]);
 
    useEffect(() => {
       const param = searchParams.get("period");
@@ -59,10 +59,13 @@ const Dashboard = () => {
          const values = Object.values(obj);
          return [keys, values];
       };
-      const [statusArray, percentageArray] = convertObjectToArray(
-         coordinatorDashboard.percentageOfContributionByStatus,
-      );
-      return <DonutChart x={statusArray} y={percentageArray} />;
+
+      if (coordinatorDashboard) {
+         const [statusArray, percentageArray] = convertObjectToArray(
+            coordinatorDashboard?.percentageOfContributionByStatus,
+         );
+         return <DonutChart x={statusArray} y={percentageArray} />;
+      }
    }, [coordinatorDashboard]);
 
    return (
@@ -91,19 +94,19 @@ const Dashboard = () => {
                </select>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 xl:gap-5 mb-5">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 xl:gap-5 mb-5">
                <Card
-                  label="Top 1 Contributor"
+                  label="Contributor"
                   value={coordinatorDashboard?.topContributorFullName}
                   icon="top"
                />
                <Card
-                  label="Total contributions"
+                  label="Contributions"
                   value={coordinatorDashboard?.totalOfContribution + ""}
                   icon="total-contributions"
                />
                <Card
-                  label="Total published"
+                  label="Published"
                   value={
                      coordinatorDashboard?.totalOfPublishedContribution + ""
                   }

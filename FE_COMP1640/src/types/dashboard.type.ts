@@ -22,7 +22,7 @@ export interface ICoordinatorDashboard {
    top5ContributorOfFaculty: ITopContributor[];
 }
 
-interface IFacultyRank {
+export interface IFacultyRank {
    [key: string]: number;
 }
 

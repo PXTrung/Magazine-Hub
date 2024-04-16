@@ -8,6 +8,8 @@ import useRedux from "../../../../hooks/useRedux";
 import { getManagerDashboard } from "../../../../redux/slices/dashboardSlice";
 import { getPeriod } from "../../../../redux/slices/periodSlide";
 import { useSearchParams } from "react-router-dom";
+import DonutChart from "./DonutChart";
+import { roundToTwoDecimal } from "../../../../utils/functions";
 import BarChart from "./BarChart";
 
 const Dashboard = () => {
@@ -38,7 +40,7 @@ const Dashboard = () => {
    useEffect(() => {
       dispatch(getPeriod());
       if (!searchParams.get("period")) setParams("period", period[0]?.id);
-   }, [dispatch]);
+   }, [dispatch, searchParams]);
 
    useEffect(() => {
       const period = searchParams.get("period") as string;
@@ -53,27 +55,33 @@ const Dashboard = () => {
       } else setCurrent("");
    }, [searchParams, period]);
 
-   const renderChart = useMemo(() => {
-      let data = Object.entries(
-         managerDashboard?.percentageOfContributionByStatus || {},
-      );
+   const renderDonutChart = useMemo(() => {
+      const convertObjectToArray = (obj: Object) => {
+         const keys = Object?.keys(obj);
+         const values = Object?.values(obj).map((value: number) =>
+            roundToTwoDecimal(value),
+         );
+         return [keys, values];
+      };
 
-      const chartData = data?.map(([status, value]) => ({
-         x: status,
-         y: value,
-      }));
+      if (managerDashboard) {
+         const [statusArray, percentageArray] = convertObjectToArray(
+            managerDashboard?.percentageOfContributionByStatus,
+         );
+         return <DonutChart x={statusArray} y={percentageArray} />;
+      }
+   }, [managerDashboard]);
 
+   const renderBarChart = useMemo(() => {
       return (
          <BarChart
-            period={
-               period.find((item) => item.id === searchParams.get("period"))
-                  ?.academicYear + ""
+            chartData={
+               managerDashboard?.numberOfContributionByStatusWithinFaculty
             }
-            chartData={chartData}
+            period={period.find((item) => item.id === current)?.academicYear}
          />
       );
-   }, [managerDashboard, searchParams]);
-
+   }, [managerDashboard]);
    return (
       <div className="w-[calc(100vw-208px)] ">
          {isLoading && <Loading />}
@@ -101,11 +109,6 @@ const Dashboard = () => {
             </div>
 
             <div className="grid md:grid-cols-3 gap-2 lg:gap-5 xl:gap-5 mb-5">
-               {/* {Object.entries(
-                  managerDashboard?.facultyRankByContribution || {},
-               )?.map(([key, value]) => (
-                  <Card icon={key} value={value.toString()} label={key} />
-               ))} */}
                <Card
                   label="Contributions"
                   value={managerDashboard?.totalOfContribution + ""}
@@ -119,22 +122,22 @@ const Dashboard = () => {
                <Card
                   label="Feedback"
                   value={
-                     managerDashboard?.percentageOfFeedbackedContribution + "%"
+                     roundToTwoDecimal(
+                        managerDashboard?.percentageOfFeedbackedContribution,
+                     ) + "%"
                   }
                   icon="feedback"
                />
             </div>
-            <div className="w-full flex flex-col lg:grid lg:grid-cols-5 gap-5 ">
-               {renderChart}
-
-               <div className="lg:col-span-3 min-h-80">
-                  <DashboardTable
-                     name="In faculty"
-                     data={
-                        managerDashboard?.numberOfContributionByStatusWithinFaculty
-                     }
-                  />
-               </div>
+            <div className="w-full flex flex-col lg:grid lg:grid-cols-4 gap-5 mb-5">
+               <div className="lg:col-span-2 min-h-80">{renderBarChart}</div>
+               <div className="lg:col-span-2 min-h-80">{renderDonutChart}</div>
+            </div>
+            <div className="w-full pb-5">
+               <DashboardTable
+                  data={managerDashboard?.facultyRankByContribution}
+                  name="Faculty Rank"
+               />
             </div>
          </div>
       </div>

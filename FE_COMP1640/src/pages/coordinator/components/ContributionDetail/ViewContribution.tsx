@@ -3,7 +3,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import useRedux from "../../../../hooks/useRedux";
-import formatDate from "../../../../utils/functions";
+import { formatDate } from "../../../../utils/functions";
 import Loading from "../../../../components/loading/Loading";
 import Button from "../../../../components/CustomButton";
 import {
