@@ -127,7 +127,7 @@ const CreateAllAccount = () => {
                 htmlFor="role"
                 className="mr-1 text-gray-700 text-base font-normal"
               >
-                Falcuty
+                Role
               </label>
               <select
                 id="roleId"

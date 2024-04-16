@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
-import { IChangePassword, ICreateAllAccount, ICreateContributor, ICreateCoordinator, ILogin, IResetPassword, ISendOTP, IUserInformation } from "../../types/user.type";
+import { IChangeFaculty, IChangePassword, IChangeRole, ICreateAllAccount, ICreateContributor, ICreateCoordinator, ILogin, IResetPassword, ISendOTP, IUserInformation } from "../../types/user.type";
 import authUtils from "../../utils/auth";
 
 export const login = createAsyncThunk(
@@ -69,6 +69,24 @@ export const SendResetPasswordOTP = createAsyncThunk("SendResetPasswordOTP", asy
 export const resetPassword = createAsyncThunk("resetPassword", async(data: IResetPassword, {rejectWithValue}) => {
    try {
       const res = await api.user.resetPassword(data);
+      return res.data;
+   } catch (error: any) {
+      return rejectWithValue(error.response.data.title);
+   }
+});
+
+export const changeRole = createAsyncThunk("changeRole", async(data: IChangeRole, {rejectWithValue}) => {
+   try {
+      const res = await api.user.changeRole(data);
+      return res.data;
+   } catch (error: any) {
+      return rejectWithValue(error.response.data.title);
+   }
+});
+
+export const changeFaculty = createAsyncThunk("changeFaculty", async(data: IChangeFaculty, {rejectWithValue}) => {
+   try {
+      const res = await api.user.changeFaculty(data);
       return res.data;
    } catch (error: any) {
       return rejectWithValue(error.response.data.title);
@@ -159,6 +177,7 @@ const authSlice = createSlice({
       });
       builder.addCase(createCoordinatorAccount.pending, (state) => {
          state.isLoading = true;
+         state.message = "";
       });
       builder.addCase(createCoordinatorAccount.fulfilled, (state, action) => {
          state.isLoading = false;
@@ -173,6 +192,7 @@ const authSlice = createSlice({
       });
       builder.addCase(changePassword.pending, (state) => {
          state.isLoading = true;
+         state.message = "";
       });
       builder.addCase(changePassword.fulfilled, (state, action) => {
          state.isLoading = false;
@@ -190,6 +210,7 @@ const authSlice = createSlice({
       });
       builder.addCase(createAllAccount.pending, (state) => {
          state.isLoading = true;
+         state.message = "";
       });
       builder.addCase(createAllAccount.fulfilled, (state, action) => {
          state.isLoading = false;
@@ -226,6 +247,30 @@ const authSlice = createSlice({
          state.isLoading = false;
          state.isError = true;
          state.message = (action.payload as string) || "An error occurred during reset password";
+      });
+      builder.addCase(changeRole.pending, (state) => {
+         state.isLoading = true;
+         state.message = "";
+      });
+      builder.addCase(changeRole.fulfilled, (state, action) => {
+         state.isLoading = false;
+         state.message = action.payload.title;
+      });
+      builder.addCase(changeRole.rejected, (state, action) => {
+         state.isLoading = false;
+         state.message = (action.payload as string) || "An error occurred during change role";
+      });
+      builder.addCase(changeFaculty.pending, (state, action) => {
+         state.isLoading = true;
+         state.message = "";
+      });
+      builder.addCase(changeFaculty.fulfilled, (state, action) => {
+         state.isLoading = false;
+         state.message = action.payload.title;
+      });
+      builder.addCase(changeFaculty.rejected, (state, action) => {
+         state.isLoading = false;
+         state.message = (action.payload as string) || "An error occurred during change faculty";
       })
    },
 });

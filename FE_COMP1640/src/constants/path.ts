@@ -1,6 +1,7 @@
 const PARAMETER = {
    ID: ":id",
    CATEGORY: ":category",
+   EMAIL: ":email",
    CONTRIBUTION_FILTER: ":filter",
    CONTRIBUTION_SLUG: "",
 };
@@ -50,6 +51,8 @@ const PATHS = {
       DETAIL: `${PARAMETER.ID}`,
       DASHBOARD: "dashboard",
       CREATE_ALL: "createAll",
+      CHANGE_ROLE: "changeRole",
+      CHANGE_FACULTY: "changeFaculty",
    },
 };
 

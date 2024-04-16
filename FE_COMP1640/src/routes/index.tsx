@@ -47,6 +47,8 @@ import UserManage from "../pages/admin/UserTable/UserManage";
 import PeriodPage from "../pages/admin/Period/Period";
 import PeriodDetail from "../pages/admin/Period/PeriodDetail";
 import CreateAllAccount from "../pages/admin/CreateAllAccount";
+import ChangeRole from "../pages/admin/ChangeRole";
+import ChangeFaculty from "../pages/admin/ChangeFaculty";
 
 // Layout
 import RoleLayout from "../layouts/RolePage/index";
@@ -219,6 +221,14 @@ const adminRoute = {
     {
       path: PATHS.ADMIN.CREATE_ALL,
       element: <CreateAllAccount />,
+    },
+    {
+      path: `${PATHS.ADMIN.CHANGE_ROLE}/${PARAMETER.EMAIL}`,
+      element: <ChangeRole />,
+    },
+    {
+      path: `${PATHS.ADMIN.CHANGE_FACULTY}/${PARAMETER.EMAIL}`,
+      element: <ChangeFaculty />,
     },
   ],
 };

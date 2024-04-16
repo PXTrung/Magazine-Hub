@@ -4,6 +4,7 @@ import { PATHS } from "../../constants/path";
 import useRedux from "../../hooks/useRedux";
 import { RootState } from "../../redux/store";
 import { getUserProfile } from "../../redux/slices/userSlice";
+import user from "../../../src/assets/images/user.png";
 
 const ViewProfile = () => {
   const { appSelector, dispatch } = useRedux();
@@ -25,7 +26,7 @@ const ViewProfile = () => {
         ) : (
           <img
             className="w-24 h-24 mb-3 rounded-full shadow-lg mt-4"
-            src="../assets/images/user.png"
+            src={user}
             alt="Bonnie"
           />
         )}

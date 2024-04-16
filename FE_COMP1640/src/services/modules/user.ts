@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios";
 import { ENDPOINTS } from "../../constants/endpoint";
-import { ICreateAllAccount, ICreateContributor, ICreateCoordinator, ILogin, IChangePassword, ISendOTP, IResetPassword } from "../../types/user.type";
+import { ICreateAllAccount, ICreateContributor, ICreateCoordinator, ILogin, IChangePassword, ISendOTP, IResetPassword, IChangeRole, IChangeFaculty } from "../../types/user.type";
 import { IParamsAxios } from "../../types/filter.type";
 
 
@@ -68,6 +68,22 @@ export default {
    updateUserProfile: async(data: FormData) => {
       const userToken = sessionStorage.getItem("user-token");
       return await axios.put(ENDPOINTS.EDIT_PROFILE, data, {
+         headers: {
+            Authorization: `Bearer ${userToken}`,
+         }
+      })
+   },
+   changeRole: async(data: IChangeRole) => {
+      const userToken = sessionStorage.getItem("user-token");
+      return await axios.put(ENDPOINTS.CHANGE_ROLE, data, {
+         headers: {
+            Authorization: `Bearer ${userToken}`,
+         }
+      })
+   },
+   changeFaculty: async(data: IChangeFaculty) => {
+      const userToken = sessionStorage.getItem("user-token");
+      return await axios.put(ENDPOINTS.CHANGE_FACULTY, data, {
          headers: {
             Authorization: `Bearer ${userToken}`,
          }

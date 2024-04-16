@@ -68,3 +68,13 @@ export interface IProfile{
    facultyName: string;
    avatarUrl: string;
 }
+
+export interface IChangeRole{
+   email: string;
+   roleId: string;
+}
+
+export interface IChangeFaculty{
+   email: string;
+   facultyId: string;
+}
