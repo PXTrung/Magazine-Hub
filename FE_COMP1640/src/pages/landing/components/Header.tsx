@@ -66,11 +66,8 @@ const Header = () => {
                   <UserInformation data={userInfor} />
                ) : (
                   <div className="flex ">
-                     <Link to={`/auth/${PATHS.AUTH.REGISTER}`}>
-                        <Button label="Register" type={"border"} style="mr-2" />
-                     </Link>
                      <Link to={`/auth/${PATHS.AUTH.LOGIN}`}>
-                        <Button label="Login" type={"primary"} />
+                        <Button label="Login" type={"border"} />
                      </Link>
                   </div>
                )}
