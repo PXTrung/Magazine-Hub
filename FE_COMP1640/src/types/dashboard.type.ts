@@ -14,7 +14,7 @@ export interface ICoordinatorDashboard {
       Published: number;
       Rejected: number;
    };
-   topContributorEmail: string;
+   topContributorFullName: string;
    totalOfContribution: number;
    totalOfPublishedContribution: number;
    percentageOfFeedbackedContribution: number;
@@ -22,7 +22,7 @@ export interface ICoordinatorDashboard {
    top5ContributorOfFaculty: ITopContributor[];
 }
 
-interface IFacultyRank {
+export interface IFacultyRank {
    [key: string]: number;
 }
 

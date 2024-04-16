@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "flowbite";
 import ApexCharts from "apexcharts";
-import useRedux from "../../../../hooks/useRedux";
-
-interface ISeriesData {
-   x: string;
-   y: number;
-}
+import { IFacultyContribution } from "../../../../types/dashboard.type";
 
 interface IBarChartProps {
-   chartData: ISeriesData[];
-   period: string;
+   chartData: IFacultyContribution[];
+   period: number | undefined;
 }
 
 const BarChart = ({ chartData, period }: IBarChartProps) => {
@@ -19,28 +14,50 @@ const BarChart = ({ chartData, period }: IBarChartProps) => {
    useEffect(() => {
       const columnChartElement = document.getElementById("column-chart");
       if (columnChartElement && typeof ApexCharts !== "undefined") {
+         const publishedCounts: number[] = [];
+         const approvedCounts: number[] = [];
+         const rejectedCounts: number[] = [];
+         const facultyNames: string[] = [];
+
+         chartData.forEach((item) => {
+            publishedCounts.push(item.publishedCount);
+            approvedCounts.push(item.approvedCount);
+            rejectedCounts.push(item.rejectedCount);
+            facultyNames.push(item.facultyName);
+         });
+
          const options = {
             series: [
                {
-                  name: "Contribution",
-                  data: chartData,
+                  name: "Approved",
+                  color: "#16BDCA",
+                  data: approvedCounts,
+               },
+               {
+                  name: "Published",
+                  color: "#1C64F2",
+                  data: publishedCounts,
+               },
+               {
+                  name: "Rejected",
+                  color: "#E74694",
+                  data: rejectedCounts,
                },
             ],
             chart: {
                type: "bar",
-               height: "320px",
+               height: "340px",
                fontFamily: "Inter, sans-serif",
                toolbar: {
                   show: false,
                },
             },
-
             plotOptions: {
                bar: {
                   horizontal: false,
                   columnWidth: "30%",
                   borderRadiusApplication: "end",
-                  borderRadius: 2,
+                  borderRadius: 8,
                },
             },
             tooltip: {
@@ -84,16 +101,17 @@ const BarChart = ({ chartData, period }: IBarChartProps) => {
                   show: true,
                   style: {
                      fontFamily: "Inter, sans-serif",
-                     cssClass: "text-xs font-normal fill-gray-500",
+                     cssClass:
+                        "text-xs font-normal fill-gray-500 dark:fill-gray-400",
                   },
                },
-
                axisBorder: {
                   show: false,
                },
                axisTicks: {
                   show: false,
                },
+               categories: facultyNames,
             },
             yaxis: {
                show: false,
@@ -117,7 +135,7 @@ const BarChart = ({ chartData, period }: IBarChartProps) => {
    }, [chart]);
 
    return (
-      <div className="lg:max-w-lg w-full bg-white rounded-lg shadow p-4 md:p-6 lg:col-span-2">
+      <div className=" w-full bg-white rounded-lg shadow p-4 md:p-6 lg:col-span-2">
          <div className="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center">
                <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center me-3">

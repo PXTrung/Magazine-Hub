@@ -3,7 +3,7 @@ import useRedux from "../../hooks/useRedux";
 import { RootState } from "../../redux/store";
 import { getPeriod } from "../../redux/slices/periodSlide";
 import { Link } from "react-router-dom";
-import formatDate from "../../utils/functions";
+import { formatDate } from "../../utils/functions";
 
 const PeriodList = () => {
    const { dispatch, appSelector } = useRedux();

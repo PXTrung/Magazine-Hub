@@ -36,8 +36,6 @@ export default {
       });
    },
    getContributionListWithToken: async (params: IParamsAxios) => {
-      console.log(userToken);
-
       return await axios.get(ENDPOINTS.CONTRIBUTION.ALL, {
          headers: {
             Authorization: `Bearer ${userToken()}`,

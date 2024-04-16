@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import { IContributionDetail } from "../../../../types/contribution.type";
-import formatDate from "../../../../utils/functions";
+import { formatDate } from "../../../../utils/functions";
 import Status from "../../../../components/Contribution/Status";
 import { Link } from "react-router-dom";
 

@@ -19,14 +19,14 @@ interface ICardProps {
 const Card = (data: ICardProps) => {
    return (
       <div className="bg-white shadow w-full h-24 rounded-lg px-5 py-5 hover:shadow-md transition-all duration-200">
-         <div className="flex flex-row justify-between h-full">
-            <div className="flex flex-col justify-between items-start">
+         <div className="flex flex-row justify-between items-center h-full">
+            <div className="flex flex-col flex-1 h-full justify-between items-start truncate">
                <h5 className="text-sm text-gray-500 font-normal">
                   {data.label}
                </h5>
                <h3
                   className={clsx(
-                     "text-gray-900 font-medium truncate",
+                     "text-gray-900 font-medium line-clamp-1",
                      data.icon === "top"
                         ? "md:text-base xl:text-md"
                         : "text-xl",
@@ -36,7 +36,7 @@ const Card = (data: ICardProps) => {
                </h3>
             </div>
             {data.icon === "top" && (
-               <div className="bg-amber-200 w-14 h-14 flex justify-center items-center rounded-md">
+               <div className="bg-amber-200 ml-2 w-12 h-12 flex justify-center items-center rounded-md">
                   <svg
                      xmlns="http://www.w3.org/2000/svg"
                      fill="none"
@@ -54,7 +54,7 @@ const Card = (data: ICardProps) => {
                </div>
             )}
             {data.icon === "total-contributions" && (
-               <div className="bg-green-200 w-14 h-14 flex justify-center items-center rounded-md">
+               <div className="bg-green-200 w-12 h-12 flex justify-center items-center rounded-md">
                   <svg
                      xmlns="http://www.w3.org/2000/svg"
                      fill="none"
@@ -72,7 +72,7 @@ const Card = (data: ICardProps) => {
                </div>
             )}
             {data.icon === "total-published" && (
-               <div className="bg-cyan-200 w-14 h-14 flex justify-center items-center rounded-md">
+               <div className="bg-cyan-200 w-12 h-12 flex justify-center items-center rounded-md">
                   <svg
                      xmlns="http://www.w3.org/2000/svg"
                      fill="none"
@@ -90,7 +90,7 @@ const Card = (data: ICardProps) => {
                </div>
             )}
             {data.icon === "feedback" && (
-               <div className="bg-violet-200 w-14 h-14 flex justify-center items-center rounded-md">
+               <div className="bg-violet-200 w-12 h-12 flex justify-center items-center rounded-md">
                   <svg
                      xmlns="http://www.w3.org/2000/svg"
                      fill="none"

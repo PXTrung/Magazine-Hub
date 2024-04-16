@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { IContributionDetail } from "../../../../types/contribution.type";
-import formatDate from "../../../../utils/functions";
+import { formatDate } from "../../../../utils/functions";
 import Status from "../../../../components/Contribution/Status";
 
 interface IRowProps {

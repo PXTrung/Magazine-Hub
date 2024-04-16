@@ -55,7 +55,7 @@ const initialState: DashboardState = {
       top5ContributorOfFaculty: [],
       totalOfContribution: 0,
       totalOfPublishedContribution: 0,
-      topContributorEmail: "",
+      topContributorFullName: "",
       percentageOfFeedbackedContribution: 0,
    },
    managerDashboard: {
