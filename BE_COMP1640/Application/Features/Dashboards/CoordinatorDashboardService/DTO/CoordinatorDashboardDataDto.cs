@@ -5,7 +5,7 @@
 
         public Dictionary<string, double> PercentageOfContributionByStatus { get; set; }
 
-        public string TopContributorEmail { get; set; }
+        public string TopContributorFullName { get; set; }
 
         public int TotalOfContribution { get; set; }
 

@@ -36,7 +36,7 @@ namespace Application.Features.Dashboards.CoordinatorDashboardService
             var dashboardData = new CoordinatorDashboardDataDto()
             {
                 PercentageOfContributionByStatus = await PercentageOfContributionByStatus(facultyId, periodId),
-                TopContributorEmail = await TopContributorEmail(facultyId, periodId),
+                TopContributorFullName = await TopContributorFullName(facultyId, periodId),
                 TotalOfContribution = await TotalContributionsCount(facultyId, periodId),
                 TotalOfPublishedContribution = await TotalPublishedContributionsCount(facultyId, periodId),
                 PercentageOfFeedbackedContribution = await PercentageOfFeedbackedContribution(facultyId, periodId),
@@ -65,7 +65,7 @@ namespace Application.Features.Dashboards.CoordinatorDashboardService
             return contributionsByStatus;
         }
 
-        private async Task<string> TopContributorEmail(Guid facultyId, Guid periodId)
+        private async Task<string> TopContributorFullName(Guid facultyId, Guid periodId)
         {
             var topContributor = await _context.Users
                 .Include(u => u.Contributions)
@@ -75,7 +75,7 @@ namespace Application.Features.Dashboards.CoordinatorDashboardService
 
             if (topContributor == null) return "There is no contributor in this period";
 
-            return topContributor.Email;
+            return $"{topContributor.FirstName + " " + topContributor.LastName}";
         }
 
         private async Task<int> TotalContributionsCount(Guid facultyId, Guid periodId)
