@@ -13,6 +13,8 @@ export const ENDPOINTS = {
    LOGIN: constructEndpoint("Auth/Login"),
    REGISTER: constructEndpoint("Auth/Register"),
    RESET_PASS: constructEndpoint("Auth/ChangeInitialPassword"),
+   SENT_OTP: constructEndpoint("Auth/SendResetPasswordOTP"),
+   CHANGE_PASS: constructEndpoint("Auth/ResetPassword"),
    CREATE_CONTRIBUTOR_ACCOUNT: constructEndpoint(
       "Auth/CreateContributorAccount",
    ),
@@ -20,6 +22,8 @@ export const ENDPOINTS = {
       "Auth/CreateCoordinatorAccount",
    ),
    CREATE_ALL_ACCOUNT: constructEndpoint("Auth/CreateAllAccount"),
+   VIEW_PROFILE: constructEndpoint("Auth/SelfProfile"),
+   EDIT_PROFILE: constructEndpoint("Auth/UpdateProfile"),
    FALCUTY: constructEndpoint("Falcuties"),
    ROLE: constructEndpoint("Auth/Roles"),
    CONTRIBUTION: {

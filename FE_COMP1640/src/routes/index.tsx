@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Children, Suspense, lazy } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { PARAMETER, PATHS } from "../constants/path";
 import Loading from "../components/loading/Loading";
@@ -9,6 +9,8 @@ import PublicContributionDetail from "../components/Contribution/PublicContribut
 import Authentication from "../pages/auth/Authentication";
 import LoginForm from "../pages/auth/components/LoginForm";
 import ChangePassword from "../pages/auth/components/ChangePassword";
+import SendEmail from "../pages/auth/components/SendEmail";
+import ResetPassword from "../pages/auth/components/ResetPassword";
 
 // Home layout
 import Home from "../layouts/Home/index";
@@ -16,6 +18,10 @@ import Home from "../layouts/Home/index";
 // Contribution
 import ContributionCategory from "../pages/contribution/ContributionCategory";
 import ContributionCreate from "../pages/contributor/UploadForm";
+
+// Profile
+import ViewProfile from "../components/Profile/ViewProfile";
+import EditProfile from "../components/Profile/EditProfile";
 
 // Contributor
 import ContributorPage from "../pages/contributor/ContributorPage";
@@ -46,192 +52,216 @@ import CreateAllAccount from "../pages/admin/CreateAllAccount";
 import RoleLayout from "../layouts/RolePage/index";
 
 const authRoute = {
-   path: PATHS.AUTH.IDENTITY,
-   element: <Authentication />,
-   children: [
-      {
-         path: "",
-         element: <Navigate to={`${PATHS.AUTH.LOGIN}`} replace />,
-      },
+  path: PATHS.AUTH.IDENTITY,
+  element: <Authentication />,
+  children: [
+    {
+      path: "",
+      element: <Navigate to={`${PATHS.AUTH.LOGIN}`} replace />,
+    },
 
-      {
-         path: PATHS.AUTH.LOGIN,
-         element: <LoginForm />,
-      },
+    {
+      path: PATHS.AUTH.LOGIN,
+      element: <LoginForm />,
+    },
 
-      {
-         path: PATHS.AUTH.CHANGE_PASS,
-         element: <ChangePassword />,
-      },
-   ],
+    {
+      path: PATHS.AUTH.CHANGE_PASS,
+      element: <ChangePassword />,
+    },
+    {
+      path: PATHS.AUTH.SEND_OTP,
+      element: <SendEmail />,
+    },
+    {
+      path: PATHS.AUTH.RESET_PASS,
+      element: <ResetPassword />,
+    },
+  ],
 };
 
 const contributionRoute = {
-   path: PATHS.CONTRIBUTION.IDENTITY,
-   element: <Home />,
-   children: [
-      {
-         path: PATHS.CONTRIBUTION.DETAIL,
-         element: <PublicContributionDetail />,
-      },
-      {
-         path: `${PATHS.CONTRIBUTION.CATEGORY}/${PARAMETER.CATEGORY}`,
-         element: <ContributionCategory />,
-      },
-   ],
+  path: PATHS.CONTRIBUTION.IDENTITY,
+  element: <Home />,
+  children: [
+    {
+      path: PATHS.CONTRIBUTION.DETAIL,
+      element: <PublicContributionDetail />,
+    },
+    {
+      path: `${PATHS.CONTRIBUTION.CATEGORY}/${PARAMETER.CATEGORY}`,
+      element: <ContributionCategory />,
+    },
+  ],
+};
+
+const profileRoute = {
+  path: PATHS.PROFILE.IDENTITY,
+  element: <Home />,
+  children: [
+    {
+      path: PATHS.PROFILE.VIEW,
+      element: <ViewProfile />,
+    },
+    {
+      path: PATHS.PROFILE.EDIT,
+      element: <EditProfile />,
+    },
+  ],
 };
 
 const contributorRoute = {
-   path: PATHS.CONTRIBUTOR.IDENTITY,
-   children: [
-      {
-         path: "",
-         element: <Navigate to={`${PATHS.CONTRIBUTION.IDENTITY}`} />,
-      },
-      {
-         index: true,
-         path: PATHS.CONTRIBUTION.IDENTITY,
-         element: <ContributorPage />,
-      },
-      {
-         path: `${PATHS.CONTRIBUTION.IDENTITY}/${PATHS.CONTRIBUTION.DETAIL}`,
-         element: <ContributorDetailPage />,
-      },
-      {
-         path: `${PATHS.CONTRIBUTION.CREATE}/${PATHS.CONTRIBUTION.DETAIL}`,
-         element: <ContributionCreate />,
-      },
-      {
-         path: PATHS.CONTRIBUTION.CREATE,
-         element: <PeriodSelector />,
-      },
-      {
-         path: PATHS.CONTRIBUTION.FACULTY,
-         element: <ContributionsByFaculty />,
-      },
-      {
-         path: `${PATHS.CONTRIBUTION.FACULTY}/${PATHS.CONTRIBUTION.DETAIL}`,
-         element: <ContributionDetail />,
-      },
-   ],
+  path: PATHS.CONTRIBUTOR.IDENTITY,
+  children: [
+    {
+      path: "",
+      element: <Navigate to={`${PATHS.CONTRIBUTION.IDENTITY}`} />,
+    },
+    {
+      index: true,
+      path: PATHS.CONTRIBUTION.IDENTITY,
+      element: <ContributorPage />,
+    },
+    {
+      path: `${PATHS.CONTRIBUTION.IDENTITY}/${PATHS.CONTRIBUTION.DETAIL}`,
+      element: <ContributorDetailPage />,
+    },
+    {
+      path: `${PATHS.CONTRIBUTION.CREATE}/${PATHS.CONTRIBUTION.DETAIL}`,
+      element: <ContributionCreate />,
+    },
+    {
+      path: PATHS.CONTRIBUTION.CREATE,
+      element: <PeriodSelector />,
+    },
+    {
+      path: PATHS.CONTRIBUTION.FACULTY,
+      element: <ContributionsByFaculty />,
+    },
+    {
+      path: `${PATHS.CONTRIBUTION.FACULTY}/${PATHS.CONTRIBUTION.DETAIL}`,
+      element: <ContributionDetail />,
+    },
+  ],
 };
 
 const coordinatorRoute = {
-   path: PATHS.COORDINATOR.IDENTITY,
-   children: [
-      {
-         path: "",
-         element: <Navigate to={`${PATHS.CONTRIBUTION.IDENTITY}`} />,
-      },
-      {
-         path: PATHS.CONTRIBUTION.IDENTITY,
-         element: <CoordinatorPage />,
-      },
-      {
-         path: `${PATHS.CONTRIBUTION.IDENTITY}/${PATHS.CONTRIBUTION.DETAIL}`,
-         element: <CoordinatorDetailPage />,
-      },
-      {
-         path: PATHS.COORDINATOR.CREATE_ACCOUNT,
-         element: <CreateContributor />,
-      },
-      {
-         path: PATHS.DASHBOARD.INDENTITY,
-         element: <CoordinatorDashboard />,
-      },
-   ],
+  path: PATHS.COORDINATOR.IDENTITY,
+  children: [
+    {
+      path: "",
+      element: <Navigate to={`${PATHS.CONTRIBUTION.IDENTITY}`} />,
+    },
+    {
+      path: PATHS.CONTRIBUTION.IDENTITY,
+      element: <CoordinatorPage />,
+    },
+    {
+      path: `${PATHS.CONTRIBUTION.IDENTITY}/${PATHS.CONTRIBUTION.DETAIL}`,
+      element: <CoordinatorDetailPage />,
+    },
+    {
+      path: PATHS.COORDINATOR.CREATE_ACCOUNT,
+      element: <CreateContributor />,
+    },
+    {
+      path: PATHS.DASHBOARD.INDENTITY,
+      element: <CoordinatorDashboard />,
+    },
+  ],
 };
 
 const managerRoute = {
-   path: PATHS.MANAGER.IDENTITY,
-   children: [
-      {
-         path: "",
-         element: <Navigate to={`${PATHS.CONTRIBUTION.IDENTITY}`} />,
-      },
-      {
-         path: PATHS.CONTRIBUTION.IDENTITY,
-         element: <ManagerPage />,
-      },
-      {
-         path: `${PATHS.CONTRIBUTION.IDENTITY}/${PATHS.CONTRIBUTION.DETAIL}`,
-         element: <ManagerDetailPage />,
-      },
-      {
-         path: PATHS.MANAGER.CREATE_ACCOUNT,
-         element: <CreateCoordinator />,
-      },
-      {
-         path: `${PATHS.DASHBOARD.INDENTITY}`,
-         element: <ManagerDashboard />,
-      },
-   ],
+  path: PATHS.MANAGER.IDENTITY,
+  children: [
+    {
+      path: "",
+      element: <Navigate to={`${PATHS.CONTRIBUTION.IDENTITY}`} />,
+    },
+    {
+      path: PATHS.CONTRIBUTION.IDENTITY,
+      element: <ManagerPage />,
+    },
+    {
+      path: `${PATHS.CONTRIBUTION.IDENTITY}/${PATHS.CONTRIBUTION.DETAIL}`,
+      element: <ManagerDetailPage />,
+    },
+    {
+      path: PATHS.MANAGER.CREATE_ACCOUNT,
+      element: <CreateCoordinator />,
+    },
+    {
+      path: `${PATHS.DASHBOARD.INDENTITY}`,
+      element: <ManagerDashboard />,
+    },
+  ],
 };
 
 const adminRoute = {
-   path: PATHS.ADMIN.IDENTITY,
-   children: [
-      {
-         path: "",
-         element: <Navigate to={`${PATHS.ADMIN.MANAGE_USER}`} />,
-      },
-      {
-         path: PATHS.ADMIN.MANAGE_USER,
-         element: <UserManage />,
-      },
-      {
-         path: PATHS.ADMIN.PERIOD,
-         element: <PeriodPage />,
-      },
-      {
-         path: `${PATHS.ADMIN.PERIOD}/${PATHS.ADMIN.DETAIL}`,
-         element: <PeriodDetail />,
-      },
-      {
-         path: PATHS.ADMIN.CREATE_ALL,
-         element: <CreateAllAccount />,
-      },
-   ],
+  path: PATHS.ADMIN.IDENTITY,
+  children: [
+    {
+      path: "",
+      element: <Navigate to={`${PATHS.ADMIN.MANAGE_USER}`} />,
+    },
+    {
+      path: PATHS.ADMIN.MANAGE_USER,
+      element: <UserManage />,
+    },
+    {
+      path: PATHS.ADMIN.PERIOD,
+      element: <PeriodPage />,
+    },
+    {
+      path: `${PATHS.ADMIN.PERIOD}/${PATHS.ADMIN.DETAIL}`,
+      element: <PeriodDetail />,
+    },
+    {
+      path: PATHS.ADMIN.CREATE_ALL,
+      element: <CreateAllAccount />,
+    },
+  ],
 };
 
 export default function AllRoutes() {
-   return useRoutes([
-      authRoute,
-      contributionRoute,
-      {
-         path: "/",
-         element: <Home />,
-         children: [
-            {
-               path: "/",
-               element: <Navigate to={`${PATHS.HOME.IDENTITY}`} replace />,
-            },
-            {
-               path: PATHS.HOME.IDENTITY,
-               element: <LandingPage />,
-            },
-         ],
-      },
-      {
-         path: "/",
-         element: <ProtectedRoute component={RoleLayout} role="Contributor" />,
-         children: [contributorRoute],
-      },
-      {
-         path: "/",
-         element: <ProtectedRoute component={RoleLayout} role="Coordinator" />,
-         children: [coordinatorRoute],
-      },
-      {
-         path: "/",
+  return useRoutes([
+    authRoute,
+    contributionRoute,
+    profileRoute,
+    {
+      path: "/",
+      element: <Home />,
+      children: [
+        {
+          path: "/",
+          element: <Navigate to={`${PATHS.HOME.IDENTITY}`} replace />,
+        },
+        {
+          path: PATHS.HOME.IDENTITY,
+          element: <LandingPage />,
+        },
+      ],
+    },
+    {
+      path: "/",
+      element: <ProtectedRoute component={RoleLayout} role="Contributor" />,
+      children: [contributorRoute],
+    },
+    {
+      path: "/",
+      element: <ProtectedRoute component={RoleLayout} role="Coordinator" />,
+      children: [coordinatorRoute],
+    },
+    {
+      path: "/",
 
-         element: <ProtectedRoute component={RoleLayout} role="Manager" />,
-         children: [managerRoute],
-      },
-      {
-         path: "/",
-         element: <ProtectedRoute component={RoleLayout} role="Admin" />,
-         children: [adminRoute],
-      },
-   ]);
+      element: <ProtectedRoute component={RoleLayout} role="Manager" />,
+      children: [managerRoute],
+    },
+    {
+      path: "/",
+      element: <ProtectedRoute component={RoleLayout} role="Admin" />,
+      children: [adminRoute],
+    },
+  ]);
 }

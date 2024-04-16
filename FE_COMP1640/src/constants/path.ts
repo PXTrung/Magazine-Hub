@@ -14,6 +14,13 @@ const PATHS = {
       LOGIN: "login",
       REGISTER: "register",
       CHANGE_PASS: "changePassword",
+      SEND_OTP: "verifyEmail",
+      RESET_PASS: "resetPassword",
+   },
+   PROFILE: {
+      IDENTITY: "profile",
+      VIEW: "view",
+      EDIT: "edit",
    },
    DASHBOARD: {
       INDENTITY: "dashboard",

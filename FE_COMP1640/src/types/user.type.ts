@@ -34,7 +34,7 @@ export interface ICreateCoordinator{
    facultyId: string;
 }
 
-export interface IResetPassword{
+export interface IChangePassword{
    email: string;
    newPassword: string;
    confirmNewPassword: string;
@@ -47,4 +47,24 @@ export interface ICreateAllAccount{
    lastName: string;
    roleId: string;
    facultyId?: string;
+}
+
+export interface IResetPassword{
+   email: string;
+   otp: string;
+   newPassword: string;
+   confirmNewPassword: string;
+}
+
+export interface ISendOTP{
+   email: string;
+}
+
+export interface IProfile{
+   fullName: string;
+   email: string;
+   numberOfContributions: string;
+   role: string;
+   facultyName: string;
+   avatarUrl: string;
 }
