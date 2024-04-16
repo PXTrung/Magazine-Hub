@@ -254,7 +254,6 @@ export default function AllRoutes() {
     },
     {
       path: "/",
-
       element: <ProtectedRoute component={RoleLayout} role="Manager" />,
       children: [managerRoute],
     },
@@ -262,6 +261,10 @@ export default function AllRoutes() {
       path: "/",
       element: <ProtectedRoute component={RoleLayout} role="Admin" />,
       children: [adminRoute],
+    },
+    {
+      path: "*",
+      element: <Navigate to={`${PATHS.HOME.IDENTITY}`} replace />,
     },
   ]);
 }
