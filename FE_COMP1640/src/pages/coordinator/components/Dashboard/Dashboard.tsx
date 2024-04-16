@@ -8,7 +8,7 @@ import useRedux from "../../../../hooks/useRedux";
 import { getCoordinatorDashboard } from "../../../../redux/slices/dashboardSlice";
 import { getPeriod } from "../../../../redux/slices/periodSlide";
 import { useSearchParams } from "react-router-dom";
-import BarChart from "./BarChart";
+import DonutChart from "./DonutChart";
 
 const Dashboard = () => {
    const { appSelector, dispatch } = useRedux();
@@ -38,12 +38,12 @@ const Dashboard = () => {
    useEffect(() => {
       dispatch(getPeriod());
       if (!searchParams.get("period")) setParams("period", period[0]?.id);
-   }, [dispatch]);
+   }, [dispatch, searchParams]);
 
    useEffect(() => {
       const period = searchParams.get("period") as string;
       dispatch(getCoordinatorDashboard(period));
-   }, [dispatch, searchParams]);
+   }, [dispatch, searchParams, period]);
 
    useEffect(() => {
       const param = searchParams.get("period");
@@ -54,24 +54,19 @@ const Dashboard = () => {
    }, [searchParams, period]);
 
    const renderChart = useMemo(() => {
-      let data = Object.entries(
-         coordinatorDashboard?.percentageOfContributionByStatus || {},
-      );
+      const convertObjectToArray = (obj: Object) => {
+         const keys = Object.keys(obj);
+         const values = Object.values(obj);
+         return [keys, values];
+      };
 
-      const chartData = data?.map(([status, value]) => ({
-         x: status,
-         y: value,
-      }));
-      return (
-         <BarChart
-            period={
-               period.find((item) => item.id === searchParams.get("period"))
-                  ?.academicYear + ""
-            }
-            chartData={chartData}
-         />
-      );
-   }, [coordinatorDashboard, searchParams]);
+      if (coordinatorDashboard) {
+         const [statusArray, percentageArray] = convertObjectToArray(
+            coordinatorDashboard?.percentageOfContributionByStatus,
+         );
+         return <DonutChart x={statusArray} y={percentageArray} />;
+      }
+   }, [coordinatorDashboard]);
 
    return (
       <div className="w-[calc(100vw-208px)] ">
@@ -99,19 +94,19 @@ const Dashboard = () => {
                </select>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 xl:gap-5 mb-5">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 xl:gap-5 mb-5">
                <Card
-                  label="Top 1 Contributor"
-                  value={coordinatorDashboard?.topContributorEmail}
+                  label="Contributor"
+                  value={coordinatorDashboard?.topContributorFullName}
                   icon="top"
                />
                <Card
-                  label="Total contributions"
+                  label="Contributions"
                   value={coordinatorDashboard?.totalOfContribution + ""}
                   icon="total-contributions"
                />
                <Card
-                  label="Total published"
+                  label="Published"
                   value={
                      coordinatorDashboard?.totalOfPublishedContribution + ""
                   }
@@ -126,15 +121,14 @@ const Dashboard = () => {
                   icon="feedback"
                />
             </div>
-            <div className="w-full flex flex-col lg:grid lg:grid-cols-5 gap-5 ">
-               {renderChart}
-
-               <div className="lg:col-span-3 min-h-80">
+            <div className="w-full flex flex-col lg:grid lg:grid-cols-3 gap-5 ">
+               <div className="lg:col-span-2 min-h-72">
                   <DashboardTable
                      name="Top contributor"
                      data={coordinatorDashboard?.top5ContributorOfFaculty}
                   />
                </div>
+               {renderChart}
             </div>
          </div>
       </div>

@@ -39,7 +39,7 @@ namespace Application.Features.Auth.Commands.ChangeFaculty
 
             user.FacultyId = request.FacultyId;
 
-            await _context.SaveChangesAsync(cancellationToken);
+            await _userManager.UpdateAsync(user);
 
             return new SuccessResult(title: "Change faculty successfully!");
         }

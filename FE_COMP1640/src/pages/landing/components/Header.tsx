@@ -36,30 +36,16 @@ const Header = () => {
             </div>
 
             <Sidebar />
-
+            <div className="block md:hidden w-full ml-5">
+               <Searchbar paramName="search" setParams={setParams} />
+            </div>
             <Link
                to={`/${PATHS.HOME.IDENTITY}`}
-               className="w-1/4 flex justify-center"
+               className="w-1/4 hidden justify-center md:flex"
             >
                <img src={image} alt="" className="h-12 md:h-14 lg:h-16" />
             </Link>
 
-            <div className="md:hidden">
-               <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="w-6 h-6 text-slate-800 "
-               >
-                  <path
-                     strokeLinecap="round"
-                     strokeLinejoin="round"
-                     d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                  />
-               </svg>
-            </div>
 
             <div className="w-1/4 justify-end items-center hidden md:flex">
                {isLogin && userInfor ? (

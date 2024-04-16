@@ -41,6 +41,13 @@ public class AssignRoleCommandHandler : IRequestHandler<AssignRoleCommand, Error
 
         var result = await _userManager.AddToRoleAsync(user, role.Name);
 
+        if (role.Name == "Admin" || role.Name == "Manager")
+        {
+            user.FacultyId = null;
+        }
+
+        await _userManager.UpdateAsync(user);
+
         if (!result.Succeeded) return Error.Unexpected(description: "Failed to assign role, please try again");
 
         return new SuccessResult(title: "Assigned role to user successfully!");

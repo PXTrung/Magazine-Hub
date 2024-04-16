@@ -3,7 +3,7 @@ import { createPeriod, getPeriod } from "../../../redux/slices/periodSlide";
 import useRedux from "../../../hooks/useRedux";
 import { RootState } from "../../../redux/store";
 import { Link } from "react-router-dom";
-import formatDate from "../../../utils/functions";
+import { formatDate } from "../../../utils/functions";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";

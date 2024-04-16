@@ -39,7 +39,7 @@ const UserInformation = ({ data }: UserInformationProps) => {
       {isLoading && <Loading />}
       <div className="w-full flex flex-row justify-center items-center z-30">
         <div className="w-full flex flex-col justify-end items-end mr-3">
-          <h3 className="text-gray-700 font-medium text-base">
+          <h3 className="text-gray-700 font-medium text-base truncate">
             {data.firstName + " " + data.lastName}
           </h3>
           <span className="text-gray-500 text-sm">{data.role}</span>
