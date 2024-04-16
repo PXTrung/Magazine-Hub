@@ -29,7 +29,7 @@ const PATHS = {
       IDENTITY: "contribution",
       DETAIL: `${PARAMETER.ID}`,
       CATEGORY: `category`,
-      CREATE: "create",
+      CREATE: "contribute",
       FACULTY: "faculty",
    },
    CONTRIBUTOR: {
@@ -49,7 +49,7 @@ const PATHS = {
       PERIOD: "period",
       DETAIL: `${PARAMETER.ID}`,
       DASHBOARD: "dashboard",
-      CREATE_ALL: "createAll",
+      CREATE_ALL: "createAccount",
    },
 };
 
