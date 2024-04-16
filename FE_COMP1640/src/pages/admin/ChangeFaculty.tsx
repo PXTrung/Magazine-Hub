@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useParams } from "react-router-dom";
-import { changeFaculty } from "../../redux/slices/authSlice";
+import { changeFaculty, clearMessage } from "../../redux/slices/authSlice";
 import { IChangeFaculty } from "../../types/user.type";
 import clsx from "clsx";
 
@@ -41,6 +41,11 @@ const ChangeFaculty = () => {
       console.log(error.message);
     }
   };
+
+  // Dispatch clearMessage action after 3 seconds
+  setTimeout(() => {
+    dispatch(clearMessage());
+  }, 3000);
 
   return (
     <div className="w-[calc(100vw-208px)] ">
@@ -79,9 +84,6 @@ const ChangeFaculty = () => {
                 className="block appearance-none w-full bg-white border border-gray-400 mt-1 p-[10px] rounded leading-tight focus:outline-none"
                 {...(register && register("facultyId", {}))}
               >
-                <option key="0" value={""}>
-                  -----
-                </option>
                 {faculty?.map((falcuty: any) => {
                   return (
                     <option key={falcuty?.id} value={falcuty?.id}>

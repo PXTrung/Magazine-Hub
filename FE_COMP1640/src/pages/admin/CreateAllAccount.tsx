@@ -5,7 +5,7 @@ import { AppDispatch, RootState } from "../../redux/store";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Input from "../../components/CustomInput";
-import { createAllAccount } from "../../redux/slices/authSlice";
+import { clearMessage, createAllAccount } from "../../redux/slices/authSlice";
 import { ICreateAllAccount } from "../../types/user.type";
 
 const validationSchema = Yup.object().shape({
@@ -79,6 +79,11 @@ const CreateAllAccount = () => {
       console.log(error.message);
     }
   };
+
+  // Dispatch clearMessage action after 3 seconds
+  setTimeout(() => {
+    dispatch(clearMessage());
+  }, 3000);
 
   return (
     <div className="w-[calc(100vw-208px)] ">

@@ -5,7 +5,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
-import { changeRole } from "../../redux/slices/authSlice";
+import { changeRole, clearMessage } from "../../redux/slices/authSlice";
 import { IChangeRole } from "../../types/user.type";
 import clsx from "clsx";
 import { useParams } from "react-router-dom";
@@ -42,6 +42,11 @@ const ChangeRole = () => {
       console.log(error.message);
     }
   };
+
+  // Dispatch clearMessage action after 3 seconds
+  setTimeout(() => {
+    dispatch(clearMessage());
+  }, 3000);
 
   return (
     <div className="w-[calc(100vw-208px)] ">

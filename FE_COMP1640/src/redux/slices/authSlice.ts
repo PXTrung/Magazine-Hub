@@ -132,6 +132,9 @@ const authSlice = createSlice({
             state.userInfor = user;
          } else return state;
       },
+      clearMessage: (state) => {
+         state.message = "";
+      }
    },
    extraReducers: (builder) => {
       builder.addCase(login.pending, (state) => {
@@ -275,5 +278,5 @@ const authSlice = createSlice({
    },
 });
 
-export const { destroy, getCurrentUser } = authSlice.actions;
+export const { destroy, getCurrentUser, clearMessage } = authSlice.actions;
 export default authSlice.reducer;
