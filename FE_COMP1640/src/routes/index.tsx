@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Children, Suspense, lazy } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { PARAMETER, PATHS } from "../constants/path";
 import Loading from "../components/loading/Loading";
@@ -29,6 +29,10 @@ const ContributionCategory = lazy(
 const ContributionCreate = lazy(
   () => import("../pages/contributor/UploadForm")
 );
+
+// Profile
+const ViewProfile = lazy(() => import("../components/Profile/ViewProfile"));
+const EditProfile = lazy(() => import("../components/Profile/EditProfile"));
 
 // Contributor
 const ContributorPage = lazy(
@@ -142,6 +146,21 @@ const contributionRoute = {
     {
       path: `${PATHS.CONTRIBUTION.CATEGORY}/${PARAMETER.CATEGORY}`,
       element: <LazyLoadingComponent component={ContributionCategory} />,
+    },
+  ],
+};
+
+const profileRoute = {
+  path: PATHS.PROFILE.IDENTITY,
+  element: <LazyLoadingComponent component={Home} />,
+  children: [
+    {
+      path: PATHS.PROFILE.VIEW,
+      element: <LazyLoadingComponent component={ViewProfile} />,
+    },
+    {
+      path: PATHS.PROFILE.EDIT,
+      element: <LazyLoadingComponent component={EditProfile} />,
     },
   ],
 };
@@ -263,6 +282,7 @@ export default function AllRoutes() {
   return useRoutes([
     authRoute,
     contributionRoute,
+    profileRoute,
     {
       path: "/",
       element: <LazyLoadingComponent component={Home} />,

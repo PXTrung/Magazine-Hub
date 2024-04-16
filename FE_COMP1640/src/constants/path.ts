@@ -17,6 +17,11 @@ const PATHS = {
       SEND_OTP: "verifyEmail",
       RESET_PASS: "resetPassword",
    },
+   PROFILE: {
+      IDENTITY: "profile",
+      VIEW: "view",
+      EDIT: "edit",
+   },
    DASHBOARD: {
       INDENTITY: "dashboard",
    },

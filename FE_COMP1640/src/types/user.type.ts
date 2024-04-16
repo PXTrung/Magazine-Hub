@@ -59,3 +59,12 @@ export interface IResetPassword{
 export interface ISendOTP{
    email: string;
 }
+
+export interface IProfile{
+   fullName: string;
+   email: string;
+   numberOfContributions: string;
+   role: string;
+   facultyName: string;
+   avatarUrl: string;
+}

@@ -57,4 +57,20 @@ export default {
    resetPassword: (data: IResetPassword) => {
       return axios.post(ENDPOINTS.CHANGE_PASS, data);
    },
+   getUserProfile: async() => {
+      const userToken = sessionStorage.getItem("user-token");
+      return await axios.get(ENDPOINTS.VIEW_PROFILE, {
+         headers: {
+            Authorization: `Bearer ${userToken}`,
+         }
+      })
+   },
+   updateUserProfile: async(data: FormData) => {
+      const userToken = sessionStorage.getItem("user-token");
+      return await axios.put(ENDPOINTS.EDIT_PROFILE, data, {
+         headers: {
+            Authorization: `Bearer ${userToken}`,
+         }
+      })
+   }
 };
