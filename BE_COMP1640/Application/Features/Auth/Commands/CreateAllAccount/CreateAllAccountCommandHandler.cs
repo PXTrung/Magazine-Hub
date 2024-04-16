@@ -38,7 +38,7 @@ namespace Application.Features.Auth.Commands.CreateAllAccount
 
             if (currentUser == null) return Error.Unauthorized(description: "You are not authorized to this resource");
 
-            //Check if email and password exist
+            //Check if email exist
             var emailExist = await _userManager.Users.AnyAsync(u => u.NormalizedEmail == request.Email.ToUpperInvariant(), cancellationToken);
 
             if (emailExist) return Error.Conflict(description: "This email already exists");

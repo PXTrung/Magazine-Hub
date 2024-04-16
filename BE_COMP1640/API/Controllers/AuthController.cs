@@ -6,6 +6,7 @@ using Application.Features.Auth.Commands.ConfirmEmail;
 using Application.Features.Auth.Commands.CreateAllAccount;
 using Application.Features.Auth.Commands.CreateContributorAccount;
 using Application.Features.Auth.Commands.CreateCoordinatorAccount;
+using Application.Features.Auth.Commands.EditUser;
 using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.ResetPassword;
@@ -264,6 +265,21 @@ public class AuthController : ApiController
     [Route("ChangeFaculty")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> ChangeFaculty([FromBody] ChangeFacultyCommand request)
+    {
+        var result = await _sender.Send(request);
+
+        return result.Match(
+            value => base.Ok(value),
+            Problem);
+    }
+
+    /// <summary>
+    ///   [Admin]  Edit user role and faculty
+    /// </summary>
+    [HttpPut]
+    [Route("EditUser")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> EditUser([FromBody] EditUserCommand request)
     {
         var result = await _sender.Send(request);
 
