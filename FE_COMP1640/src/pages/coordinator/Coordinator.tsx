@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import useRedux from "../../hooks/useRedux";
 import { getContributionListWithToken } from "../../redux/slices/contributionSlice";
 import { getPeriod } from "../../redux/slices/periodSlide";
@@ -37,13 +37,16 @@ const Coordinator = () => {
       });
    };
 
+   const renderTable = useMemo(() => {
+      return <Table data={list} name="Contribution" />;
+   }, [list]);
+
    useEffect(() => {
       const query = searchParams.get("search") as string;
       const status = searchParams.get("status") as string;
       const period = searchParams.get("period") as string;
       const sort = searchParams.get("sorts") as string;
       const page = parseInt(searchParams.get("page") as string);
-
       dispatch(
          getContributionListWithToken({
             filters: {
@@ -73,7 +76,8 @@ const Coordinator = () => {
                </div>
                <SortSelector paramName="sorts" setParams={setParams} />
             </div>
-            <Table data={list} name="Contribution" />
+            {/* <Table data={list} name="Contribution" /> */}
+            {renderTable}
             {list.length !== 0 && (
                <Pagination
                   total={totalPage}

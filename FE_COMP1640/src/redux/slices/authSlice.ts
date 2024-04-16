@@ -15,24 +15,29 @@ export const login = createAsyncThunk(
    },
 );
 
+export const createContributorAccount = createAsyncThunk(
+   "createContributorAccount",
+   async (data: ICreateContributor, { rejectWithValue }) => {
+      try {
+         const res = await api.user.createContributor(data);
+         return res.data;
+      } catch (error: any) {
+         return rejectWithValue(error.response.data.title);
+      }
+   },
+);
 
-export const createContributorAccount = createAsyncThunk("createContributorAccount", async(data: ICreateContributor, {rejectWithValue}) => {
-   try {
-      const res = await api.user.createContributor(data);
-      return res.data;
-   } catch (error: any) {
-      return rejectWithValue(error.response.data.title);
-   }
-});
-
-export const createCoordinatorAccount = createAsyncThunk("createCoordinatorAccount", async(data: ICreateCoordinator, {rejectWithValue}) => {
-   try {
-      const res = await api.user.createCoordinator(data);
-      return res.data;
-   } catch (error: any) {
-      return rejectWithValue(error.response.data.title);
-   }
-});
+export const createCoordinatorAccount = createAsyncThunk(
+   "createCoordinatorAccount",
+   async (data: ICreateCoordinator, { rejectWithValue }) => {
+      try {
+         const res = await api.user.createCoordinator(data);
+         return res.data;
+      } catch (error: any) {
+         return rejectWithValue(error.response.data.title);
+      }
+   },
+);
 
 export const changePassword = createAsyncThunk("changePassword", async(data: IChangePassword, {rejectWithValue}) => {
    try {
@@ -129,7 +134,6 @@ const authSlice = createSlice({
             state.isLogin = true;
          }
 
-      
          state.message = "";
       });
       builder.addCase(login.rejected, (state, action) => {
@@ -149,7 +153,9 @@ const authSlice = createSlice({
       builder.addCase(createContributorAccount.rejected, (state, action) => {
          state.isLoading = false;
          state.isError = true;
-         state.message = (action.payload as string) || "An error occurred during create user.";
+         state.message =
+            (action.payload as string) ||
+            "An error occurred during create user.";
       });
       builder.addCase(createCoordinatorAccount.pending, (state) => {
          state.isLoading = true;
@@ -161,7 +167,9 @@ const authSlice = createSlice({
       builder.addCase(createCoordinatorAccount.rejected, (state, action) => {
          state.isLoading = false;
          state.isError = true;
-         state.message = (action.payload as string) || "An error occurred during create user.";
+         state.message =
+            (action.payload as string) ||
+            "An error occurred during create user.";
       });
       builder.addCase(changePassword.pending, (state) => {
          state.isLoading = true;
@@ -176,7 +184,9 @@ const authSlice = createSlice({
       builder.addCase(changePassword.rejected, (state, action) => {
          state.isLoading = false;
          state.isChangePassword = false;
-         state.message = (action.payload as string) || "An error occurred during create user.";
+         state.message =
+            (action.payload as string) ||
+            "An error occurred during create user.";
       });
       builder.addCase(createAllAccount.pending, (state) => {
          state.isLoading = true;

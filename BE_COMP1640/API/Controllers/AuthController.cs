@@ -226,7 +226,7 @@ public class AuthController : ApiController
     }
 
     /// <summary>
-    ///   [Coordinator]  For changing initial password of new user
+    ///    For changing initial password of new user
     /// </summary>
     [HttpPost]
     [Route("ChangeInitialPassword")]

@@ -5,7 +5,7 @@
 
         public Dictionary<string, double> PercentageOfContributionByStatus { get; set; }
 
-        public string TopContributorEmail { get; set; }
+        public string TopContributorFullName { get; set; }
 
         public int TotalOfContribution { get; set; }
 
@@ -14,5 +14,7 @@
         public double PercentageOfFeedbackedContribution { get; set; }
 
         public double ContributionsVsContributorsCorrelation { get; set; }
+
+        public List<TopContributorOfFacultyDto> Top5ContributorOfFaculty { get; set; }
     }
 }

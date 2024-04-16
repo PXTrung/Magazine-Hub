@@ -8,6 +8,7 @@ import { RootState } from "../../../redux/store";
 import UserInformation from "./UserInformation";
 import useRedux from "../../../hooks/useRedux";
 import Sidebar from "./Sidebar";
+import image from "../../../assets/images/logo.jpg";
 
 const Header = () => {
    const [searchParams, setSearchParams] = useSearchParams();
@@ -40,29 +41,9 @@ const Header = () => {
                to={`/${PATHS.HOME.IDENTITY}`}
                className="w-1/4 flex justify-center"
             >
-               <img
-                  src="./assets/images/logo.jpg"
-                  alt=""
-                  className="h-12 md:h-14 lg:h-16"
-               />
+               <img src={image} alt="" className="h-12 md:h-14 lg:h-16" />
             </Link>
 
-            {/* <div className="md:hidden">
-               <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-8 h-8 text-slate-800"
-               >
-                  <path
-                     strokeLinecap="round"
-                     strokeLinejoin="round"
-                     d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                  />
-               </svg>
-            </div> */}
             <div className="md:hidden">
                <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -79,16 +60,14 @@ const Header = () => {
                   />
                </svg>
             </div>
+
             <div className="w-1/4 justify-end items-center hidden md:flex">
                {isLogin && userInfor ? (
                   <UserInformation data={userInfor} />
                ) : (
                   <div className="flex ">
-                     <Link to={`/auth/${PATHS.AUTH.REGISTER}`}>
-                        <Button label="Register" type={"border"} style="mr-2" />
-                     </Link>
                      <Link to={`/auth/${PATHS.AUTH.LOGIN}`}>
-                        <Button label="Login" type={"primary"} />
+                        <Button label="Login" type={"border"} />
                      </Link>
                   </div>
                )}

@@ -3,7 +3,7 @@ import { IUserInformation } from "../types/user.type";
 
 /* eslint-disable import/no-anonymous-default-export */
 const TOKEN_KEY = "user-token";
-const TEMP_TOKEN = "temp-token"
+const TEMP_TOKEN = "temp-token";
 const EMAIL = "email";
 
 export default {
@@ -37,16 +37,14 @@ export default {
             email: userData[
                "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
             ],
-            facultyId: userData[
-               "facultyId"
-            ],
+            facultyId: userData["facultyId"],
          };
       } else return null;
    },
-   setEmail(email?: string){
-      if(email){
+   setEmail(email?: string) {
+      if (email) {
          sessionStorage.setItem(EMAIL, email);
-      }else{
+      } else {
          sessionStorage.removeItem(EMAIL);
       }
    },
@@ -54,8 +52,8 @@ export default {
       let email = sessionStorage.getItem(EMAIL);
       return email;
    },
-   setTempToken(token?: string){
-      if(token){
+   setTempToken(token?: string) {
+      if (token) {
          sessionStorage.setItem(TEMP_TOKEN, token);
       } else {
          sessionStorage.removeItem(TEMP_TOKEN);
@@ -65,7 +63,7 @@ export default {
       let token = sessionStorage.getItem(TEMP_TOKEN);
       return token ? token : null;
    },
-   removeTempToken(){
+   removeTempToken() {
       sessionStorage.removeItem(TEMP_TOKEN);
-   }
+   },
 };

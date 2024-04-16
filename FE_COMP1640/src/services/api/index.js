@@ -5,6 +5,7 @@ import faculty from "../modules/faculty";
 import feedback from "../modules/feedback";
 import period from "../modules/period";
 import role from "../modules/role";
+import dashboard from "../modules/dashboard";
 
 export default {
    user,
@@ -13,4 +14,5 @@ export default {
    feedback,
    period,
    role,
+   dashboard,
 };
