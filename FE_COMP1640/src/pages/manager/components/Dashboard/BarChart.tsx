@@ -19,7 +19,7 @@ const BarChart = ({ chartData, period }: IBarChartProps) => {
          const rejectedCounts: number[] = [];
          const facultyNames: string[] = [];
 
-         chartData.forEach((item) => {
+         chartData?.forEach((item) => {
             publishedCounts.push(item.publishedCount);
             approvedCounts.push(item.approvedCount);
             rejectedCounts.push(item.rejectedCount);

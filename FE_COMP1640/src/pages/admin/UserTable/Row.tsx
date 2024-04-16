@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import { IUserData } from "../../../types/user.type";
+import avatar from "../../../assets/images/Avatar.png";
 
 interface IRowProps {
    user?: IUserData;
@@ -9,16 +10,16 @@ interface IRowProps {
 const Row = ({ user, label }: IRowProps) => {
    return (
       <div className="grid grid-cols-12 items-center gap-3 py-4 bg-white border-t border-t-slate-200 min-w-[650px]">
+         <img
+            src={user?.avatarUrl || avatar}
+            alt="avatar"
+            className="col-span-1 truncate h-8 object-contain"
+         />
          <span className="col-span-3 truncate">{user?.fullName}</span>
          <span className="col-span-3 truncate">{user?.email}</span>
-         <img
-            src={user?.avatarUrl}
-            alt="avatar"
-            className="col-span-2 truncate h-8 object-contain"
-         />
 
          <span className="col-span-2 truncate">{user?.facultyName || "-"}</span>
-         <div className="h-full col-span-1 text-left truncate text-xs font-medium text-gray-600 flex justify-start items-center">
+         <div className="h-full col-span-2 text-left truncate text-xs font-medium text-gray-600 flex justify-start items-center">
             {user?.role}
          </div>
          <span className="col-span-1">

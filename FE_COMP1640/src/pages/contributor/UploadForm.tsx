@@ -8,6 +8,7 @@ import useRedux from "../../hooks/useRedux";
 import { RootState } from "../../redux/store";
 import { useParams } from "react-router-dom";
 import Toast from "../../components/Toast";
+import ConfirmModal from "../../components/Modal/ConfirmModal";
 
 const schema = yup.object().shape({
    Title: yup.string().required("Title is required"),
@@ -65,9 +66,12 @@ const UploadForm = () => {
    };
 
    return (
-      <div className="w-[calc(100vw-208px)]">
-         <div className="md:w-[500px] lg:w-[600px] h-fit mx-auto bg-white px-8 py-10 rounded-lg shadow-md mt-5">
-            {message && <Toast message={message} type="success" />}
+      <div className="w-[calc(100vw-208px)] ">
+         {/* <Toast message="Test" type="success" /> */}
+         <Toast message="Test" type="danger" />
+
+         <div className="relative md:w-[500px] lg:w-[600px] h-fit mx-auto bg-white px-8 py-10 rounded-lg shadow-md mt-5">
+            <ConfirmModal message="Tesst" />
 
             <h2 className="text-2xl font-semibold mb-4">
                Contribution Upload (
