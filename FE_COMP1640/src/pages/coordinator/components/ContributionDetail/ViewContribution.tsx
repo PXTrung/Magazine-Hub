@@ -1,7 +1,7 @@
 /* eslint-disable react/style-prop-object */
 
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import useRedux from "../../../../hooks/useRedux";
 import { formatDate } from "../../../../utils/functions";
 import Loading from "../../../../components/loading/Loading";
@@ -12,6 +12,8 @@ import {
    publish,
 } from "../../../../redux/slices/contributionSlice";
 import FeedbackList from "./FeedbackList";
+import Status from "../../../../components/Contribution/Status";
+import { getPeriod } from "../../../../redux/slices/periodSlide";
 
 const ViewContribution = () => {
    const { dispatch, appSelector } = useRedux();
@@ -36,9 +38,21 @@ const ViewContribution = () => {
       }
    };
 
+   const renderFeedbackList = useMemo(() => {
+      if (detail)
+         return (
+            <FeedbackList
+               period={detail?.periodId as string}
+               status={detail?.status as string}
+            />
+         );
+   }, [detail]);
+
    useEffect(() => {
       if (id) dispatch(getContributionById(id));
    }, [id, dispatch]);
+
+   console.log(detail);
 
    return (
       <>
@@ -46,8 +60,8 @@ const ViewContribution = () => {
             <Loading />
          ) : (
             <div className="w-[calc(100vw-208px)] ">
-               <div className="w-full px-2 md:px-5 lg:px-5 xl:px-10 py-5 overflow-hidden">
-                  <div className="flex flex-col  lg:grid lg:grid-cols-5 justify-center items-start gap-4 pt-5">
+               <div className="w-full px-2 md:px-5 lg:px-5 xl:px-10 py-5 overflow-hidden md:max-w-screen-md lg:max-w-screen-lg xl:max-w-full">
+                  <div className="flex flex-col lg:grid lg:grid-cols-5 justify-center items-start gap-4 pt-5">
                      <div
                         className="w-full h-full flex-1 pt-5 md:pt-10 my-5 md:my-0
                     bg-white rounded-md md:px-10 md:mb-5 items-start lg:col-span-3"
@@ -60,9 +74,14 @@ const ViewContribution = () => {
                                  </span>
                                  <span>{publishedDate}</span>
                               </div>
-                              <h1 className="w-full my-5 leading-normal lg:leading-normal font-semibold text-2xl md:text-2xl text-left text-gray-800 line-clamp-2">
-                                 {detail?.title}
-                              </h1>
+                              <div className="w-full my-5 flex justify-between items-center">
+                                 <h1 className="leading-normal lg:leading-normal font-semibold text-2xl text-left text-gray-900 line-clamp-2">
+                                    {detail?.title}
+                                 </h1>
+                                 <div className="h-5 w-20">
+                                    <Status status={detail?.status} />
+                                 </div>
+                              </div>
                            </div>
 
                            <div className="w-full flex flex-col md:grid md:grid-cols-3 justify-center items-start gap-5 mt-5">
@@ -101,17 +120,15 @@ const ViewContribution = () => {
                         </div>
                      </div>
                      <div className="lg:col-span-2 w-full">
-                        <FeedbackList
-                           period={detail?.periodId as string}
-                           status={detail?.status as string}
-                        />
+                        {renderFeedbackList}
                         {(detail?.status === "Processed" ||
                            detail?.status === "Processing") && (
-                           <div className="w-full flex items-center">
+                           <div className="w-full flex items-center justify-center">
                               <Button
                                  label="Approve"
                                  type="primary"
                                  onClick={() => handleApproveContribution(true)}
+                                 style="mr-2 bg-emerald-600"
                               />
                               <Button
                                  label="Reject"

@@ -2,15 +2,14 @@
 import { useEffect } from "react";
 import useRedux from "../../hooks/useRedux";
 import {
-  getContributionListWithToken,
-  getZipAll,
+   getContributionListWithToken,
+   getZipAll,
 } from "../../redux/slices/contributionSlice";
 import { getPeriod } from "../../redux/slices/periodSlide";
 import { useLocation, useSearchParams } from "react-router-dom";
 import Pagination from "../../components/Pagination/Pagination";
 import Loading from "../../components/loading/Loading";
 import Table from "./components/ContributionTable/Table";
-import Button from "../../components/CustomButton";
 import StatusSelector from "../../components/Dropdown/StatusSelector";
 import PeriodSelector from "../../components/Dropdown/PeriodSelector";
 import SortSelector from "../../components/Dropdown/SortSelector";
@@ -21,7 +20,7 @@ const Manager = () => {
    const { appSelector, dispatch } = useRedux();
    const [searchParams, setSearchParams] = useSearchParams();
    const { userInfor } = appSelector((state) => state.auth);
-   const { list, totalPage, isLoading} = appSelector(
+   const { list, totalPage, isLoading } = appSelector(
       (state) => state.contribution,
    );
 
@@ -72,7 +71,7 @@ const Manager = () => {
    return (
       <div className="w-[calc(100vw-208px)] ">
          {isLoading && <Loading />}
-         <div className="w-full px-2 md:px-5 lg:px-5 xl:px-10 py-5 overflow-hidden">
+         <div className="w-full px-2 md:px-5 lg:px-5 xl:px-10 py-5 overflow-hidden md:max-w-screen-md lg:max-w-screen-lg xl:max-w-full">
             <div className="w-full flex flex-col gap-3 xl:gap-0 xl:flex-row justify-between items-start xl:items-end pb-5">
                <div className="w-full flex justify-start items-end">
                   <StatusSelector paramName="status" setParams={setParams} />

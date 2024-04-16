@@ -14,8 +14,10 @@ import BarChart from "./BarChart";
 
 const Dashboard = () => {
    const { appSelector, dispatch } = useRedux();
-   const [current, setCurrent] = useState<string>();
    const [searchParams, setSearchParams] = useSearchParams();
+   const [current, setCurrent] = useState<string>(
+      searchParams.get("period") || "",
+   );
    const { managerDashboard, isLoading } = appSelector(
       (state) => state.dashboard,
    );
@@ -39,31 +41,26 @@ const Dashboard = () => {
 
    useEffect(() => {
       dispatch(getPeriod());
+      dispatch(getManagerDashboard(current));
       if (!searchParams.get("period")) setParams("period", period[0]?.id);
-   }, [dispatch, searchParams]);
-
-   useEffect(() => {
-      const period = searchParams.get("period") as string;
-      dispatch(getManagerDashboard(period));
-   }, [dispatch, searchParams]);
+   }, [dispatch, current]);
 
    useEffect(() => {
       const param = searchParams.get("period");
       if (param) {
          const temp = period.find((item) => item.id === param);
-         setCurrent(temp?.id);
+         setCurrent(temp?.id as string);
       } else setCurrent("");
    }, [searchParams, period]);
 
+   const convertObjectToArray = (obj: Object) => {
+      const keys = Object?.keys(obj);
+      const values = Object?.values(obj).map((value: number) =>
+         roundToTwoDecimal(value),
+      );
+      return [keys, values];
+   };
    const renderDonutChart = useMemo(() => {
-      const convertObjectToArray = (obj: Object) => {
-         const keys = Object?.keys(obj);
-         const values = Object?.values(obj).map((value: number) =>
-            roundToTwoDecimal(value),
-         );
-         return [keys, values];
-      };
-
       if (managerDashboard) {
          const [statusArray, percentageArray] = convertObjectToArray(
             managerDashboard?.percentageOfContributionByStatus,
@@ -73,14 +70,25 @@ const Dashboard = () => {
    }, [managerDashboard]);
 
    const renderBarChart = useMemo(() => {
-      return (
-         <BarChart
-            chartData={
-               managerDashboard?.numberOfContributionByStatusWithinFaculty
-            }
-            period={period.find((item) => item.id === current)?.academicYear}
-         />
-      );
+      if (managerDashboard?.numberOfContributionByStatusWithinFaculty)
+         return (
+            <BarChart
+               chartData={
+                  managerDashboard?.numberOfContributionByStatusWithinFaculty
+               }
+               period={period.find((item) => item.id === current)?.academicYear}
+            />
+         );
+   }, [managerDashboard]);
+
+   const renderTable = useMemo(() => {
+      if (managerDashboard?.facultyRankByContribution)
+         return (
+            <DashboardTable
+               data={managerDashboard?.facultyRankByContribution}
+               name="Faculty Rank"
+            />
+         );
    }, [managerDashboard]);
    return (
       <div className="w-[calc(100vw-208px)] ">
@@ -111,7 +119,7 @@ const Dashboard = () => {
             <div className="grid md:grid-cols-3 gap-2 lg:gap-5 xl:gap-5 mb-5">
                <Card
                   label="Contributions"
-                  value={managerDashboard?.totalOfContribution + ""}
+                  value={managerDashboard?.totalOfContribution + "" || "..."}
                   icon="total-contributions"
                />
                <Card
@@ -123,7 +131,8 @@ const Dashboard = () => {
                   label="Feedback"
                   value={
                      roundToTwoDecimal(
-                        managerDashboard?.percentageOfFeedbackedContribution,
+                        managerDashboard?.percentageOfFeedbackedContribution ||
+                           0,
                      ) + "%"
                   }
                   icon="feedback"
@@ -133,12 +142,7 @@ const Dashboard = () => {
                <div className="lg:col-span-2 min-h-80">{renderBarChart}</div>
                <div className="lg:col-span-2 min-h-80">{renderDonutChart}</div>
             </div>
-            <div className="w-full pb-5">
-               <DashboardTable
-                  data={managerDashboard?.facultyRankByContribution}
-                  name="Faculty Rank"
-               />
-            </div>
+            <div className="w-full pb-5">{renderTable}</div>
          </div>
       </div>
    );

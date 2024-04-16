@@ -76,7 +76,6 @@ const Coordinator = () => {
                </div>
                <SortSelector paramName="sorts" setParams={setParams} />
             </div>
-            {/* <Table data={list} name="Contribution" /> */}
             {renderTable}
             {list.length !== 0 && (
                <Pagination

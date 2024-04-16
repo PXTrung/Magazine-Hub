@@ -12,8 +12,10 @@ import DonutChart from "./DonutChart";
 
 const Dashboard = () => {
    const { appSelector, dispatch } = useRedux();
-   const [current, setCurrent] = useState<string>();
    const [searchParams, setSearchParams] = useSearchParams();
+   const [current, setCurrent] = useState<string>(
+      searchParams.get("period") || "",
+   );
    const { coordinatorDashboard, isLoading } = appSelector(
       (state) => state.dashboard,
    );
@@ -37,19 +39,15 @@ const Dashboard = () => {
 
    useEffect(() => {
       dispatch(getPeriod());
+      dispatch(getCoordinatorDashboard(current));
       if (!searchParams.get("period")) setParams("period", period[0]?.id);
-   }, [dispatch, searchParams]);
-
-   useEffect(() => {
-      const period = searchParams.get("period") as string;
-      dispatch(getCoordinatorDashboard(period));
-   }, [dispatch, searchParams, period]);
+   }, [dispatch, current]);
 
    useEffect(() => {
       const param = searchParams.get("period");
       if (param) {
          const temp = period.find((item) => item.id === param);
-         setCurrent(temp?.id);
+         setCurrent(temp?.id as string);
       } else setCurrent("");
    }, [searchParams, period]);
 
@@ -66,6 +64,16 @@ const Dashboard = () => {
          );
          return <DonutChart x={statusArray} y={percentageArray} />;
       }
+   }, [coordinatorDashboard]);
+
+   const renderTable = useMemo(() => {
+      if (coordinatorDashboard?.top5ContributorOfFaculty)
+         return (
+            <DashboardTable
+               data={coordinatorDashboard?.top5ContributorOfFaculty}
+               name="Top contributor"
+            />
+         );
    }, [coordinatorDashboard]);
 
    return (
@@ -97,7 +105,7 @@ const Dashboard = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 xl:gap-5 mb-5">
                <Card
                   label="Contributor"
-                  value={coordinatorDashboard?.topContributorFullName}
+                  value={coordinatorDashboard?.topContributorFullName || "..."}
                   icon="top"
                />
                <Card
@@ -123,10 +131,11 @@ const Dashboard = () => {
             </div>
             <div className="w-full flex flex-col lg:grid lg:grid-cols-3 gap-5 ">
                <div className="lg:col-span-2 min-h-72">
-                  <DashboardTable
+                  {/* <DashboardTable
                      name="Top contributor"
                      data={coordinatorDashboard?.top5ContributorOfFaculty}
-                  />
+                  /> */}
+                  {renderTable}
                </div>
                {renderChart}
             </div>

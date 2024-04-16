@@ -5,7 +5,7 @@ import { getPeriod } from "../../redux/slices/periodSlide";
 import { useLocation, useSearchParams } from "react-router-dom";
 import Pagination from "../../components/Pagination/Pagination";
 import Loading from "../../components/loading/Loading";
-import Table from "./components/ContributionTable/Table";
+import Table from "./components/ContributionByFacultyTable/Table";
 import PeriodSelector from "../../components/Dropdown/PeriodSelector";
 import SortSelector from "../../components/Dropdown/SortSelector";
 
@@ -41,7 +41,6 @@ const ContributionsByFaculty = () => {
 
    useEffect(() => {
       const query = searchParams.get("search") as string;
-      const status = searchParams.get("status") as string;
       const period = searchParams.get("period") as string;
       const sort = searchParams.get("sorts") as string;
       const page = parseInt(searchParams.get("page") as string);
@@ -49,10 +48,10 @@ const ContributionsByFaculty = () => {
       dispatch(
          getContributionListWithToken({
             filters: {
-               email: userInfor?.email,
-               status: status,
+               status: "Approved",
                period: period,
                search: query,
+               facultyId: userInfor?.facultyId,
             },
             sorts: sort,
             page: page,

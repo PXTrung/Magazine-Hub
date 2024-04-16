@@ -34,8 +34,8 @@ interface DashboardState {
    isError: boolean;
    message: string;
    status: string;
-   coordinatorDashboard: ICoordinatorDashboard;
-   managerDashboard: IManagerDashboard;
+   coordinatorDashboard: ICoordinatorDashboard | null;
+   managerDashboard: IManagerDashboard | null;
 }
 
 const initialState: DashboardState = {
@@ -43,42 +43,8 @@ const initialState: DashboardState = {
    isError: false,
    message: "",
    status: "",
-   coordinatorDashboard: {
-      contributionsVsContributorsCorrelation: 0,
-      percentageOfContributionByStatus: {
-         Approved: 0,
-         Processed: 0,
-         Processing: 0,
-         Published: 0,
-         Rejected: 0,
-      },
-      top5ContributorOfFaculty: [],
-      totalOfContribution: 0,
-      totalOfPublishedContribution: 0,
-      topContributorFullName: "",
-      percentageOfFeedbackedContribution: 0,
-   },
-   managerDashboard: {
-      percentageOfContributionByStatus: {
-         Approved: 0,
-         Processed: 0,
-         Processing: 0,
-         Published: 0,
-         Rejected: 0,
-      },
-      totalOfContribution: 0,
-      totalOfPublishedContribution: 0,
-      percentageOfFeedbackedContribution: 0,
-      facultyRankByContribution: {},
-      numberOfContributionByStatusWithinFaculty: [
-         {
-            facultyName: "",
-            publishedCount: 0,
-            approvedCount: 0,
-            rejectedCount: 0,
-         },
-      ],
-   },
+   coordinatorDashboard: null,
+   managerDashboard: null,
 };
 
 const dashboardSlice = createSlice({
