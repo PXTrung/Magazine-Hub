@@ -14,7 +14,7 @@ export interface ICoordinatorDashboard {
       Published: number;
       Rejected: number;
    };
-   topContributorEmail: string;
+   topContributorFullName: string;
    totalOfContribution: number;
    totalOfPublishedContribution: number;
    percentageOfFeedbackedContribution: number;
