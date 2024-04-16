@@ -21,7 +21,7 @@ const Manager = () => {
    const { appSelector, dispatch } = useRedux();
    const [searchParams, setSearchParams] = useSearchParams();
    const { userInfor } = appSelector((state) => state.auth);
-   const { list, totalPage, isLoading, zip } = appSelector(
+   const { list, totalPage, isLoading} = appSelector(
       (state) => state.contribution,
    );
 
