@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Input from "../../components/CustomInput";
 import * as yup from "yup";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -29,9 +29,9 @@ const schema = yup.object().shape({
          return !files || files?.[0]?.size < 5000000;
       }),
    DocumentFile: yup
-      .mixed<File>()
-      .test("require", "Upload your document", (file) => {
-         return !!file;
+      .mixed<FileList>()
+      .test("require", "Upload your document", (files) => {
+         return !!files?.[0];
       }),
 });
 
@@ -42,6 +42,18 @@ const UploadForm = () => {
    const { isError, message, isLoading, detail } = appSelector(
       (state: RootState) => state.contribution,
    );
+   const [isOpenModal, setIsOpenModal] = useState<Boolean>(false);
+   const [isConfirm, setIsConfirm] = useState<Boolean>(false);
+   const [contributionForm, setContributionForm] = useState<FormData>();
+
+   const closeModal = useCallback(() => {
+      setIsOpenModal(false);
+   }, []);
+
+   const openModal = useCallback(() => {
+      setIsOpenModal(true);
+      setIsConfirm(false);
+   }, []);
 
    const {
       register,
@@ -51,33 +63,50 @@ const UploadForm = () => {
       resolver: yupResolver<FieldValues>(schema),
    });
 
-   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-      if (id) {
-         const formData = new FormData();
+   const onSubmit: SubmitHandler<FieldValues> = useCallback(
+      async (data) => {
+         openModal();
 
-         formData.append("imageFile", data?.ImageFile[0]);
-         formData.append("title", data?.Title);
-         formData.append("description", data?.Description);
-         formData.append("documentFile", data?.DocumentFile[0]);
-         formData.append("periodId", id);
+         if (id) {
+            const formData = new FormData();
 
-         dispatch(contribute(formData));
-      }
+            formData.append("imageFile", data?.ImageFile[0]);
+            formData.append("title", data?.Title);
+            formData.append("description", data?.Description);
+            formData.append("documentFile", data?.DocumentFile[0]);
+            formData.append("periodId", id);
+
+            setContributionForm(formData);
+         }
+      },
+      [id, openModal],
+   );
+
+   const handleAgree = () => {
+      setIsConfirm(true);
+      closeModal();
    };
+
+   useEffect(() => {
+      if (isConfirm && contributionForm) {
+         dispatch(contribute(contributionForm));
+      }
+   }, [isConfirm, contributionForm, dispatch]);
 
    return (
       <div className="w-[calc(100vw-208px)] ">
-         {/* <Toast message="Test" type="success" /> */}
-         <Toast message="Test" type="danger" />
-
          <div className="relative md:w-[500px] lg:w-[600px] h-fit mx-auto bg-white px-8 py-10 rounded-lg shadow-md mt-5">
-            <ConfirmModal message="Tesst" />
-
             <h2 className="text-2xl font-semibold mb-4">
                Contribution Upload (
                {period.find((item) => item.id === id)?.academicYear})
             </h2>
             <form onSubmit={handleSubmit(onSubmit)}>
+               <ConfirmModal
+                  message="Are you sure you want to submit?"
+                  handleAgree={handleAgree}
+                  handleClose={closeModal}
+                  isOpen={isOpenModal}
+               />
                <Input
                   register={register}
                   errors={errors}
@@ -113,10 +142,7 @@ const UploadForm = () => {
                   accept=".pdf"
                ></Input>
                <div className="w-full flex justify-center mt-5">
-                  <button
-                     type="submit"
-                     className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-[280px]"
-                  >
+                  <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-[280px]">
                      Submit
                   </button>
                </div>
