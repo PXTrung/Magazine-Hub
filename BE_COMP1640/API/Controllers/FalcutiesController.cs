@@ -1,5 +1,6 @@
 ﻿using API.Sieve;
 using Application.Features.Faculties.Commands.CreateFaculty;
+using Application.Features.Faculties.Commands.EditFaculty;
 using Application.Features.Faculties.Queries.ListFaculty;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -26,7 +27,7 @@ public class FalcutiesController : ApiController
 
 
     /// <summary>
-    ///     Create a new Faculty
+    ///   [Admin] Create a new Faculty
     /// </summary>
     [HttpPost]
     [Authorize(Roles = "Admin")]
@@ -36,6 +37,21 @@ public class FalcutiesController : ApiController
 
         return result.Match(
             value => StatusCode(201, value),
+            Problem);
+    }
+
+    /// <summary>
+    ///    [Admin] Update a Faculty
+    /// </summary>
+    [HttpPut]
+    [Route("UpdateFaculty")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> EditFaculty([FromBody] UpdateFacultyCommand request)
+    {
+        var result = await _sender.Send(request);
+
+        return result.Match(
+            value => StatusCode(200, value),
             Problem);
     }
 
