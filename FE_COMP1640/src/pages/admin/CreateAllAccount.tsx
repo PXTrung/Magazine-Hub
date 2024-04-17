@@ -5,8 +5,9 @@ import { AppDispatch, RootState } from "../../redux/store";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Input from "../../components/CustomInput";
-import { createAllAccount } from "../../redux/slices/authSlice";
+import { clearMessage, createAllAccount } from "../../redux/slices/authSlice";
 import { ICreateAllAccount } from "../../types/user.type";
+import Toast from "../../components/Toast";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -24,7 +25,7 @@ const CreateAllAccount = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { faculty } = useSelector((state: RootState) => state.faculty);
   const { role } = useSelector((state: RootState) => state.role);
-  const { message } = useSelector((state: RootState) => state.auth);
+  const { message, isError } = useSelector((state: RootState) => state.auth);
   const roleRef = useRef<HTMLSelectElement>(null);
   const facultyRef = useRef<HTMLSelectElement>(null);
 
@@ -74,17 +75,25 @@ const CreateAllAccount = () => {
 
     try {
       await dispatch(createAllAccount(userInformation as ICreateAllAccount));
-      console.log(userInformation);
     } catch (error: any) {
       console.log(error.message);
     }
   };
 
+  // Dispatch clearMessage action after 3 seconds
+  setTimeout(() => {
+    dispatch(clearMessage());
+  }, 4000);
+
   return (
     <div className="w-[calc(100vw-208px)] ">
+      {isError && message ? (
+        <Toast message={message} type="danger" />
+      ) : (
+        message && <Toast message={message} type="success" />
+      )}
       <div className="w-full px-2 md:px-5 lg:px-5 xl:px-10 py-5 overflow-hidden flex justify-center items-start">
         <div className=" bg-white/70 mt-5 p-8 rounded shadow-md  w-[600px] z-20">
-          {message && <span className="text-green-600">{message}</span>}
           <h1 className="text-2xl font-semibold mb-6">
             Create Contributor Account
           </h1>
@@ -127,7 +136,7 @@ const CreateAllAccount = () => {
                 htmlFor="role"
                 className="mr-1 text-gray-700 text-base font-normal"
               >
-                Falcuty
+                Role
               </label>
               <select
                 id="roleId"

@@ -1,7 +1,7 @@
 import { PARAMETER } from "./path";
 
 // Define the base URL for the API
-const API_BASE_URL = "http://localhost:5001/api/";
+const API_BASE_URL = "https://localhost:7009/api/";
 
 // Define functions to construct endpoint URLs
 function constructEndpoint(endpoint: string) {
@@ -24,7 +24,10 @@ export const ENDPOINTS = {
    CREATE_ALL_ACCOUNT: constructEndpoint("Auth/CreateAllAccount"),
    VIEW_PROFILE: constructEndpoint("Auth/SelfProfile"),
    EDIT_PROFILE: constructEndpoint("Auth/UpdateProfile"),
+   CHANGE_ROLE: constructEndpoint("Auth/ChangeRole"),
+   CHANGE_FACULTY: constructEndpoint("Auth/ChangeFaculty"),
    FALCUTY: constructEndpoint("Falcuties"),
+   EDIT_FALCUTY: constructEndpoint("Falcuties/UpdateFaculty"),
    ROLE: constructEndpoint("Auth/Roles"),
    CONTRIBUTION: {
       ALL: constructEndpoint(`Contributions`),

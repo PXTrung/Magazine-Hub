@@ -23,6 +23,9 @@ import ContributionCreate from "../pages/contributor/UploadForm";
 import ViewProfile from "../components/Profile/ViewProfile";
 import EditProfile from "../components/Profile/EditProfile";
 
+// Terms of Service
+import TermsOfService from "../components/TermsOfService";
+
 // Contributor
 import ContributorPage from "../pages/contributor/ContributorPage";
 import ContributorDetailPage from "../pages/contributor/components/ContributionDetail/UpdateContribution";
@@ -47,9 +50,14 @@ import UserManage from "../pages/admin/UserTable/UserManage";
 import PeriodPage from "../pages/admin/Period/Period";
 import PeriodDetail from "../pages/admin/Period/PeriodDetail";
 import CreateAllAccount from "../pages/admin/CreateAllAccount";
+import ChangeRole from "../pages/admin/ChangeRole";
+import ChangeFaculty from "../pages/admin/ChangeFaculty";
+import CreateFaculty from "../pages/admin/Faculty/CreateFaculty";
+import EditFaculty from "../pages/admin/Faculty/EditFaculty";
 
 // Layout
 import RoleLayout from "../layouts/RolePage/index";
+import ProtectedRouteForLogin from "./ProtectedRouteForLogin";
 
 const authRoute = {
   path: PATHS.AUTH.IDENTITY,
@@ -97,7 +105,6 @@ const contributionRoute = {
 
 const profileRoute = {
   path: PATHS.PROFILE.IDENTITY,
-  element: <Home />,
   children: [
     {
       path: PATHS.PROFILE.VIEW,
@@ -106,6 +113,17 @@ const profileRoute = {
     {
       path: PATHS.PROFILE.EDIT,
       element: <EditProfile />,
+    },
+  ],
+};
+
+const TermsOfServiceRoute = {
+  path: PATHS.TERM_OF_SERVICE.IDENTITY,
+  element: <Home />,
+  children: [
+    {
+      path: PATHS.TERM_OF_SERVICE.DETAIL,
+      element: <TermsOfService />,
     },
   ],
 };
@@ -220,6 +238,22 @@ const adminRoute = {
       path: PATHS.ADMIN.CREATE_ALL,
       element: <CreateAllAccount />,
     },
+    {
+      path: `${PATHS.ADMIN.CHANGE_ROLE}/${PARAMETER.EMAIL}`,
+      element: <ChangeRole />,
+    },
+    {
+      path: `${PATHS.ADMIN.CHANGE_FACULTY}/${PARAMETER.EMAIL}`,
+      element: <ChangeFaculty />,
+    },
+    {
+      path: PATHS.ADMIN.FACULTY,
+      element: <CreateFaculty />,
+    },
+    {
+      path: `${PATHS.ADMIN.FACULTY}/${PATHS.ADMIN.DETAIL}`,
+      element: <EditFaculty />,
+    },
   ],
 };
 
@@ -227,7 +261,7 @@ export default function AllRoutes() {
   return useRoutes([
     authRoute,
     contributionRoute,
-    profileRoute,
+    TermsOfServiceRoute,
     {
       path: "/",
       element: <Home />,
@@ -261,6 +295,11 @@ export default function AllRoutes() {
       path: "/",
       element: <ProtectedRoute component={RoleLayout} role="Admin" />,
       children: [adminRoute],
+    },
+    {
+      path: "/",
+      element: <ProtectedRouteForLogin component={Home} />,
+      children: [profileRoute],
     },
     {
       path: "*",

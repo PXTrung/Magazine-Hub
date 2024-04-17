@@ -1,6 +1,7 @@
 const PARAMETER = {
    ID: ":id",
    CATEGORY: ":category",
+   EMAIL: ":email",
    CONTRIBUTION_FILTER: ":filter",
    CONTRIBUTION_SLUG: "",
 };
@@ -49,8 +50,15 @@ const PATHS = {
       PERIOD: "period",
       DETAIL: `${PARAMETER.ID}`,
       DASHBOARD: "dashboard",
+      CHANGE_ROLE: "changeRole",
+      CHANGE_FACULTY: "changeFaculty",
       CREATE_ALL: "createAccount",
+      FACULTY: "faculty",
    },
+   TERM_OF_SERVICE: {
+      IDENTITY: "TermsOfService",
+      DETAIL: "DETAIL",
+   }
 };
 
 export { PATHS, PARAMETER };

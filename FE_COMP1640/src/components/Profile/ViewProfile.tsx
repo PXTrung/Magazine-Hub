@@ -4,6 +4,8 @@ import { PATHS } from "../../constants/path";
 import useRedux from "../../hooks/useRedux";
 import { RootState } from "../../redux/store";
 import { getUserProfile } from "../../redux/slices/userSlice";
+import user from "../../../src/assets/images/user.png";
+import { getCurrentUser } from "../../redux/slices/authSlice";
 
 const ViewProfile = () => {
   const { appSelector, dispatch } = useRedux();
@@ -25,7 +27,7 @@ const ViewProfile = () => {
         ) : (
           <img
             className="w-24 h-24 mb-3 rounded-full shadow-lg mt-4"
-            src="../assets/images/user.png"
+            src={user}
             alt="Bonnie"
           />
         )}
@@ -57,19 +59,21 @@ const ViewProfile = () => {
           </div>
         </div>
 
-        <div className="w-1/2 flex justify-center mt-8 max-lg:w-full">
-          <div className="w-1/2 text-end">
-            <span className="mb-1 text-xl font-medium text-gray-900 dark:text-white pr-9">
-              Faculty:
-            </span>
-          </div>
+        {userProfile?.role !== "Admin" && userProfile?.role !== "Manager" && (
+          <div className="w-1/2 flex justify-center mt-8 max-lg:w-full">
+            <div className="w-1/2 text-end">
+              <span className="mb-1 text-xl font-medium text-gray-900 dark:text-white pr-9">
+                Faculty:
+              </span>
+            </div>
 
-          <div className="w-1/2">
-            <span className="text-xl text-gray-500 dark:text-gray-400 pl-10">
-              {userProfile?.facultyName}
-            </span>
+            <div className="w-1/2">
+              <span className="text-xl text-gray-500 dark:text-gray-400 pl-10">
+                {userProfile?.facultyName}
+              </span>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="w-1/2 flex justify-center mt-8 max-lg:w-full">
           <div className="w-1/2 text-end">

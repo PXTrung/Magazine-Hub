@@ -1,47 +1,43 @@
-/* eslint-disable react/style-prop-object */
 import React from "react";
 import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
+import Input from "../../components/CustomInput";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Input from "../../components/CustomInput";
-import {
-  clearMessage,
-  createCoordinatorAccount,
-} from "../../redux/slices/authSlice";
-import { ICreateCoordinator } from "../../types/user.type";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { changeRole, clearMessage } from "../../redux/slices/authSlice";
+import { IChangeRole } from "../../types/user.type";
+import clsx from "clsx";
+import { useParams } from "react-router-dom";
 import Toast from "../../components/Toast";
 
-const registerSchema = Yup.object().shape({
-  firstName: Yup.string().required("Enter your first name"),
-  lastName: Yup.string().required("Enter your last name"),
-  email: Yup.string().email("Invalid email").required("Enter your email"),
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Email is required"),
 });
 
-const CreateCoordinator = () => {
+const ChangeRole = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { faculty } = useSelector((state: RootState) => state.faculty);
+  const { role } = useSelector((state: RootState) => state.role);
   const { message, isError } = useSelector((state: RootState) => state.auth);
+  const { email } = useParams<{ email: string }>() || "";
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FieldValues>({
-    resolver: yupResolver<FieldValues>(registerSchema),
+    resolver: yupResolver<FieldValues>(validationSchema),
   });
 
-  const defaultValue: string | undefined =
-    faculty.length > 0 ? faculty[0].id : undefined;
+  const defaultRoleValue: string | undefined =
+    role.length > 0 ? role[0].id : undefined;
 
+  // handle submit data
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const userInformation = { ...data };
 
     try {
-      await dispatch(
-        createCoordinatorAccount(userInformation as ICreateCoordinator)
-      );
+      await dispatch(changeRole(userInformation as IChangeRole));
       console.log(userInformation);
     } catch (error: any) {
       console.log(error.message);
@@ -51,60 +47,54 @@ const CreateCoordinator = () => {
   // Dispatch clearMessage action after 3 seconds
   setTimeout(() => {
     dispatch(clearMessage());
-  }, 4000);
+  }, 3000);
 
   return (
     <div className="w-[calc(100vw-208px)] ">
-      {message && isError ? (
+      {isError && message ? (
         <Toast message={message} type="danger" />
       ) : (
         message && <Toast message={message} type="success" />
       )}
       <div className="w-full px-2 md:px-5 lg:px-5 xl:px-10 py-5 overflow-hidden flex justify-center items-start">
-        <div className=" bg-white/70 mt-5 p-8 rounded shadow-md w-[600px] z-20">
+        <div className=" bg-white/70 mt-5 p-8 rounded shadow-md  w-[600px] z-20">
           <h1 className="text-2xl font-semibold mb-6">
-            Create Coordinator Account
+            Create Contributor Account
           </h1>
+
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-row justify-between items-start">
-              <Input
-                register={register}
-                errors={errors}
-                required
-                id="firstName"
-                label="First Name"
+            <div className={clsx("mb-3")}>
+              <input
+                id="email"
                 type="text"
-                placeholder="First name"
-                style="mr-2 flex-1"
-              />
-              <Input
-                register={register}
-                errors={errors}
-                required
-                id="lastName"
-                label="Last Name"
-                type="text"
-                placeholder="Last name"
-                style="flex-1"
+                value={email ?? ""}
+                className={clsx(
+                  "mt-1 p-2 w-full border rounded outline-gray-700"
+                )}
+                placeholder="trung@gmail.com"
+                {...register("email")}
+                hidden
+                autoComplete="username"
               />
             </div>
+
             <div className="relative mb-3">
               <label
-                htmlFor="falcuty"
+                htmlFor="role"
                 className="mr-1 text-gray-700 text-base font-normal"
               >
-                Falcuty
+                Role
               </label>
               <select
-                id="facultyId"
+                id="roleId"
                 className="block appearance-none w-full bg-white border border-gray-400 mt-1 p-[10px] rounded leading-tight focus:outline-none"
-                defaultValue={defaultValue}
-                {...(register && register("facultyId", {}))}
+                defaultValue={defaultRoleValue}
+                {...(register && register("roleId", {}))}
               >
-                {faculty?.map((falcuty: any) => {
+                {role?.map((role: any) => {
                   return (
-                    <option key={falcuty?.id} value={falcuty?.id}>
-                      {falcuty?.name}
+                    <option key={role?.id} value={role?.id}>
+                      {role?.name}
                     </option>
                   );
                 })}
@@ -119,15 +109,6 @@ const CreateCoordinator = () => {
                 </svg>
               </div>
             </div>
-            <Input
-              register={register}
-              errors={errors}
-              required
-              id="email"
-              label="Email"
-              type="text"
-              placeholder="example@gmail.com"
-            />
 
             <button
               type="submit"
@@ -142,4 +123,4 @@ const CreateCoordinator = () => {
   );
 };
 
-export default CreateCoordinator;
+export default ChangeRole;

@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { PATHS } from "../../../constants/path";
 import { Navigate } from "react-router-dom";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { changePassword } from "../../../redux/slices/authSlice";
+import { changePassword, clearMessage } from "../../../redux/slices/authSlice";
 import { IChangePassword } from "../../../types/user.type";
 import Input from "../../../components/CustomInput";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +15,11 @@ const resetPasswordSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Enter your email"),
   newPassword: Yup.string()
     .required("Enter your password")
-    .min(6, "Password must be at least 6 characters"),
+    .min(8, "Password must be at least 8 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-+=])[A-Za-z\d!@#$%^&*()-+=]{8,}$/,
+      "Password must contain at least 1 uppercase, 1 lowercase, 1 digit, and 1 special character"
+    ),
   confirmNewPassword: Yup.string()
     .required("Confirm your password")
     .oneOf([Yup.ref(" newPassword")], "Passwords do not match"),
@@ -30,7 +34,9 @@ const ChangePassword = () => {
     resolver: yupResolver<FieldValues>(resetPasswordSchema),
   });
   const dispatch = useDispatch<AppDispatch>();
-  const { isChangePassword } = useSelector((state: RootState) => state.auth);
+  const { isChangePassword, message, isError } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   // Get email and token form session storage
   const email = authUtils.getEmail();
@@ -55,6 +61,11 @@ const ChangePassword = () => {
     }
   };
 
+  // Dispatch clearMessage action after 3 seconds
+  setTimeout(() => {
+    dispatch(clearMessage());
+  }, 3000);
+
   return (
     <>
       {isChangePassword && (
@@ -66,7 +77,13 @@ const ChangePassword = () => {
         />
       )}
       <div>
-        <h1 className="text-2xl font-semibold mb-6">Change Password</h1>
+        <h1 className="text-2xl font-semibold mb-6">Change Initial Password</h1>
+        <div className="bg-stone-200 px-2">
+          <p className="mb-3 text-lg font-normal text-slate-600">
+            You have logged in into the system in the first time, please provide
+            a new password
+          </p>
+        </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             id="email"
