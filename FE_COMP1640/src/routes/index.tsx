@@ -53,6 +53,7 @@ import CreateAllAccount from "../pages/admin/CreateAllAccount";
 import ChangeRole from "../pages/admin/ChangeRole";
 import ChangeFaculty from "../pages/admin/ChangeFaculty";
 import CreateFaculty from "../pages/admin/Faculty/CreateFaculty";
+import EditFaculty from "../pages/admin/Faculty/EditFaculty";
 
 // Layout
 import RoleLayout from "../layouts/RolePage/index";
@@ -248,6 +249,10 @@ const adminRoute = {
     {
       path: PATHS.ADMIN.FACULTY,
       element: <CreateFaculty />,
+    },
+    {
+      path: `${PATHS.ADMIN.FACULTY}/${PATHS.ADMIN.DETAIL}`,
+      element: <EditFaculty />,
     },
   ],
 };

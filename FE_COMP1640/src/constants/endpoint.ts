@@ -27,6 +27,7 @@ export const ENDPOINTS = {
    CHANGE_ROLE: constructEndpoint("Auth/ChangeRole"),
    CHANGE_FACULTY: constructEndpoint("Auth/ChangeFaculty"),
    FALCUTY: constructEndpoint("Falcuties"),
+   EDIT_FALCUTY: constructEndpoint("Falcuties/UpdateFaculty"),
    ROLE: constructEndpoint("Auth/Roles"),
    CONTRIBUTION: {
       ALL: constructEndpoint(`Contributions`),

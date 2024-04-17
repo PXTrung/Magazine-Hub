@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios";
 import { ENDPOINTS } from "../../constants/endpoint";
-import { ICreateFaculty } from "../../types/faculty.type";
+import { ICreateFaculty, IEditFaculty } from "../../types/faculty.type";
 
 export default {
    getFaculty: () => {
@@ -14,6 +14,14 @@ export default {
             Authorization: `Bearer ${userToken}`,
          }
       })
-   }
+   },
+   editFaculty: (data: IEditFaculty) => {
+      const userToken = sessionStorage.getItem("user-token");
+      return axios.put(ENDPOINTS.EDIT_FALCUTY, data, {
+         headers: {
+            Authorization: `Bearer ${userToken}`,
+         }
+      })
+   },
 };
 

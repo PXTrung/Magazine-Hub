@@ -59,19 +59,21 @@ const ViewProfile = () => {
           </div>
         </div>
 
-        <div className="w-1/2 flex justify-center mt-8 max-lg:w-full">
-          <div className="w-1/2 text-end">
-            <span className="mb-1 text-xl font-medium text-gray-900 dark:text-white pr-9">
-              Faculty:
-            </span>
-          </div>
+        {userProfile?.role !== "Admin" && userProfile?.role !== "Manager" && (
+          <div className="w-1/2 flex justify-center mt-8 max-lg:w-full">
+            <div className="w-1/2 text-end">
+              <span className="mb-1 text-xl font-medium text-gray-900 dark:text-white pr-9">
+                Faculty:
+              </span>
+            </div>
 
-          <div className="w-1/2">
-            <span className="text-xl text-gray-500 dark:text-gray-400 pl-10">
-              {userProfile?.facultyName}
-            </span>
+            <div className="w-1/2">
+              <span className="text-xl text-gray-500 dark:text-gray-400 pl-10">
+                {userProfile?.facultyName}
+              </span>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="w-1/2 flex justify-center mt-8 max-lg:w-full">
           <div className="w-1/2 text-end">

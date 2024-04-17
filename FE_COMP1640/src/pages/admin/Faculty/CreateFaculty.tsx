@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import useRedux from "../../../hooks/useRedux";
-import { RootState } from "../../../redux/store";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { createFaculty, getFaculty } from "../../../redux/slices/facultySlice";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ICreateFaculty } from "../../../types/faculty.type";
+import { useEffect, useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import * as yup from "yup";
 import Toast from "../../../components/Toast";
+import useRedux from "../../../hooks/useRedux";
+import { createFaculty, getFaculty } from "../../../redux/slices/facultySlice";
+import { RootState } from "../../../redux/store";
+import { ICreateFaculty } from "../../../types/faculty.type";
 
 const schema = yup.object().shape({
   name: yup.string().required("Faculty name is required"),
@@ -26,13 +26,6 @@ const CreateFaculty = () => {
   } = useForm<FieldValues>({
     resolver: yupResolver<FieldValues>(schema),
   });
-
-  const formaDate = (date: Date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);

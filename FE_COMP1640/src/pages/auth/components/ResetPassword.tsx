@@ -14,10 +14,14 @@ import { Link, Navigate } from "react-router-dom";
 
 const resetPasswordSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Enter your email"),
-  otp: Yup.string().required("Description is required"),
+  otp: Yup.string().required("OTP is required"),
   newPassword: Yup.string()
     .required("Enter your password")
-    .min(6, "Password must be at least 6 characters"),
+    .min(8, "Password must be at least 8 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-+=])[A-Za-z\d!@#$%^&*()-+=]{8,}$/,
+      "Password must contain at least 1 uppercase, 1 lowercase, 1 digit, and 1 special character"
+    ),
   confirmNewPassword: Yup.string()
     .required("Confirm your password")
     .oneOf([Yup.ref(" newPassword")], "Passwords do not match"),

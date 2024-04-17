@@ -2,7 +2,7 @@
 import axios from "axios";
 import { ENDPOINTS } from "../../constants/endpoint";
 import { IUploadFeedback } from "../../types/feedback.type";
-const userToken = sessionStorage.getItem("user-token");
+
 
 export default {
    getFeedback: async () => {
@@ -21,6 +21,7 @@ export default {
       });
    },
    postFeedback: async (data: IUploadFeedback) => {
+      const userToken = sessionStorage.getItem("user-token");
       return await axios.post(ENDPOINTS.FEEDBACK.ALL, data, {
          headers: {
             Authorization: `bearer ${userToken}`,

@@ -35,13 +35,13 @@ const menu: Menu = {
   Contributor: [
     {
       id: 1,
-      label: "Contribution",
+      label: "My Contribution",
       path: `${PATHS.CONTRIBUTOR.IDENTITY}/${PATHS.CONTRIBUTION.IDENTITY}?page=1`,
       icon: "contribution",
     },
     {
       id: 2,
-      label: " Faculty",
+      label: "Faculty Contribution",
       path: `${PATHS.CONTRIBUTOR.IDENTITY}/${PATHS.CONTRIBUTION.FACULTY}?page=1`,
       icon: "faculty",
     },
@@ -75,7 +75,7 @@ const menu: Menu = {
   Manager: [
     {
       id: 1,
-      label: "Contribution",
+      label: "Manage Contribution",
       icon: "contribution",
       path: `${PATHS.MANAGER.IDENTITY}/${PATHS.CONTRIBUTION.IDENTITY}?page=1`,
     },
@@ -95,13 +95,13 @@ const menu: Menu = {
   Admin: [
     {
       id: 1,
-      label: "User",
+      label: "Manage User",
       icon: "user",
       path: `${PATHS.ADMIN.IDENTITY}/${PATHS.ADMIN.MANAGE_USER}?page=1`,
     },
     {
       id: 2,
-      label: "Period",
+      label: "Manage Period",
       path: `${PATHS.ADMIN.IDENTITY}/${PATHS.ADMIN.PERIOD}`,
       icon: "time",
     },

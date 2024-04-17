@@ -75,7 +75,6 @@ const CreateAllAccount = () => {
 
     try {
       await dispatch(createAllAccount(userInformation as ICreateAllAccount));
-      console.log(userInformation);
     } catch (error: any) {
       console.log(error.message);
     }
