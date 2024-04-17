@@ -1,6 +1,7 @@
 ﻿using Application.Common.Behaviours;
 using Application.Features.Dashboards.AdminDashboardService;
 using Application.Features.Dashboards.CoordinatorDashboardService;
+using Application.Features.Dashboards.ManagerDashboardService;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
