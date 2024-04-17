@@ -53,7 +53,12 @@ const PATHS = {
       CHANGE_ROLE: "changeRole",
       CHANGE_FACULTY: "changeFaculty",
       CREATE_ALL: "createAccount",
+      FACULTY: "faculty",
    },
+   TERM_OF_SERVICE: {
+      IDENTITY: "TermsOfService",
+      DETAIL: "DETAIL",
+   }
 };
 
 export { PATHS, PARAMETER };

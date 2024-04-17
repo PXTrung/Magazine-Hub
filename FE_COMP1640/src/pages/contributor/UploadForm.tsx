@@ -104,7 +104,12 @@ const UploadForm = () => {
 
   return (
     <div className="w-[calc(100vw-208px)] ">
-      {message && <Toast message={message} type="success" />}
+      {isError && message ? (
+        <Toast message={message} type="danger" />
+      ) : (
+        message && <Toast message={message} type="success" />
+      )}
+
       <div className="relative md:w-[500px] lg:w-[600px] h-fit mx-auto bg-white px-8 py-10 rounded-lg shadow-md mt-5">
         <h2 className="text-2xl font-semibold mb-4">
           Contribution Upload (
@@ -149,7 +154,7 @@ const UploadForm = () => {
             id="DocumentFile"
             label="Document"
             type="file"
-            accept=".pdf"
+            accept=".pdf, .docx"
           ></Input>
           <div className="w-full flex justify-center mt-5">
             <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-[280px]">

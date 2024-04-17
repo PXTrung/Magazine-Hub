@@ -5,3 +5,7 @@ export interface IFaculty {
    lastModifyiedAt: string;
    createByEmail: string;
 }
+
+export interface ICreateFaculty{
+   name: string;
+}

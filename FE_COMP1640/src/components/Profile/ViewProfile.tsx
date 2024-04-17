@@ -5,6 +5,7 @@ import useRedux from "../../hooks/useRedux";
 import { RootState } from "../../redux/store";
 import { getUserProfile } from "../../redux/slices/userSlice";
 import user from "../../../src/assets/images/user.png";
+import { getCurrentUser } from "../../redux/slices/authSlice";
 
 const ViewProfile = () => {
   const { appSelector, dispatch } = useRedux();

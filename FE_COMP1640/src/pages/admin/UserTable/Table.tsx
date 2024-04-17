@@ -9,7 +9,7 @@ interface ITableProps {
 const Table = ({ name, data }: ITableProps) => {
   return (
     <>
-      <div className="w-full bg-white flex flex-col text-sm px-6 py-6 rounded-lg drop-shadow-md md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl overflow-hidden">
+      <div className="w-full bg-white flex flex-col text-sm px-6 py-6 rounded-lg drop-shadow-md md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl 2xl:max-w-full overflow-hidden">
         <h2 className="text-lg font-bold text-blue-950 py-1">{name}</h2>
 
         <div className="w-full overflow-x-scroll">

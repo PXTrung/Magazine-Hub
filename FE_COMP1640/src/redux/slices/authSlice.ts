@@ -166,6 +166,7 @@ const authSlice = createSlice({
       });
       builder.addCase(createContributorAccount.pending, (state) => {
          state.isLoading = true;
+         state.message = "";
          state.isError = false;
       });
       builder.addCase(createContributorAccount.fulfilled, (state, action) => {
@@ -257,6 +258,7 @@ const authSlice = createSlice({
       });
       builder.addCase(changeRole.pending, (state) => {
          state.isLoading = true;
+         state.isError = false;
          state.message = "";
       });
       builder.addCase(changeRole.fulfilled, (state, action) => {
@@ -269,6 +271,7 @@ const authSlice = createSlice({
       });
       builder.addCase(changeFaculty.pending, (state, action) => {
          state.isLoading = true;
+         state.isError = false;
          state.message = "";
       });
       builder.addCase(changeFaculty.fulfilled, (state, action) => {
