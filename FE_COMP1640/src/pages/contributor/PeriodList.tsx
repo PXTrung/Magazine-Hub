@@ -16,12 +16,12 @@ const PeriodList = () => {
    return (
       <div className="w-[calc(100vw-208px)]">
          <div className="w-full px-2 md:px-5 lg:px-5 xl:px-10 py-5 overflow-hidden">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 justify-center mt-8 p-4 w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3 justify-center mt-8 p-4 w-full">
                {periods.period.map((p) => (
                   <Link to={`${p.id}`} className="w-full md:px-32 lg:px-0">
                      <button
                         type="button"
-                        className="w-full py-5 px-8 text-gray-600 text-sm lg:text-base rounded-md bg-white text-center flex flex-col shadow hover:shadow-md transition-all duration-200 "
+                        className="w-full py-5 px-8 text-gray-600 text-sm rounded-md bg-white flex flex-col items-start shadow hover:shadow-md transition-all duration-200 "
                      >
                         <div>
                            <span className="font-medium mr-2">

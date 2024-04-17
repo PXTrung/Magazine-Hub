@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import { useState } from "react";
 import { IUserData } from "../../../types/user.type";
+import avatar from "../../../assets/images/Avatar.png";
 import "flowbite";
 import { Link } from "react-router-dom";
 import { PATHS } from "../../../constants/path";
