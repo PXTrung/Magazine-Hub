@@ -182,6 +182,9 @@ public static class SeedData
                         var contributionNumber = i + 1;
                         foreach (ContributionStatus status in Enum.GetValues(typeof(ContributionStatus)))
                         {
+                            DateTime createdAt;
+                            createdAt = period.AcademicYear == DateTime.Now.Year ? DateTime.Now : new DateTime(period.AcademicYear, 5, 30);
+
                             //seed Document
                             var document = new Media
                             {
@@ -202,7 +205,9 @@ public static class SeedData
                                 CreatedById = contributor.Id,
                                 PeriodId = period.Id,
                                 Image = image,
-                                Document = document
+                                Document = document,
+                                CreatedAt = createdAt,
+                                LastModifiedAt = createdAt
                             };
                             newContributions.Add(contribution);
 

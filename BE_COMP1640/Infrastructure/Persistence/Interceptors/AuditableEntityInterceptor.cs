@@ -61,8 +61,15 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
                         }
                     }
                 }
-                entry.Entity.CreatedAt = utcNow;
-                entry.Entity.LastModifiedAt = utcNow;
+                if (entry.Entity.CreatedAt == default)
+                {
+                    entry.Entity.CreatedAt = utcNow;
+                }
+
+                if (entry.Entity.LastModifiedAt == default)
+                {
+                    entry.Entity.LastModifiedAt = utcNow;
+                }
             }
         }
     }
