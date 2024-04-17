@@ -88,15 +88,16 @@ public static class SeedData
                         Name = facultyName
                     });
                 }
+                await context.SaveChangesAsync();
             }
 
             // Create 4 accounts for 4 coordinators of each faculty
             var coordinatorsToSeed = new List<(string facultyName, string emailPrefix)>
                 {
-                    ("Graphic Design", "graphicdesign"),
                     ("IT", "it"),
                     ("Business", "business"),
-                    ("Medical", "medical")
+                    ("Medical", "medical"),
+                    ("Graphic Design", "graphicdesign"),
                 };
 
             foreach (var (facultyName, emailPrefix) in coordinatorsToSeed)
