@@ -95,6 +95,7 @@ const UploadForm = () => {
 
    return (
       <div className="w-[calc(100vw-208px)] ">
+         {message && <Toast message={message} type="success" />}
          <div className="relative md:w-[500px] lg:w-[600px] h-fit mx-auto bg-white px-8 py-10 rounded-lg shadow-md mt-5">
             <h2 className="text-2xl font-semibold mb-4">
                Contribution Upload (
