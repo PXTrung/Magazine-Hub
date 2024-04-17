@@ -11,6 +11,7 @@ import {
   createContributorAccount,
 } from "../../redux/slices/authSlice";
 import { ICreateContributor } from "../../types/user.type";
+import Toast from "../../components/Toast";
 
 const registerSchema = Yup.object().shape({
   firstName: Yup.string().required("Enter your first name"),
@@ -20,7 +21,7 @@ const registerSchema = Yup.object().shape({
 
 const CreateContributor = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { message } = useSelector((state: RootState) => state.auth);
+  const { message, isError } = useSelector((state: RootState) => state.auth);
 
   const {
     register,
@@ -46,16 +47,21 @@ const CreateContributor = () => {
   // Dispatch clearMessage action after 3 seconds
   setTimeout(() => {
     dispatch(clearMessage());
-  }, 3000);
+  }, 4000);
 
   return (
     <div className="w-[calc(100vw-208px)] ">
+      {message && isError ? (
+        <Toast message={message} type="danger" />
+      ) : (
+        message && <Toast message={message} type="success" />
+      )}
+
       <div className="w-full px-2 md:px-5 lg:px-5 xl:px-10 py-5 overflow-hidden flex justify-center items-start">
         <div className=" bg-white/70 mt-5 p-8 rounded shadow-md  w-[600px] z-20">
           <h1 className="text-2xl font-semibold mb-6">
             Create Contributor Account
           </h1>
-          {message && <span className="text-green-600">{message}</span>}
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-row justify-between items-start">
               <Input

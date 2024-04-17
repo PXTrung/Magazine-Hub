@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { PATHS } from "../../../constants/path";
 import { Navigate } from "react-router-dom";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { changePassword } from "../../../redux/slices/authSlice";
+import { changePassword, clearMessage } from "../../../redux/slices/authSlice";
 import { IChangePassword } from "../../../types/user.type";
 import Input from "../../../components/CustomInput";
 import { useDispatch, useSelector } from "react-redux";
@@ -54,6 +54,11 @@ const ChangePassword = () => {
       console.log(error.message);
     }
   };
+
+  // Dispatch clearMessage action after 3 seconds
+  setTimeout(() => {
+    dispatch(clearMessage());
+  }, 3000);
 
   return (
     <>

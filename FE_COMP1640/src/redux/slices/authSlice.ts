@@ -166,6 +166,7 @@ const authSlice = createSlice({
       });
       builder.addCase(createContributorAccount.pending, (state) => {
          state.isLoading = true;
+         state.isError = false;
       });
       builder.addCase(createContributorAccount.fulfilled, (state, action) => {
          state.isLoading = false;
@@ -180,6 +181,7 @@ const authSlice = createSlice({
       });
       builder.addCase(createCoordinatorAccount.pending, (state) => {
          state.isLoading = true;
+         state.isError = false;
          state.message = "";
       });
       builder.addCase(createCoordinatorAccount.fulfilled, (state, action) => {
@@ -213,6 +215,7 @@ const authSlice = createSlice({
       });
       builder.addCase(createAllAccount.pending, (state) => {
          state.isLoading = true;
+         state.isError = false;
          state.message = "";
       });
       builder.addCase(createAllAccount.fulfilled, (state, action) => {
@@ -221,6 +224,7 @@ const authSlice = createSlice({
       });
       builder.addCase(createAllAccount.rejected, (state, action) => {
          state.isLoading = false;
+         state.isError = true;
          state.message = (action.payload as string) || "An error occurred during create user";
       });
       builder.addCase(SendResetPasswordOTP.pending, (state) => {

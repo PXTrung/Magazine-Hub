@@ -212,7 +212,11 @@ const initialState: ContributionState = {
 const contributionSlice = createSlice({
    name: "contribution",
    initialState,
-   reducers: {},
+   reducers: {
+      clearContributionMessage: (state) => {
+         state.message = "";
+      }
+   },
    extraReducers: (builder) => {
       builder
          .addCase(contribute.pending, (state) => {
@@ -245,6 +249,8 @@ const contributionSlice = createSlice({
       builder
          .addCase(publish.pending, (state) => {
             state.isLoading = true;
+            state.message = "";
+            state.isError = false;
          })
          .addCase(publish.fulfilled, (state, action) => {
             state.isLoading = false;
@@ -259,6 +265,8 @@ const contributionSlice = createSlice({
       builder
          .addCase(approve.pending, (state) => {
             state.isLoading = true;
+            state.message = "";
+            state.isError = false;
          })
          .addCase(approve.fulfilled, (state, action) => {
             state.isLoading = false;
@@ -293,7 +301,6 @@ const contributionSlice = createSlice({
          })
          .addCase(getContributionById.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.message = "";
             state.detail = action.payload;
          })
          .addCase(getContributionById.rejected, (state, action) => {
@@ -354,4 +361,5 @@ const contributionSlice = createSlice({
    },
 });
 
+export const { clearContributionMessage } = contributionSlice.actions;
 export default contributionSlice.reducer;

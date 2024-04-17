@@ -4,7 +4,7 @@ import Input from "../../../components/CustomInput";
 import * as Yup from "yup";
 import authUtils from "../../../utils/auth";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { resetPassword } from "../../../redux/slices/authSlice";
+import { clearMessage, resetPassword } from "../../../redux/slices/authSlice";
 import { IResetPassword } from "../../../types/user.type";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
@@ -55,6 +55,11 @@ const ResetPassword = () => {
     }
   };
 
+  // Dispatch clearMessage action after 3 seconds
+  setTimeout(() => {
+    dispatch(clearMessage());
+  }, 3000);
+
   return (
     <>
       {!isResetPassword ? (
@@ -89,7 +94,7 @@ const ResetPassword = () => {
               id="otp"
               label="OTP"
               type="text"
-              placeholder="Enter your password"
+              placeholder="Enter your OTP"
             />
 
             <Input

@@ -9,6 +9,7 @@ import { changeRole, clearMessage } from "../../redux/slices/authSlice";
 import { IChangeRole } from "../../types/user.type";
 import clsx from "clsx";
 import { useParams } from "react-router-dom";
+import Toast from "../../components/Toast";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -17,7 +18,7 @@ const validationSchema = Yup.object().shape({
 const ChangeRole = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { role } = useSelector((state: RootState) => state.role);
-  const { message } = useSelector((state: RootState) => state.auth);
+  const { message, isError } = useSelector((state: RootState) => state.auth);
   const { email } = useParams<{ email: string }>() || "";
 
   const {
@@ -50,9 +51,13 @@ const ChangeRole = () => {
 
   return (
     <div className="w-[calc(100vw-208px)] ">
+      {isError && message ? (
+        <Toast message={message} type="danger" />
+      ) : (
+        message && <Toast message={message} type="success" />
+      )}
       <div className="w-full px-2 md:px-5 lg:px-5 xl:px-10 py-5 overflow-hidden flex justify-center items-start">
         <div className=" bg-white/70 mt-5 p-8 rounded shadow-md  w-[600px] z-20">
-          {message && <span className="text-green-600">{message}</span>}
           <h1 className="text-2xl font-semibold mb-6">
             Create Contributor Account
           </h1>
