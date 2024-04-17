@@ -1,11 +1,12 @@
 ﻿using Application.Common.Interfaces;
+using Application.Features.Dashboards.AdminDashboardService;
 using Application.Features.Dashboards.AdminDashboardService.DTO;
 using Application.Features.Dashboards.CoordinatorDashboardService.DTO;
 using Domain.Enums;
 using ErrorOr;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Features.Dashboards.AdminDashboardService
+namespace Application.Features.Dashboards.ManagerDashboardService
 {
     public class ManagerDashboardService : IManagerDashboardService
     {
@@ -77,7 +78,7 @@ namespace Application.Features.Dashboards.AdminDashboardService
                 .Include(c => c.Feedbacks)
                 .CountAsync(c => c.PeriodId == periodId && c.Feedbacks.Any());
 
-            var feedbackPercentage = (double)contributionsWithFeedback / totalContributions * 100;
+            var feedbackPercentage = Math.Round((double)contributionsWithFeedback / totalContributions * 100, 2);
 
             return feedbackPercentage;
         }

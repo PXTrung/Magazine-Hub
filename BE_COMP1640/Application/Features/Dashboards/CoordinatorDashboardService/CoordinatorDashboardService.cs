@@ -49,20 +49,34 @@ namespace Application.Features.Dashboards.CoordinatorDashboardService
 
         private async Task<Dictionary<string, double>> PercentageOfContributionByStatus(Guid facultyId, Guid periodId)
         {
+            // Get the total number of contributions for the specified faculty and period
             var totalContributions = await _context.Contributions
                 .CountAsync(c => c.CreatedBy.FacultyId == facultyId && c.PeriodId == periodId);
 
+            // Group contributions by status and calculate the percentage for each status
             var contributionsByStatus = await _context.Contributions
                 .Where(c => c.CreatedBy.FacultyId == facultyId && c.PeriodId == periodId)
                 .GroupBy(c => c.Status)
-                .Select(g => new
+                .Select(g => new ContributionStatusPercentage
                 {
-                    Status = g.Key,
+                    Status = g.Key.ToString(),
                     Percentage = (double)g.Count() / totalContributions * 100
                 })
-                .ToDictionaryAsync(g => g.Status.ToString(), g => g.Percentage);
+                .ToListAsync();
 
-            return contributionsByStatus;
+            // Calculate the total percentage of all statuses
+            var totalPercentage = contributionsByStatus.Sum(item => item.Percentage);
+
+            // Round the total percentage to two decimal places
+            totalPercentage = Math.Round(totalPercentage, 2);
+
+            // Adjust the percentage of each status so that the total percentage is 100%
+            contributionsByStatus.ForEach(item => item.Percentage = item.Percentage / totalPercentage * 100);
+
+            // Create a dictionary from the adjusted list
+            var adjustedPercentages = contributionsByStatus.ToDictionary(item => item.Status.ToString(), item => item.Percentage);
+
+            return adjustedPercentages;
         }
 
         private async Task<string> TopContributorFullName(Guid facultyId, Guid periodId)
@@ -106,7 +120,7 @@ namespace Application.Features.Dashboards.CoordinatorDashboardService
                 .Where(c => c.CreatedBy.FacultyId == facultyId && c.PeriodId == periodId && c.Feedbacks.Any())
                 .CountAsync();
 
-            double feedbackPercentage = totalContributions > 0 ? (double)contributionsWithFeedback / totalContributions * 100 : 0;
+            double feedbackPercentage = totalContributions > 0 ? Math.Round((double)contributionsWithFeedback / totalContributions * 100, 2) : 0;
 
             return feedbackPercentage;
         }
