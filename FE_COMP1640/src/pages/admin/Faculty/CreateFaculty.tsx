@@ -118,6 +118,7 @@ const CreateFaculty = () => {
               <button
                 type="button"
                 className="w-full py-5 px-8 text-gray-600 text-sm rounded-md bg-white flex flex-col items-start shadow hover:shadow-md transition-all duration-200 "
+                key={p.id}
               >
                 <div>
                   <span className="font-medium mr-2">Faculty:</span>

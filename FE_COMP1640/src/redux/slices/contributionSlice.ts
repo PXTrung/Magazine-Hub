@@ -221,6 +221,7 @@ const contributionSlice = createSlice({
       builder
          .addCase(contribute.pending, (state) => {
             state.isLoading = true;
+      
          })
          .addCase(contribute.fulfilled, (state, action) => {
             state.isLoading = false;
