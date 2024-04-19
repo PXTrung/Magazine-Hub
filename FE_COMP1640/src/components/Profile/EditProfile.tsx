@@ -11,8 +11,16 @@ import { Link } from "react-router-dom";
 import { PATHS } from "../../constants/path";
 
 const schema = yup.object().shape({
-  firstName: yup.string().required("First name is required"),
-  lastName: yup.string().required("Last name is required"),
+  firstName: yup
+    .string()
+    .min(2, "First name must be at least 2 characters")
+    .max(20, "First name must not exceed 20 characters")
+    .required("First name is required"),
+  lastName: yup
+    .string()
+    .min(2, "Last name must be at least 2 characters")
+    .max(20, "Last name must not exceed 20 characters")
+    .required("Last name is required"),
   avatarFile: yup.mixed<FileList>(),
 });
 
@@ -25,6 +33,7 @@ const EditProfile = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FieldValues>({
     resolver: yupResolver<FieldValues>(schema),
@@ -42,6 +51,7 @@ const EditProfile = () => {
     console.log(formData);
 
     dispatch(updateUserProfile(formData));
+    reset();
   };
 
   return (

@@ -7,12 +7,14 @@ type IConfirmModalProps = {
   handleClose: () => void;
   isOpen: Boolean;
   handleAgree: () => void;
+  action: "contribute" | "feedback";
 };
 
 const ConfirmModal = ({
   message,
   handleClose,
   isOpen,
+  action,
   handleAgree,
 }: IConfirmModalProps) => {
   return (
@@ -62,18 +64,31 @@ const ConfirmModal = ({
               <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                 {message}
               </h3>
-              <div className="mb-6">
-                <span>
-                  Before you submit your contribution, you must have agree with
-                  our
-                </span>
-                <Link
-                  to={`/${PATHS.TERM_OF_SERVICE.IDENTITY}/${PATHS.TERM_OF_SERVICE.DETAIL}`}
-                  target="_blank"
-                >
-                  <a className="text-cyan-500"> Terms Of Service</a>
-                </Link>
-              </div>
+
+              {action === "contribute" && (
+                <div className="mb-6">
+                  <span>
+                    Before you submit your contribution, you must have agree
+                    with our
+                  </span>
+                  <Link
+                    to={`/${PATHS.TERM_OF_SERVICE.IDENTITY}/${PATHS.TERM_OF_SERVICE.DETAIL}`}
+                    target="_blank"
+                  >
+                    <a className="text-cyan-500"> Terms Of Service</a>
+                  </Link>
+                </div>
+              )}
+
+              {action === "feedback" && (
+                <div className="mb-6">
+                  <span>
+                    Your feedback must not contain insulting or discriminatory
+                    words about anyone's personality, dignity or background
+                  </span>
+                </div>
+              )}
+
               <button
                 data-modal-hide="popup-modal"
                 type="button"

@@ -42,7 +42,7 @@ const EditFaculty = () => {
           {isError && message && <Toast message={message} type="danger" />}
           {isSuccess && message && <Toast message={message} type="success" />}
           <div className="py-10">
-            <p className="text-2xl font-bold">Update Deadline</p>
+            <p className="text-2xl font-bold">Update Faculty</p>
           </div>
           <div className="text-left w-full">
             <form

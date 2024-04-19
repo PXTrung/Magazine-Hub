@@ -22,7 +22,7 @@ const Row = ({ user, label }: IRowProps) => {
       <span className="col-span-3 truncate">{user?.fullName}</span>
       <span className="col-span-2 truncate">{user?.email}</span>
       <img
-        src={user?.avatarUrl}
+        src={user?.avatarUrl || avatar}
         alt="avatar"
         className="col-span-1 truncate h-8 object-contain"
       />

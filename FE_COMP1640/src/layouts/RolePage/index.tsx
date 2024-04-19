@@ -55,7 +55,7 @@ const menu: Menu = {
   Coordinator: [
     {
       id: 1,
-      label: "Contribution",
+      label: "Manage Faculty Contributions",
       path: `${PATHS.COORDINATOR.IDENTITY}/${PATHS.CONTRIBUTION.IDENTITY}?page=1`,
       icon: "contribution",
     },
@@ -113,7 +113,7 @@ const menu: Menu = {
     },
     {
       id: 4,
-      label: "Faculty",
+      label: "Manage Faculty",
       icon: "faculty",
       path: `${PATHS.ADMIN.IDENTITY}/${PATHS.ADMIN.FACULTY}`,
     },

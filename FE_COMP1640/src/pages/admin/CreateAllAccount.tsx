@@ -32,6 +32,7 @@ const CreateAllAccount = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FieldValues>({
     resolver: yupResolver<FieldValues>(validationSchema),
@@ -75,6 +76,7 @@ const CreateAllAccount = () => {
 
     try {
       await dispatch(createAllAccount(userInformation as ICreateAllAccount));
+      reset();
     } catch (error: any) {
       console.log(error.message);
     }
@@ -94,9 +96,7 @@ const CreateAllAccount = () => {
       )}
       <div className="w-full px-2 md:px-5 lg:px-5 xl:px-10 py-5 overflow-hidden flex justify-center items-start">
         <div className=" bg-white/70 mt-5 p-8 rounded shadow-md  w-[600px] z-20">
-          <h1 className="text-2xl font-semibold mb-6">
-            Create Contributor Account
-          </h1>
+          <h1 className="text-2xl font-semibold mb-6">Create Account</h1>
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-row justify-between items-start">

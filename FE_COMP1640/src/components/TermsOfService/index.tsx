@@ -9,12 +9,12 @@ const TermsOfService = () => {
     <div className="w-full px-4 pt-16 ">
       <div className="mx-auto w-full max-w-md  bg-white p-2 px-2">
         <div className="text-center text-xl font-bold">
-          Welcome to the platform for submitting contributions to Greenwich
+          Welcome to the platform for submitting contributions in Greenwich
           university.
         </div>
         <div className="text-center text-lg px-3 mt-2">
           Before you proceed, please carefully review the following terms of
-          service governing your submission.
+          service prior to your submission.
         </div>
       </div>
       <div className="mx-auto w-full max-w-md  bg-white p-2 rounded-2xl">

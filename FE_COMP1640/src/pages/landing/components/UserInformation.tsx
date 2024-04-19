@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IUserInformation } from "../../../types/user.type";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
@@ -7,6 +7,8 @@ import Loading from "../../../components/loading/Loading";
 import useRedux from "../../../hooks/useRedux";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { PATHS } from "../../../constants/path";
+import { RootState } from "../../../redux/store";
+import { getUserProfile } from "../../../redux/slices/userSlice";
 
 export interface UserInformationProps {
   data: IUserInformation;
@@ -23,7 +25,7 @@ export const protectedMenuItems = [
 ];
 
 const UserInformation = ({ data }: UserInformationProps) => {
-  const { dispatch } = useRedux();
+  const { dispatch, appSelector } = useRedux();
   const [isLoading, setIsLoading] = useState(false);
   const matchingMenuItem = protectedMenuItems.find(
     (item) => item.path === `${data?.role.toLowerCase()}`
@@ -34,13 +36,19 @@ const UserInformation = ({ data }: UserInformationProps) => {
     dispatch(destroy());
   };
 
+  const { userProfile } = appSelector((state: RootState) => state.user);
+
+  useEffect(() => {
+    dispatch(getUserProfile());
+  }, [dispatch]);
+
   return (
     <>
       {isLoading && <Loading />}
       <div className="w-full flex flex-row justify-center items-center z-30">
         <div className="w-full flex flex-col justify-end items-end mr-3">
           <h3 className="text-gray-700 font-medium text-base truncate">
-            {data.firstName + " " + data.lastName}
+            {userProfile?.fullName}
           </h3>
           <span className="text-gray-500 text-sm">{data.role}</span>
         </div>
