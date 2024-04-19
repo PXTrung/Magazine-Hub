@@ -79,7 +79,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
 
         CreateMap<CreateCoordinatorAccountCommand, ApplicationUser>()
-            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
+            .ForMember(dest => dest.FacultyId, opt => opt.MapFrom(src => src.FacultyId));
 
         CreateMap<UpdateProfileCommand, ApplicationUser>()
             .ForMember(dest => dest.Avatar, opt => opt.Ignore())
