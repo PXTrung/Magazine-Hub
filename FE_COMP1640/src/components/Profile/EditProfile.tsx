@@ -2,7 +2,10 @@ import React from "react";
 import * as yup from "yup";
 import Toast from "../Toast";
 import Input from "../CustomInput";
-import { updateUserProfile } from "../../redux/slices/userSlice";
+import {
+  clearProfileMessage,
+  updateUserProfile,
+} from "../../redux/slices/userSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { RootState } from "../../redux/store";
@@ -53,6 +56,11 @@ const EditProfile = () => {
     dispatch(updateUserProfile(formData));
     reset();
   };
+
+  // Dispatch clearMessage action after 3 seconds
+  setTimeout(() => {
+    dispatch(clearProfileMessage());
+  }, 4000);
 
   return (
     <div className="w-full mt-32">

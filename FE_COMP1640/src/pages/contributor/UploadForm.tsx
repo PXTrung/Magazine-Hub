@@ -99,7 +99,7 @@ const UploadForm = () => {
     }
   }, [isConfirm, contributionForm, dispatch]);
 
-  // Dispatch clearMessage action after 3 seconds
+  // Dispatch clearMessage action after 4 seconds
   setTimeout(() => {
     dispatch(clearContributionMessage());
   }, 4000);

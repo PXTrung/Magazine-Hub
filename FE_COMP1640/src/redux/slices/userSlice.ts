@@ -63,6 +63,7 @@ interface UserState {
    isError: boolean;
    message: string;
    list: IUserData[];
+   isProfileUpdate: boolean;
    userProfile: IProfile | null;
    currentPage: number;
    totalPage: number;
@@ -73,6 +74,7 @@ const initialState: UserState = {
    isError: false,
    message: "",
    list: [],
+   isProfileUpdate: false,
    userProfile: null,
    currentPage: 1,
    totalPage: 1,
@@ -81,7 +83,11 @@ const initialState: UserState = {
 const userSlice = createSlice({
    name: "user",
    initialState,
-   reducers: {},
+   reducers: {
+      clearProfileMessage: (state) => {
+         state.message = "";
+      }
+   },
    extraReducers: (builder) => {
       builder
          .addCase(getUserList.pending, (state) => {
@@ -106,7 +112,6 @@ const userSlice = createSlice({
          })
          .addCase(getUserProfile.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.message = "";
             state.userProfile = action.payload;
          })
          .addCase(getUserProfile.rejected, (state, action) => {
@@ -117,9 +122,11 @@ const userSlice = createSlice({
          })
          .addCase(updateUserProfile.pending, (state) => {
             state.isLoading = true;
+            state.isProfileUpdate = false;
          })
          .addCase(updateUserProfile.fulfilled, (state, action) => {
             state.isLoading = false;
+            state.isProfileUpdate = true;
             state.message = action.payload.title;
          })
          .addCase(updateUserProfile.rejected, (state, action) => {
@@ -130,4 +137,5 @@ const userSlice = createSlice({
    },
 });
 
+export const { clearProfileMessage } = userSlice.actions;
 export default userSlice.reducer;
