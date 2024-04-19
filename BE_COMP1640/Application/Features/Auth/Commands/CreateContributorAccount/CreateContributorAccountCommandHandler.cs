@@ -10,7 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Auth.Commands.CreateContributorAccount
 {
-    public class CreateContributorAccountCommandHandler : IRequestHandler<CreateContributorAccountCommand, ErrorOr<SuccessResult>>
+    public class
+        CreateContributorAccountCommandHandler : IRequestHandler<CreateContributorAccountCommand, ErrorOr<SuccessResult>>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IApplicationDbContext _context;
