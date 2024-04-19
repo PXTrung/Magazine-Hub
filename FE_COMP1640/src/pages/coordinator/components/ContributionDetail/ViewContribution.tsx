@@ -87,7 +87,7 @@ const ViewContribution = () => {
                         {detail?.title}
                       </h1>
                       <div className="h-5 w-20">
-                        <Status status={detail?.status} />
+                        <Status status={detail?.status} key={detail?.status} />
                       </div>
                     </div>
                   </div>
@@ -105,11 +105,7 @@ const ViewContribution = () => {
                     </div>
                     <div className="col-span-2">
                       <p className="w-full mb-4 xl:mb-5 text-left text-gray-700 font-normal">
-                        {detail?.description} Lorem ipsum dolor sit amet
-                        consectetur adipisicing elit. Dolorum placeat molestias
-                        fuga similique repellat maiores voluptatem nesciunt,
-                        fugit doloremque veniam perferendis saepe. Quaerat,
-                        quasi suscipit quisquam itaque perferendis adipisci a!
+                        {detail?.description}
                       </p>
                       <div className="w-full mt-5 py-5 flex justify-between items-center md:justify-start text-gray-700 border-t">
                         <span className="md:mr-8">Document:</span>

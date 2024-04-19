@@ -41,7 +41,7 @@ export const getFeedbackByContributionId = createAsyncThunk(
 interface FeedbackState {
    isLoading: boolean;
    isError: boolean;
-   message: string;
+   message: string ;
    status: string;
    feedback: IFeedback[];
 }
@@ -57,14 +57,20 @@ const initialState: FeedbackState = {
 const feedbackSlide = createSlice({
    name: "feedback",
    initialState,
-   reducers: {},
+   reducers: {
+      clearFeedbackMessage: (state) => {
+         state.message = "";
+      },
+   },
    extraReducers: (builder) => {
       builder.addCase(postFeedback.pending, (state) => {
          state.isLoading = true;
+         state.isError = false;
+         state.message = "";
       });
       builder.addCase(postFeedback.fulfilled, (state, action) => {
          state.isLoading = false;
-         state.message = "";
+         state.message = action.payload.title;
       });
       builder.addCase(postFeedback.rejected, (state, action) => {
          state.isLoading = false;
@@ -76,7 +82,6 @@ const feedbackSlide = createSlice({
       });
       builder.addCase(getFeedback.fulfilled, (state, action) => {
          state.isLoading = false;
-         state.message = "";
          state.feedback = action.payload.items;
       });
       builder.addCase(getFeedback.rejected, (state, action) => {
@@ -91,7 +96,6 @@ const feedbackSlide = createSlice({
          getFeedbackByContributionId.fulfilled,
          (state, action) => {
             state.isLoading = false;
-            state.message = "";
             state.feedback = action.payload?.items;
          },
       );
@@ -103,4 +107,5 @@ const feedbackSlide = createSlice({
    },
 });
 
+export const { clearFeedbackMessage } = feedbackSlide.actions;
 export default feedbackSlide.reducer;

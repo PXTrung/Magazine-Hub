@@ -38,8 +38,8 @@ const ViewProfile = () => {
             </span>
           </div>
 
-          <div className="w-1/2">
-            <span className="mb-1 text-xl font-medium text-gray-500 dark:text-white pl-10">
+          <div className="w-1/2 pl-10">
+            <span className="mb-1 text-xl font-medium text-gray-500 dark:text-white ">
               {userProfile?.fullName}
             </span>
           </div>
@@ -52,8 +52,8 @@ const ViewProfile = () => {
             </span>
           </div>
 
-          <div className="w-1/2">
-            <span className="text-xl text-gray-500 dark:text-gray-400 pl-10">
+          <div className="w-1/2 pl-10">
+            <span className="text-xl text-gray-500 dark:text-gray-400 ">
               {userProfile?.email}
             </span>
           </div>
@@ -67,8 +67,8 @@ const ViewProfile = () => {
               </span>
             </div>
 
-            <div className="w-1/2">
-              <span className="text-xl text-gray-500 dark:text-gray-400 pl-10">
+            <div className="w-1/2 pl-10">
+              <span className="text-xl text-gray-500 dark:text-gray-400 ">
                 {userProfile?.facultyName}
               </span>
             </div>
@@ -82,8 +82,8 @@ const ViewProfile = () => {
             </span>
           </div>
 
-          <div className="w-1/2">
-            <span className="text-xl text-gray-500 dark:text-gray-400 pl-10">
+          <div className="w-1/2 pl-10">
+            <span className="text-xl text-gray-500 dark:text-gray-400 ">
               {userProfile?.role}
             </span>
           </div>

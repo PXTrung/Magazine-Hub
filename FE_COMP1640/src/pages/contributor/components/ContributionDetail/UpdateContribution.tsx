@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useRedux from "../../../../hooks/useRedux";
 import Input from "../../../../components/CustomInput";
@@ -18,6 +18,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Toast from "../../../../components/Toast";
 import { clearMessage } from "../../../../redux/slices/authSlice";
+import ConfirmModal from "../../../../components/Modal/ConfirmModal";
 
 const schema = yup.object().shape({
   Title: yup.string(),
@@ -46,12 +47,30 @@ const UpdateContribution = () => {
   const { isError, message, isLoading, detail } = appSelector(
     (state) => state.contribution
   );
+  const [isOpenModal, setIsOpenModal] = useState<Boolean>(false);
+  const [isConfirm, setIsConfirm] = useState<Boolean>(false);
+  const [contributionForm, setContributionForm] = useState<FormData>();
 
   const allowedStatuses = ["Approved", "Rejected", "Published"];
   const thisPeriod = period.find((p) => p.id === detail?.periodId);
 
+  const closeModal = useCallback(() => {
+    setIsOpenModal(false);
+  }, []);
+
+  const openModal = useCallback(() => {
+    setIsOpenModal(true);
+    setIsConfirm(false);
+  }, []);
+
+  const handleAgree = () => {
+    setIsConfirm(true);
+    closeModal();
+  };
+
   const {
     register,
+    unregister,
     handleSubmit,
     formState: { errors },
   } = useForm<FieldValues>({
@@ -60,6 +79,8 @@ const UpdateContribution = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (id) {
+      openModal();
+
       const formData = new FormData();
 
       if (shouldAppendToFormData(formData, data, detail, "Title")) {
@@ -79,8 +100,7 @@ const UpdateContribution = () => {
         console.log(key, value);
       });
 
-      await dispatch(updateContribution({ data: formData, id: id }));
-      dispatch(getContributionById(id));
+      setContributionForm(formData);
     }
   };
 
@@ -96,21 +116,36 @@ const UpdateContribution = () => {
   };
 
   useEffect(() => {
+    unregister();
+  }, []);
+
+  useEffect(() => {
+    console.log(id);
     if (id) {
-      dispatch(getContributionById(id));
       dispatch(getPeriod());
       dispatch(getFeedbackByContributionId(id));
+      dispatch(getContributionById(id));
     }
   }, [dispatch, id]);
 
-  // Dispatch clearMessage action after 3 seconds
+  console.log(detail, ` contribution-title-${detail?.title}-${detail?.id}`);
+
+  useEffect(() => {
+    if (isConfirm && contributionForm) {
+      if (id) {
+        dispatch(updateContribution({ data: contributionForm, id: id }));
+        dispatch(getContributionById(id));
+      }
+    }
+  }, [isConfirm, contributionForm, dispatch]);
+
+  // Dispatch clearMessage action after 4 seconds
   setTimeout(() => {
     dispatch(clearContributionMessage());
   }, 4000);
 
   return (
     <div className="w-[calc(100vw-208px)] ">
-      {" "}
       {isError && message && <Toast message={message} type="danger" />}
       {message && <Toast message={message} type="success" />}
       <div className="w-full px-2 md:px-5 lg:px-5 xl:px-10 py-5 overflow-hidden">
@@ -125,7 +160,15 @@ const UpdateContribution = () => {
               </div>
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
+              <ConfirmModal
+                message="Are you sure you want to update?"
+                handleAgree={handleAgree}
+                handleClose={closeModal}
+                isOpen={isOpenModal}
+                action="contribute"
+              />
               <Input
+                key={`contribution-title-${detail?.id}`}
                 required
                 register={register}
                 id="Title"
@@ -135,6 +178,7 @@ const UpdateContribution = () => {
                 disabled={!disableUpdate()}
               ></Input>
               <Input
+                key={`contribution-description-${detail?.id}`}
                 required
                 register={register}
                 id="Description"
@@ -144,6 +188,7 @@ const UpdateContribution = () => {
                 disabled={!disableUpdate()}
               ></Input>
               <Input
+                key={`contribution-image-${detail?.id}`}
                 register={register}
                 errors={errors}
                 id="ImageFile"
@@ -155,6 +200,7 @@ const UpdateContribution = () => {
                 disabled={!disableUpdate()}
               ></Input>
               <Input
+                key={`contribution-document-${detail?.id}`}
                 register={register}
                 errors={errors}
                 required

@@ -26,6 +26,7 @@ const CreateContributor = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FieldValues>({
     resolver: yupResolver<FieldValues>(registerSchema),
@@ -38,6 +39,7 @@ const CreateContributor = () => {
       await dispatch(
         createContributorAccount(userInformation as ICreateContributor)
       );
+      reset();
       console.log(userInformation);
     } catch (error: any) {
       console.log(error.message);

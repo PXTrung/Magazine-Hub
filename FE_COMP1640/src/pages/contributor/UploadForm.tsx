@@ -62,6 +62,7 @@ const UploadForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FieldValues>({
     resolver: yupResolver<FieldValues>(schema),
@@ -94,6 +95,7 @@ const UploadForm = () => {
   useEffect(() => {
     if (isConfirm && contributionForm) {
       dispatch(contribute(contributionForm));
+      reset();
     }
   }, [isConfirm, contributionForm, dispatch]);
 
@@ -121,6 +123,7 @@ const UploadForm = () => {
             handleAgree={handleAgree}
             handleClose={closeModal}
             isOpen={isOpenModal}
+            action="contribute"
           />
           <Input
             register={register}

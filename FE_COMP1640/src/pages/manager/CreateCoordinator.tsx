@@ -27,6 +27,7 @@ const CreateCoordinator = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FieldValues>({
     resolver: yupResolver<FieldValues>(registerSchema),
@@ -42,6 +43,7 @@ const CreateCoordinator = () => {
       await dispatch(
         createCoordinatorAccount(userInformation as ICreateCoordinator)
       );
+      reset();
       console.log(userInformation);
     } catch (error: any) {
       console.log(error.message);

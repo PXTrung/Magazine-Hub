@@ -25,6 +25,7 @@ export default {
 
       return axios.post(ENDPOINTS.CREATE_CONTRIBUTOR_ACCOUNT, data, {
          headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${userToken}`,
          },
       });
@@ -34,6 +35,7 @@ export default {
 
       return axios.post(ENDPOINTS.CREATE_COORDINATOR_ACCOUNT, data, {
          headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${userToken}`,
          },
       });
