@@ -1,7 +1,7 @@
 /* eslint-disable react/style-prop-object */
 
 import { useParams } from "react-router-dom";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useRedux from "../../../../hooks/useRedux";
 import { formatDate } from "../../../../utils/functions";
 import Loading from "../../../../components/loading/Loading";
@@ -54,8 +54,6 @@ const ViewContribution = () => {
   useEffect(() => {
     if (id) dispatch(getContributionById(id));
   }, [id, dispatch]);
-
-  console.log(detail);
 
   return (
     <>
