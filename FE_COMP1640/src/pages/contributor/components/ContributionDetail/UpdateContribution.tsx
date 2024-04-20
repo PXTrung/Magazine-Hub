@@ -54,6 +54,8 @@ const UpdateContribution = () => {
   const allowedStatuses = ["Approved", "Rejected", "Published"];
   const thisPeriod = period.find((p) => p.id === detail?.periodId);
 
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const closeModal = useCallback(() => {
     setIsOpenModal(false);
   }, []);
@@ -134,10 +136,16 @@ const UpdateContribution = () => {
     if (isConfirm && contributionForm) {
       if (id) {
         dispatch(updateContribution({ data: contributionForm, id: id }));
-        dispatch(getContributionById(id));
+        setIsSuccess(true);
       }
     }
   }, [isConfirm, contributionForm, dispatch]);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getContributionById(id));
+    }
+  }, [dispatch, isSuccess]);
 
   // Dispatch clearMessage action after 4 seconds
   setTimeout(() => {
@@ -156,7 +164,9 @@ const UpdateContribution = () => {
                 Update Contribution
               </h2>
               <div className="h-5 w-20">
-                <Status status={detail?.status} />
+                <div className="h-5 w-20">
+                  <Status status={detail?.status} />
+                </div>
               </div>
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -207,7 +217,7 @@ const UpdateContribution = () => {
                 id="DocumentFile"
                 label="Document"
                 type="file"
-                accept=".pdf"
+                accept=".pdf, .docx"
                 labelForLink="Current document"
                 link={detail?.documentUrl}
                 disabled={!disableUpdate()}

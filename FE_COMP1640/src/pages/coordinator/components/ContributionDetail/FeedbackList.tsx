@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import Feedback from "../../../../components/Feedback";
 import useRedux from "../../../../hooks/useRedux";
 import { useParams } from "react-router-dom";
@@ -29,6 +35,7 @@ const FeedbackList = (contribution: IFeedbackListProps) => {
   const [overTime, setOverTime] = useState<Boolean>(false);
   const [isOpenModal, setIsOpenModal] = useState<Boolean>(false);
   const [isConfirm, setIsConfirm] = useState<Boolean>(false);
+  const [isFeedbackSuccess, setIsFeedbackSuccess] = useState(false);
 
   const disableUpdate = () => {
     console.log(contribution.status);
@@ -76,9 +83,14 @@ const FeedbackList = (contribution: IFeedbackListProps) => {
   useEffect(() => {
     if (id && isConfirm) {
       dispatch(postFeedback({ content, contributionId: id }));
-      dispatch(getFeedbackByContributionId(id));
+
       dispatch(getContributionById(id));
       clearContent();
+      setIsFeedbackSuccess(true);
+      // Dispatch clearMessage action after 3 seconds
+      setTimeout(() => {
+        dispatch(clearFeedbackMessage());
+      }, 3000);
     }
   }, [dispatch, isConfirm]);
 
@@ -90,12 +102,13 @@ const FeedbackList = (contribution: IFeedbackListProps) => {
     disableUpdate();
   }, [dispatch, id]);
 
-  console.log(overTime);
+  useEffect(() => {
+    if (id) {
+      dispatch(getFeedbackByContributionId(id));
+    }
+  }, [dispatch, isFeedbackSuccess]);
 
-  // Dispatch clearMessage action after 3 seconds
-  setTimeout(() => {
-    dispatch(clearFeedbackMessage());
-  }, 3000);
+  console.log(overTime);
 
   return (
     <div className="max-h-[550px] w-full">
