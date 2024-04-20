@@ -41,16 +41,16 @@ public static class InfrastructureDependencyInjection
         {
             options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
 
-            options.UseSqlServer(configuration.GetConnectionString("SQLServerConnection"))
-                .LogTo(s => Debug.WriteLine(s))
-                .EnableDetailedErrors()
-                .EnableSensitiveDataLogging();
-
-
-            //options.UseSqlite(configuration.GetConnectionString("SQLiteConnection"))
+            //options.UseSqlServer(configuration.GetConnectionString("SQLServerConnection"))
             //    .LogTo(s => Debug.WriteLine(s))
             //    .EnableDetailedErrors()
             //    .EnableSensitiveDataLogging();
+
+
+            options.UseSqlite(configuration.GetConnectionString("SQLiteConnection"))
+                .LogTo(s => Debug.WriteLine(s))
+                .EnableDetailedErrors()
+                .EnableSensitiveDataLogging();
         });
 
         services.AddHangfire(cfg =>
