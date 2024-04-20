@@ -16,7 +16,7 @@ const variants = {
   },
   [`/auth/${PATHS.AUTH.LOGIN}`]: {
     to: `/auth/${PATHS.AUTH.SEND_OTP}`,
-    linkText: "Change Password",
+    linkText: "Reset Password",
     text: "Do you forget password?",
   },
 };
