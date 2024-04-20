@@ -27,11 +27,11 @@ const PATHS = {
       INDENTITY: "dashboard",
    },
    CONTRIBUTION: {
-      IDENTITY: "contribution",
+      IDENTITY: "Contribution",
       DETAIL: `${PARAMETER.ID}`,
       CATEGORY: `category`,
       CREATE: "contribute",
-      FACULTY: "faculty",
+      FACULTY: "Faculty",
    },
    CONTRIBUTOR: {
       IDENTITY: "contributor",

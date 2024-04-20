@@ -8,6 +8,7 @@ import {
    IUpdateContributionParams,
 } from "../../types/contribution.type";
 import { IParamsSlice, generateParams } from "../../types/filter.type";
+import { error } from "console";
 
 export const contribute = createAsyncThunk(
    "contribute",
@@ -352,13 +353,14 @@ const contributionSlice = createSlice({
          })
          .addCase(getZipAll.fulfilled, (state, action) => {
             state.isLoading = false;
+            console.log(action.payload);
             state.message = "";
             state.zip = action.payload;
          })
          .addCase(getZipAll.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
-            state.message =
+            state.message = 
                (action.payload as string) || "An error occurred during login.";
          });
    },
