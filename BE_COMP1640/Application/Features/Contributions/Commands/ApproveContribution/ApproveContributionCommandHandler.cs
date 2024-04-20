@@ -47,7 +47,7 @@ public class ApproveContributionCommandHandler : IRequestHandler<ApproveContribu
 
         BackgroundJob.Enqueue(() => _emailService.SendEmailAsync(contribution.CreatedBy.Email,
             $"Your contribution has been {status}",
-            $"Hi {contributor.FirstName} {contributor.LastName}" +
+            $"Hi <strong>{coordinator.FirstName} {coordinator.LastName}</strong>" +
             $"<p>Your contribution with the title: <strong>{contribution.Title}</strong> has been {statusText} by the your faculty Coordinator with the email: <strong>{coordinator.Email}</strong>"));
 
         //Return the result to the client
