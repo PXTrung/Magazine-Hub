@@ -71,8 +71,8 @@ public class UpdateContributionCommandHandler : IRequestHandler<UpdateContributi
         {
             BackgroundJob.Enqueue(() => _emailService.SendEmailAsync(coordinator.Email,
                 "Contribution has been UPDATED",
-                $"Hi {coordinator.FirstName} {coordinator.LastName}" +
-                $"<p>A contribution belong to your faculty has been <strong>UPDATED<strong/> by <strong>{currentUser.Email}</strong> with the title: <strong>{contributionEntity.Title}</strong>. Please review and give new feedbacks</p>"));
+                $"Hi <strong>{coordinator.FirstName} {coordinator.LastName}</strong>" +
+                $"<p>A contribution belong to your faculty has been <strong>UPDATED</strong> by <strong>{currentUser.Email}</strong> with the title: <strong>{contributionEntity.Title}</strong>. Please review and give new feedbacks</p>"));
         }
 
 

@@ -73,8 +73,8 @@ public class CreateContributionCommandHandler : IRequestHandler<CreateContributi
         {
             BackgroundJob.Enqueue(() => _emailService.SendEmailAsync(coordinator.Email,
                 "New contribution SUBMITTED",
-                $"Hi {coordinator.FirstName} {coordinator.LastName}" +
-                $"<p>A new contribution belong to your faculty has been <strong>SUBMITTED<strong/> by <strong>{currentUser.Email}</strong> with the title: <strong>{contributionEntity.Title}</strong>. Please review and handle the contribution</p>"));
+                $"Hi <strong>{coordinator.FirstName} {coordinator.LastName}</strong>" +
+                $"<p>A new contribution belong to your faculty has been <strong>SUBMITTED</strong> by <strong>{currentUser.Email}</strong> with the title: <strong>{contributionEntity.Title}</strong>. Please review and handle the contribution</p>"));
         }
 
         return new SuccessResult(title: "Submitted contribution successfully!");
