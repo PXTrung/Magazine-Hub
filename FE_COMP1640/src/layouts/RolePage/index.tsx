@@ -148,17 +148,17 @@ const RolePage = () => {
     dispatch(getRole());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (userInfor) {
-      const currentItem = menu[userInfor.role]?.find((item) => {
-        return location.pathname
-          .toLowerCase()
-          .includes(item.label.toLowerCase().replace(/ /g, ""));
-      });
+  // useEffect(() => {
+  //   if (userInfor) {
+  //     const currentItem = menu[userInfor.role]?.find((item) => {
+  //       return location.pathname
+  //         .toLowerCase()
+  //         .includes(item.label.toLowerCase().replace(/ /g, ""));
+  //     });
 
-      setIsActive(currentItem?.id);
-    }
-  }, [location]);
+  //     setIsActive(currentItem?.id);
+  //   }
+  // }, [location]);
 
   return userInfor ? (
     <div className="flex flex-row justify-center items-center bg-slate-100">
