@@ -1,10 +1,12 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import { useState } from "react";
-import { IUserData } from "../../../types/user.type";
+import { IToggleActive, IUserData } from "../../../types/user.type";
 import avatar from "../../../assets/images/Avatar.png";
 import "flowbite";
 import { Link } from "react-router-dom";
 import { PATHS } from "../../../constants/path";
+import useRedux from "../../../hooks/useRedux";
+import { toggleActive } from "../../../redux/slices/userSlice";
 
 interface IRowProps {
   user?: IUserData;
@@ -12,10 +14,17 @@ interface IRowProps {
 }
 
 const Row = ({ user, label }: IRowProps) => {
+  const { appSelector, dispatch } = useRedux();
   const notAllowedToChangeFaculty = ["Admin", "Manager"];
   const isNotAllowedToChangeFaculty = notAllowedToChangeFaculty.includes(
     user?.role as string
   );
+
+  const handleToggle = (e: any) => {
+    if (user?.email) {
+      dispatch(toggleActive({ email: user.email } as IToggleActive));
+    }
+  };
 
   return (
     <div className="grid grid-cols-12 items-center gap-3 py-4 bg-white border-t border-t-slate-200 min-w-[650px]">
@@ -33,10 +42,22 @@ const Row = ({ user, label }: IRowProps) => {
       </div>
       <span className="col-span-1">
         <label className="relative inline-flex cursor-pointer items-center">
-          <input id="switch" type="checkbox" className="peer sr-only" />
+          <input
+            id="switch"
+            type="checkbox"
+            className="peer sr-only"
+            onClick={handleToggle}
+          />
           <label htmlFor="switch" className="hidden"></label>
-          {/* <div className="peer h-7 w-12 rounded-full border-2 bg-slate-200 after:absolute after:left-1 after:top-1 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-cyan-500 peer-checked:after:translate-x-full peer-checked:after:border-white"></div> */}
-          <div className="peer h-7 w-12 rounded-full border-2 after:absolute after:left-1 after:top-1 after:h-5 after:w-5 after:rounded-full after:border after:bg-white after:transition-all after:content-[''] bg-cyan-500 after:translate-x-full after:border-white"></div>
+          {user?.isActive === false && (
+            <div className="peer h-7 w-12 rounded-full border-2 bg-slate-200 after:absolute after:left-1 after:top-1 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-cyan-500 peer-checked:after:translate-x-full  peer-checked:after:border-white"></div>
+          )}
+          {user?.isActive === true && (
+            <div className="peer h-7 w-12 rounded-full border-2 bg-cyan-500 after:absolute after:left-1 after:top-1 after:h-5 after:w-5 after:rounded-full after:border after:translate-x-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-slate-200 peer-checked:after:translate-x-0  peer-checked:after:border-white"></div>
+          )}
+          {/* {user?.isActive == true && (
+            <div className="peer h-7 w-12 rounded-full border-2 after:absolute after:left-1 after:top-1 after:h-5 after:w-5 after:rounded-full after:border after:bg-white after:transition-all after:content-[''] bg-cyan-500 after:translate-x-full after:border-white"></div>
+          )} */}
         </label>
       </span>
 

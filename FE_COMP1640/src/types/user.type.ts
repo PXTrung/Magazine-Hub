@@ -19,6 +19,7 @@ export interface IUserData {
    facultyName: string;
    facultyId: string;
    avatarUrl: string;
+   isActive: boolean;
 }
 
 export interface ICreateContributor{
@@ -77,4 +78,8 @@ export interface IChangeRole{
 export interface IChangeFaculty{
    email: string;
    facultyId: string;
+}
+
+export interface IToggleActive{
+   email: string;
 }

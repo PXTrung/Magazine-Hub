@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
-import { IProfile, IUserData } from "../../types/user.type";
+import { IProfile, IToggleActive, IUserData } from "../../types/user.type";
 import { IParamsSlice, generateParams } from "../../types/filter.type";
 
 export const getUserList = createAsyncThunk(
@@ -55,6 +55,15 @@ export const updateUserProfile = createAsyncThunk("updateUserProfile", async(dat
       return res.data;
    } catch (error: any) {
       rejectWithValue(error.respone.data.title);
+   }
+});
+
+export const toggleActive = createAsyncThunk("toggleActive", async(data: IToggleActive, {rejectWithValue}) => {
+   try {
+      const res = await api.user.toggleActive(data);
+      return res.data;
+   } catch (error: any) {
+      rejectWithValue(error.response.data.title);
    }
 })
 
@@ -133,6 +142,19 @@ const userSlice = createSlice({
             state.isLoading = false;
             state.isError = true;
             state.message = (action.payload as string) || "An error occurred during update profile.";
+         })
+         .addCase(toggleActive.pending, (state) => {
+            state.isLoading = true;
+            state.message = "";
+         })
+         .addCase(toggleActive.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.message = "";
+         })
+         .addCase(toggleActive.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message = (action.payload as string) || "An error occurred during active or deactive user.";
          })
    },
 });

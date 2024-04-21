@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { AppDispatch, RootState } from "../../redux/store";
@@ -28,11 +28,13 @@ const CreateAllAccount = () => {
   const { message, isError } = useSelector((state: RootState) => state.auth);
   const roleRef = useRef<HTMLSelectElement>(null);
   const facultyRef = useRef<HTMLSelectElement>(null);
+  const [isDisplay, setIsDisplay] = useState(true);
 
   const {
     register,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors },
   } = useForm<FieldValues>({
     resolver: yupResolver<FieldValues>(validationSchema),
@@ -57,11 +59,13 @@ const CreateAllAccount = () => {
     if (selectedRoleId === managerRoleId || selectedRoleId === adminRoleId) {
       const facultyInput = facultyRef.current;
       if (facultyInput) {
+        setIsDisplay(true);
         facultyInput.setAttribute("disabled", "true");
         facultyInput.value = "";
       }
     } else {
       facultyRef.current?.removeAttribute("disabled");
+      setIsDisplay(false);
     }
   };
 
@@ -165,41 +169,43 @@ const CreateAllAccount = () => {
               </div>
             </div>
 
-            <div className="relative mb-3">
-              <label
-                htmlFor="falcuty"
-                className="mr-1 text-gray-700 text-base font-normal"
-              >
-                Falcuty
-              </label>
-              <select
-                id="facultyId"
-                className="block appearance-none w-full bg-white border border-gray-400 mt-1 p-[10px] rounded leading-tight focus:outline-none"
-                {...(register && register("facultyId", {}))}
-                ref={facultyRef}
-                disabled={defaultRoleValue ? true : false}
-              >
-                <option key="0" value={""}>
-                  -----
-                </option>
-                {faculty?.map((falcuty: any) => {
-                  return (
-                    <option key={falcuty?.id} value={falcuty?.id}>
-                      {falcuty?.name}
-                    </option>
-                  );
-                })}
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 pt-7 text-gray-700">
-                <svg
-                  className="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
+            {!isDisplay && (
+              <div className="relative mb-3">
+                <label
+                  htmlFor="falcuty"
+                  className="mr-1 text-gray-700 text-base font-normal"
                 >
-                  <path d="M10 12L4 6h12z" />
-                </svg>
+                  Falcuty
+                </label>
+                <select
+                  id="facultyId"
+                  className="block appearance-none w-full bg-white border border-gray-400 mt-1 p-[10px] rounded leading-tight focus:outline-none"
+                  {...(register && register("facultyId", {}))}
+                  ref={facultyRef}
+                  disabled={defaultRoleValue ? true : false}
+                >
+                  <option key="0" value={""}>
+                    -----
+                  </option>
+                  {faculty?.map((falcuty: any) => {
+                    return (
+                      <option key={falcuty?.id} value={falcuty?.id}>
+                        {falcuty?.name}
+                      </option>
+                    );
+                  })}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 pt-7 text-gray-700">
+                  <svg
+                    className="fill-current h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M10 12L4 6h12z" />
+                  </svg>
+                </div>
               </div>
-            </div>
+            )}
 
             <button
               type="submit"

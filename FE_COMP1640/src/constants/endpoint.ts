@@ -15,6 +15,7 @@ export const ENDPOINTS = {
    RESET_PASS: constructEndpoint("Auth/ChangeInitialPassword"),
    SENT_OTP: constructEndpoint("Auth/SendResetPasswordOTP"),
    CHANGE_PASS: constructEndpoint("Auth/ResetPassword"),
+   ACTIVE_USER: constructEndpoint("Auth/ToggleActive"),
    CREATE_CONTRIBUTOR_ACCOUNT: constructEndpoint(
       "Auth/CreateContributorAccount",
    ),

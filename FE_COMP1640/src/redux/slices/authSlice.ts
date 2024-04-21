@@ -155,7 +155,7 @@ const authSlice = createSlice({
             state.isLogin = true;
          }
 
-         state.message = "";
+         state.message = action.payload.title;
       });
       builder.addCase(login.rejected, (state, action) => {
          state.isLoading = false;
