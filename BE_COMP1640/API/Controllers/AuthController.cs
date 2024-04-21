@@ -10,6 +10,7 @@ using Application.Features.Auth.Commands.EditUser;
 using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.ResetPassword;
+using Application.Features.Auth.Commands.ToggleActive;
 using Application.Features.Auth.Commands.UpdateProfile;
 using Application.Features.Auth.Queries.GetResetPasswordOTP;
 using Application.Features.Auth.Queries.GetSelfProfile;
@@ -288,5 +289,19 @@ public class AuthController : ApiController
             Problem);
     }
 
+    /// <summary>
+    ///   [Admin]  Toggle the active status of user
+    /// </summary>
+    [HttpPut]
+    [Route("ToggleActive")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> ToggleActive([FromBody] ToggleActiveCommand request)
+    {
+        var result = await _sender.Send(request);
+
+        return result.Match(
+            value => base.Ok(value),
+            Problem);
+    }
 
 }

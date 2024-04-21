@@ -30,6 +30,8 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, ErrorOr<Success
 
         if (user.EmailConfirmed == false) return Error.Unauthorized(description: "Please verify your email first!");
 
+        if (user.IsActive == false) return Error.Unauthorized(description: "You are banned from the system due to the violation of Term of services");
+
         if (user.IsInitialPasswordChanged == false)
         {
             var changeInitialPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);

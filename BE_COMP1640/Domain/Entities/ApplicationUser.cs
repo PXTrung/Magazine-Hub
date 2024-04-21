@@ -10,6 +10,8 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public bool IsInitialPasswordChanged { get; set; } = false;
 
+    public bool IsActive { get; set; } = true;
+
     public ICollection<Contribution> Contributions { get; set; }
 
     public ICollection<Feedback> Feedbacks { get; set; }
