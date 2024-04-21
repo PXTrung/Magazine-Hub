@@ -4,12 +4,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../authValidationSchemas";
 import Input from "../../../components/CustomInput";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../../redux/slices/authSlice";
+import { clearMessage, login } from "../../../redux/slices/authSlice";
 import { AppDispatch, RootState } from "../../../redux/store";
 import Loading from "../../../components/loading/Loading";
 import { PATHS } from "../../../constants/path";
 import { Navigate, useLocation } from "react-router-dom";
 import authUtils from "../../../utils/auth";
+import Toast from "../../../components/Toast";
 
 const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -33,6 +34,10 @@ const LoginForm = () => {
     } catch (error: any) {
       console.log(error.message);
     }
+
+    setTimeout(() => {
+      dispatch(clearMessage());
+    }, 4000);
   };
 
   return (
@@ -74,7 +79,9 @@ const LoginForm = () => {
             placeholder="Enter your password"
           />
 
-          {isError && <p className="text-red-500 text-xs mb-3">{message}</p>}
+          {isError && message && (
+            <p className="text-red-500 text-xl mb-3 font-bold">{message}</p>
+          )}
 
           <button
             type="submit"
