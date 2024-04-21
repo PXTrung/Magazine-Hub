@@ -182,7 +182,6 @@ const CreateAllAccount = () => {
                   className="block appearance-none w-full bg-white border border-gray-400 mt-1 p-[10px] rounded leading-tight focus:outline-none"
                   {...(register && register("facultyId", {}))}
                   ref={facultyRef}
-                  disabled={defaultRoleValue ? true : false}
                 >
                   <option key="0" value={""}>
                     -----
