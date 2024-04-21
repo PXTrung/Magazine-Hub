@@ -57,7 +57,9 @@ const ChangeFaculty = () => {
       )}
       <div className="w-full px-2 md:px-5 lg:px-5 xl:px-10 py-5 overflow-hidden flex justify-center items-start">
         <div className=" bg-white/70 mt-5 p-8 rounded shadow-md  w-[600px] z-20">
-          <h1 className="text-2xl font-semibold mb-6">Change Faculty</h1>
+          <h1 className="text-2xl font-semibold mb-6">
+            Change Faculty ({email})
+          </h1>
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className={clsx("mb-3")}>

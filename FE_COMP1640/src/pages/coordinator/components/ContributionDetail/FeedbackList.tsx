@@ -35,7 +35,6 @@ const FeedbackList = (contribution: IFeedbackListProps) => {
   const [overTime, setOverTime] = useState<Boolean>(false);
   const [isOpenModal, setIsOpenModal] = useState<Boolean>(false);
   const [isConfirm, setIsConfirm] = useState<Boolean>(false);
-  const [isFeedbackSuccess, setIsFeedbackSuccess] = useState(false);
 
   const disableUpdate = () => {
     console.log(contribution.status);
@@ -83,11 +82,14 @@ const FeedbackList = (contribution: IFeedbackListProps) => {
   useEffect(() => {
     if (id && isConfirm) {
       dispatch(postFeedback({ content, contributionId: id }));
-
-      dispatch(getContributionById(id));
       clearContent();
-      setIsFeedbackSuccess(true);
+
       // Dispatch clearMessage action after 3 seconds
+      setTimeout(() => {
+        dispatch(getFeedbackByContributionId(id));
+        dispatch(getContributionById(id));
+      }, 100);
+
       setTimeout(() => {
         dispatch(clearFeedbackMessage());
       }, 3000);
@@ -101,12 +103,6 @@ const FeedbackList = (contribution: IFeedbackListProps) => {
     dispatch(getPeriod());
     disableUpdate();
   }, [dispatch, id]);
-
-  useEffect(() => {
-    if (id) {
-      dispatch(getFeedbackByContributionId(id));
-    }
-  }, [dispatch, isFeedbackSuccess]);
 
   console.log(overTime);
 
