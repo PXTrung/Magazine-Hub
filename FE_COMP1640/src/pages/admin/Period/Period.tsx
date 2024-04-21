@@ -139,7 +139,7 @@ const Period = () => {
                       First Deadline
                     </label>
                     <input
-                      className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                       id="firstSubmissionDeadline"
                       type="date"
                       {...register("firstSubmissionDeadline")}
@@ -159,7 +159,7 @@ const Period = () => {
                       Second Deadline
                     </label>
                     <input
-                      className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none borderrounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                       id="secondSubmissionDeadline"
                       type="date"
                       {...register("secondSubmissionDeadline")}

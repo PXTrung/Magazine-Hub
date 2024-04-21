@@ -31,9 +31,14 @@ const EditFaculty = () => {
     console.log(data);
     const faculty = { ...data, id: id };
 
-    console.log(faculty);
     dispatch(editFaculty(faculty as IEditFaculty));
   };
+
+  const selectedFaculty = faculty.find((p) => p.id == id);
+
+  useEffect(() => {
+    dispatch(getFaculty());
+  }, [dispatch]);
 
   return (
     <div className="w-[calc(100vw-208px)] ">
@@ -57,9 +62,10 @@ const EditFaculty = () => {
                   Faculty Name
                 </label>
                 <input
-                  className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                   id="name"
                   type="text"
+                  defaultValue={selectedFaculty?.name}
                   {...register("name")}
                   required
                 />
