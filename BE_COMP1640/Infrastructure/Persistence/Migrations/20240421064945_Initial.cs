@@ -86,6 +86,7 @@ namespace Infrastructure.Persistence.Migrations
                     FirstName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     IsInitialPasswordChanged = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
                     FacultyId = table.Column<Guid>(type: "TEXT", nullable: true),
                     AvatarId = table.Column<Guid>(type: "TEXT", nullable: true),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),

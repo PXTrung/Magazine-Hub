@@ -79,7 +79,7 @@ namespace Application.Features.Auth.Commands.CreateAllAccount
             //Create new user
             var result = await _userManager.CreateAsync(newUser, randomPassword);
 
-            if (!result.Succeeded) return Error.Unexpected(description: "Something went wrong, please try register again");
+            if (!result.Succeeded) return Error.Unexpected(description: "Something went wrong, please try again");
 
             newUser.EmailConfirmed = true;
 

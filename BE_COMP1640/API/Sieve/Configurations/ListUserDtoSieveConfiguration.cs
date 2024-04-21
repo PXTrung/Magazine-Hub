@@ -27,5 +27,9 @@ public class ListUserDtoSieveConfiguration : ISieveConfiguration
             .CanFilter()
             .CanSort();
 
+        mapper.Property<ListUserDto>(c => c.IsActive)
+            .CanFilter()
+            .CanSort();
+
     }
 }

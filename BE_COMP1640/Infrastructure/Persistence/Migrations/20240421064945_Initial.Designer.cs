@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240420065930_Initial")]
+    [Migration("20240421064945_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -77,6 +77,9 @@ namespace Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsInitialPasswordChanged")
                         .HasColumnType("INTEGER");

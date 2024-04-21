@@ -15,4 +15,6 @@ public class ListUserDto
     public Guid? FacultyId { get; set; }
 
     public string AvatarUrl { get; set; }
+
+    public bool IsActive { get; set; }
 }
