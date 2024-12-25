@@ -15,6 +15,5 @@ public class Media : BaseEntity
 
     public long? FileSizeInBytes { get; set; }
 
-
 }
 
